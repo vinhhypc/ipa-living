@@ -1,0 +1,640 @@
+"use client";
+
+import { useActionState, useMemo, useState } from "react";
+import { useFormStatus } from "react-dom";
+import Image from "next/image";
+import {
+  Award,
+  Briefcase,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Heart,
+  HeartHandshake,
+  MapPin,
+  Search,
+  Send,
+  Shield,
+  Sparkles,
+  Star,
+  TrendingUp,
+  Users,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import { EXPERTS } from "@/lib/data";
+import type { Expert, ExpertCategory } from "@/lib/types";
+import {
+  submitWorkshopInterest,
+  type WorkshopInterestState,
+} from "@/lib/actions/registration";
+
+type Filter = "all" | ExpertCategory;
+const INITIAL: WorkshopInterestState = { status: "idle" };
+
+const inputClass =
+  "w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-xs text-neutral-800 outline-none focus-visible:ring-2 focus-visible:ring-amber-500";
+
+const CATEGORY_PILLS: { key: Filter; label: string; icon?: LucideIcon; active: string }[] = [
+  { key: "all", label: `Tất cả (${EXPERTS.length})`, active: "bg-neutral-900 text-white" },
+  { key: "ca", label: "Client Advisor (CA)", icon: Users, active: "bg-amber-600 text-white" },
+  { key: "anvie", label: "Bác sĩ Anvie Health", icon: Heart, active: "bg-emerald-600 text-white" },
+  { key: "vndgo", label: "Tài chính VNDGO", icon: TrendingUp, active: "bg-amber-800 text-white" },
+  { key: "pticare", label: "Bảo an PTI", icon: Shield, active: "bg-sky-600 text-white" },
+];
+
+const CATEGORY_BADGE: Record<ExpertCategory, string> = {
+  anvie: "border-emerald-200 bg-emerald-100 text-emerald-900",
+  ca: "border-amber-200 bg-amber-100 text-amber-900",
+  vndgo: "border-orange-200 bg-orange-100 text-orange-900",
+  pticare: "border-sky-200 bg-sky-100 text-sky-900",
+};
+
+const STATS = [
+  { icon: Users, tone: "text-brand-gold", value: "2.000+", label: "Đội ngũ chuyên gia", desc: "Chuyên viên & Cố vấn gia sản, y học lối sống và bảo an được đào tạo bài bản trên toàn quốc." },
+  { icon: MapPin, tone: "text-brand-green", value: "34 Tỉnh/TP", label: "Mạng lưới phủ sóng", desc: "Hệ thống trạm Dstation và chi nhánh dịch vụ hiện diện khắp các tỉnh thành cả nước." },
+  { icon: HeartHandshake, tone: "text-brand-bluegray", value: "500.000+", label: "Khách hàng đồng hành", desc: "Gia đình và hội viên tin tưởng đồng hành trọn đời trên hành trình Sống Vui - Khỏe - Giàu." },
+  { icon: Star, tone: "text-amber-500", value: "98.6%", label: "Mức độ hài lòng", desc: "Đánh giá hài lòng từ các phiên tư vấn, dịch vụ bồi thường và hội thảo chuyển hóa." },
+];
+
+const JOIN_BENEFITS = [
+  { title: "Môi trường làm việc văn minh", desc: "Làm việc tại chuỗi không gian sáng tạo Dstation sang trọng, gần gũi thiên nhiên." },
+  { title: "Thu nhập & Đãi ngộ xứng đáng", desc: "Cơ chế lương cứng cạnh tranh, hoa hồng đa hệ sinh thái và bảo hiểm sức khỏe VIP." },
+  { title: "Đào tạo liên tục", desc: "Được kèm cặp bởi các chuyên gia hàng đầu về Y học lối sống, Hoạch định tài chính và Thẩm định bảo an." },
+];
+
+export function DCareView() {
+  const [filter, setFilter] = useState<Filter>("all");
+  const [search, setSearch] = useState("");
+  const [booking, setBooking] = useState<Expert | null>(null);
+
+  const query = search.trim().toLowerCase();
+  const experts = useMemo(
+    () =>
+      EXPERTS.filter((expert) => {
+        const matchesCategory =
+          filter === "all" || expert.category === filter;
+        const matchesSearch =
+          !query ||
+          expert.name.toLowerCase().includes(query) ||
+          expert.role.toLowerCase().includes(query) ||
+          expert.specialties.some((s) => s.toLowerCase().includes(query));
+        return matchesCategory && matchesSearch;
+      }),
+    [filter, query],
+  );
+
+  return (
+    <div className="min-h-screen bg-neutral-50 pb-20 font-sans text-neutral-800">
+      <section className="relative overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white md:py-24">
+        <div className="bg-glow-gold-top pointer-events-none absolute inset-0" />
+        <div className="relative z-10 mx-auto max-w-7xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-300 backdrop-blur-md">
+            <span className="h-2 w-2 rounded-full bg-amber-400" /> D-Care · Đội ngũ
+            đồng hành &amp; Chuyên gia
+          </span>
+          <h1 className="mx-auto max-w-4xl font-display text-3xl font-black leading-tight text-white sm:text-5xl">
+            Người Đồng Hành Tận Tâm Cho Cuộc Sống Vui - Khỏe - Giàu
+          </h1>
+          <p className="mx-auto max-w-2xl text-sm font-light leading-relaxed text-neutral-300 sm:text-base">
+            Mạng lưới <strong>Client Advisor (CA)</strong>, Bác sĩ Y học lối sống
+            Anvie, Chuyên gia Tích sản VNDGO và Chuyên gia Bảo an PTI — sẵn sàng
+            tư vấn và kiến tạo an tâm cho gia đình bạn.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3 pt-4">
+            <a
+              href="#danh-sach-chuyen-gia"
+              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              <Users className="h-4 w-4" />
+              <span>Gặp gỡ chuyên gia</span>
+            </a>
+            <a
+              href="#gia-nhap-doi-ngu"
+              className="inline-flex items-center gap-2 rounded-xl bg-amber-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              <Briefcase className="h-4 w-4" />
+              <span>Gia nhập đội ngũ (Ứng tuyển)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-20 mx-auto -mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-lg sm:p-8">
+          <div className="grid grid-cols-2 gap-6 divide-neutral-100 sm:gap-8 sm:divide-x lg:grid-cols-4">
+            {STATS.map((stat, idx) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={stat.label}
+                  className={cn(
+                    "space-y-2 text-center sm:text-left",
+                    idx > 0 && "sm:pl-4",
+                    idx < STATS.length - 1 && "sm:pr-4",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "flex items-center justify-center gap-2 sm:justify-start",
+                      stat.tone,
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="text-xs font-bold uppercase tracking-wider">
+                      {stat.label}
+                    </span>
+                  </span>
+                  <p className="font-display text-3xl font-black tracking-tight text-neutral-900 sm:text-4xl">
+                    {stat.value}
+                  </p>
+                  <p className="text-xs font-light leading-relaxed text-neutral-600">
+                    {stat.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="danh-sach-chuyen-gia"
+        className="mx-auto max-w-7xl space-y-8 px-4 pt-12 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-3xl space-y-2 text-center">
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-700">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Phần 1: Đội ngũ Cố vấn &amp; Chuyên gia</span>
+          </span>
+          <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-3xl">
+            Chuyên gia Đồng hành Cùng Bạn
+          </h2>
+          <p className="text-xs leading-relaxed text-neutral-600 sm:text-sm">
+            Chọn chuyên gia theo lĩnh vực quan tâm để nhận tư vấn chuyên sâu hoặc
+            đặt lịch gặp trực tiếp tại Dstation.
+          </p>
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm sm:p-6 md:flex-row">
+          <div className="flex w-full flex-wrap items-center gap-2 md:w-auto">
+            {CATEGORY_PILLS.map((pill) => {
+              const Icon = pill.icon;
+              const active = filter === pill.key;
+              return (
+                <button
+                  key={pill.key}
+                  type="button"
+                  onClick={() => setFilter(pill.key)}
+                  aria-pressed={active}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+                    active
+                      ? pill.active
+                      : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200",
+                  )}
+                >
+                  {Icon ? <Icon className="h-3.5 w-3.5" /> : null}
+                  <span>{pill.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+            <label htmlFor="expert-search" className="sr-only">
+              Tìm chuyên gia
+            </label>
+            <input
+              id="expert-search"
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Tìm theo tên hoặc chuyên môn..."
+              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-xs outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {experts.map((expert) => (
+            <article
+              key={expert.id}
+              className="group flex flex-col justify-between overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg"
+            >
+              <div>
+                <div className="relative h-56 overflow-hidden bg-neutral-100">
+                  <Image
+                    src={expert.avatar}
+                    alt={expert.name}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/25 to-transparent" />
+                  <span
+                    className={cn(
+                      "absolute left-3 top-3 rounded-full border px-3 py-1 text-xs font-bold uppercase shadow-sm",
+                      CATEGORY_BADGE[expert.category],
+                    )}
+                  >
+                    {expert.categoryLabel}
+                  </span>
+                  <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-neutral-900/80 px-2.5 py-1 text-xs font-bold text-white backdrop-blur-md">
+                    <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                    <span>{expert.rating}</span>
+                    <span className="text-xs font-normal text-neutral-300">
+                      ({expert.reviewsCount})
+                    </span>
+                  </span>
+                  <div className="absolute inset-x-3 bottom-3 text-white">
+                    <h3 className="font-display text-lg font-black leading-tight text-white">
+                      {expert.name}
+                    </h3>
+                    <p className="mt-0.5 line-clamp-1 text-xs font-light text-neutral-200">
+                      {expert.role}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-3.5 p-5">
+                  <p className="line-clamp-2 text-xs leading-relaxed text-neutral-600">
+                    {expert.bio}
+                  </p>
+                  <p className="flex items-center gap-2 text-xs text-neutral-500">
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-600" />
+                    <span className="truncate">{expert.location}</span>
+                  </p>
+                  <div className="space-y-1.5 border-t border-neutral-100 pt-2">
+                    <p className="text-xs font-bold uppercase text-neutral-400">
+                      Lĩnh vực tư vấn
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {expert.specialties.map((spec) => (
+                        <span
+                          key={spec}
+                          className="rounded-md bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-5 pt-0">
+                <button
+                  type="button"
+                  onClick={() => setBooking(expert)}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                >
+                  <Calendar className="h-4 w-4" />
+                  <span>Đặt lịch tư vấn</span>
+                </button>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {experts.length === 0 ? (
+          <p className="rounded-3xl border border-neutral-200 bg-white p-12 text-center text-sm text-neutral-500">
+            Không tìm thấy chuyên gia phù hợp với bộ lọc hiện tại.
+          </p>
+        ) : null}
+      </section>
+
+      {/* Recruitment */}
+      <section
+        id="gia-nhap-doi-ngu"
+        className="mx-auto max-w-7xl scroll-mt-24 px-4 pt-20 sm:px-6 lg:px-8"
+      >
+        <div className="overflow-hidden rounded-3xl border border-amber-200/90 bg-white shadow-lg">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
+            <div className="flex flex-col justify-between space-y-6 bg-gradient-to-br from-amber-950 via-neutral-900 to-neutral-950 p-8 text-white sm:p-10 lg:col-span-5">
+              <div className="space-y-4">
+                <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-500/20 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-amber-300">
+                  <Award className="h-3.5 w-3.5 text-amber-400" />
+                  <span>Phần 2: Tuyển dụng &amp; Đồng hành</span>
+                </span>
+                <h2 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">
+                  Gia Nhập Đội Ngũ{" "}
+                  <span className="text-amber-400">
+                    Client Advisor &amp; Chuyên Gia
+                  </span>
+                </h2>
+                <p className="text-xs font-light leading-relaxed text-neutral-300 sm:text-sm">
+                  Trở thành người kiến tạo nếp sống an tâm cho hàng ngàn gia đình.
+                  Chúng tôi chào đón các bạn trẻ nhiệt huyết, chuyên gia y tế, tài
+                  chính và bảo hiểm cùng chung triết lý phụng sự.
+                </p>
+                <ul className="space-y-3.5 border-t border-white/10 pt-4 text-xs text-neutral-200">
+                  {JOIN_BENEFITS.map((benefit) => (
+                    <li key={benefit.title} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                      <span>
+                        <strong>{benefit.title}:</strong> {benefit.desc}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="flex items-center gap-2 border-t border-white/10 pt-6 text-xs text-neutral-400">
+                <Clock className="h-4 w-4 text-amber-400" />
+                <span>Phản hồi hồ sơ nhanh chóng trong vòng 3 ngày làm việc</span>
+              </p>
+            </div>
+
+            <div className="bg-neutral-50/50 p-8 sm:p-10 lg:col-span-7">
+              <RecruitmentForm />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {booking ? (
+        <BookingModal expert={booking} onClose={() => setBooking(null)} />
+      ) : null}
+    </div>
+  );
+}
+
+function RecruitmentForm() {
+  const [state, formAction] = useActionState(submitWorkshopInterest, INITIAL);
+
+  if (state.status === "success") {
+    return (
+      <div className="space-y-4 py-12 text-center">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+          <CheckCircle2 className="h-10 w-10" />
+        </span>
+        <h3 className="font-display text-2xl font-black text-neutral-900">
+          Ứng tuyển thành công!
+        </h3>
+        <p className="mx-auto max-w-md text-xs leading-relaxed text-neutral-600 sm:text-sm">
+          {state.message}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form action={formAction} className="space-y-4" noValidate>
+      <div>
+        <h3 className="font-display text-xl font-bold text-neutral-900">
+          Điền Thông Tin Ứng Tuyển
+        </h3>
+        <p className="mt-0.5 text-xs text-neutral-500">
+          Vui lòng cung cấp thông tin liên hệ chính xác để chúng tôi kết nối sớm
+          nhất.
+        </p>
+      </div>
+      {state.status === "error" && state.message ? (
+        <p
+          role="alert"
+          className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-medium text-red-700"
+        >
+          {state.message}
+        </p>
+      ) : null}
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Field id="r-name" label="Họ và tên ứng viên" required>
+          <input id="r-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Trần Quốc Bảo" className={inputClass} />
+        </Field>
+        <Field id="r-phone" label="Số điện thoại" required>
+          <input id="r-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0909 123 456" className={inputClass} />
+        </Field>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Field id="r-email" label="Email liên hệ">
+          <input id="r-email" name="email" type="email" autoComplete="email" placeholder="baotran@gmail.com" className={inputClass} />
+        </Field>
+        <Field id="r-position" label="Vị trí mong muốn ứng tuyển">
+          <select id="r-position" name="position" defaultValue="ca" className={inputClass}>
+            <option value="ca">Client Advisor (Tư vấn viên lối sống & gia sản)</option>
+            <option value="doctor">Bác sĩ / Dược sĩ Y học lối sống Anvie</option>
+            <option value="financial">Chuyên viên Hoạch định Tài chính VNDGO</option>
+            <option value="insurance">Chuyên viên Tư vấn Bảo hiểm PTI</option>
+            <option value="station">Quản lý / Vận hành Trạm Dstation</option>
+          </select>
+        </Field>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Field id="r-location" label="Khu vực làm việc mong muốn">
+          <select id="r-location" name="location" defaultValue="hanoi" className={inputClass}>
+            <option value="hanoi">Hà Nội (Tây Hồ, Hai Bà Trưng)</option>
+            <option value="hcm">TP. HCM (Quận 1, Quận 5)</option>
+            <option value="danang">Đà Nẵng</option>
+            <option value="haiphong">Hải Phòng</option>
+          </select>
+        </Field>
+        <Field id="r-exp" label="Kinh nghiệm làm việc">
+          <select id="r-exp" name="experienceYears" defaultValue="1-3" className={inputClass}>
+            <option value="fresh">Mới tốt nghiệp / Đam mê phong cách sống</option>
+            <option value="1-3">1 - 3 năm kinh nghiệm</option>
+            <option value="3-5">3 - 5 năm kinh nghiệm</option>
+            <option value="5+">Trên 5 năm kinh nghiệm</option>
+          </select>
+        </Field>
+      </div>
+      <Field id="r-cv" label="Link CV / Hồ sơ năng lực (Google Drive / LinkedIn / PDF)">
+        <input id="r-cv" name="cvLink" type="url" placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..." className={inputClass} />
+      </Field>
+      <Field id="r-bg" label="Kinh nghiệm / Thông điệp gửi tới IPA Living">
+        <textarea id="r-bg" name="background" rows={2} placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..." className={cn(inputClass, "resize-none")} />
+      </Field>
+
+      <RecruitSubmit />
+    </form>
+  );
+}
+
+function RecruitSubmit() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-600 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-all hover:bg-amber-700 disabled:opacity-60"
+    >
+      <Send className="h-4 w-4" />
+      <span>{pending ? "Đang gửi..." : "Nộp hồ sơ ứng tuyển"}</span>
+    </button>
+  );
+}
+
+function BookingModal({
+  expert,
+  onClose,
+}: {
+  expert: Expert;
+  onClose: () => void;
+}) {
+  const [state, formAction] = useActionState(submitWorkshopInterest, INITIAL);
+  const [format, setFormat] = useState<"in-person" | "online">("in-person");
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-950/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Đặt lịch tư vấn với ${expert.name}`}
+        onClick={(e) => e.stopPropagation()}
+        className="relative max-h-modal w-full max-w-lg overflow-y-auto rounded-3xl border border-neutral-100 bg-white p-6 shadow-lg sm:p-8"
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Đóng"
+          className="absolute right-4 top-4 rounded-full p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600"
+        >
+          <X className="h-5 w-5" />
+        </button>
+
+        {state.status === "success" ? (
+          <div className="space-y-4 py-8 text-center">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+              <CheckCircle2 className="h-8 w-8" />
+            </span>
+            <h3 className="font-display text-xl font-bold text-neutral-900">
+              Đặt lịch thành công!
+            </h3>
+            <p className="mx-auto max-w-xs text-xs leading-relaxed text-neutral-600">
+              {state.message}
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-xl bg-neutral-900 px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-neutral-800"
+            >
+              Đóng cửa sổ
+            </button>
+          </div>
+        ) : (
+          <form action={formAction} className="space-y-4" noValidate>
+            <input type="hidden" name="expert" value={expert.name} />
+            <input type="hidden" name="format" value={format} />
+            <div className="flex items-center gap-3.5 border-b border-neutral-100 pb-4">
+              <Image
+                src={expert.avatar}
+                alt={expert.name}
+                width={48}
+                height={48}
+                className="h-12 w-12 rounded-xl object-cover"
+              />
+              <div>
+                <h3 className="text-sm font-bold text-neutral-900">
+                  {expert.name}
+                </h3>
+                <p className="text-xs text-neutral-500">{expert.role}</p>
+              </div>
+            </div>
+
+            {state.status === "error" && state.message ? (
+              <p
+                role="alert"
+                className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2 text-xs font-medium text-red-700"
+              >
+                {state.message}
+              </p>
+            ) : null}
+
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Field id="b-name" label="Họ và tên của bạn" required>
+                <input id="b-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={inputClass} />
+              </Field>
+              <Field id="b-phone" label="Số điện thoại" required>
+                <input id="b-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={inputClass} />
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <Field id="b-date" label="Ngày tư vấn">
+                <input id="b-date" name="date" type="date" className={inputClass} />
+              </Field>
+              <Field id="b-slot" label="Khung giờ">
+                <select id="b-slot" name="timeSlot" defaultValue="09:00 - 10:30" className={inputClass}>
+                  <option value="09:00 - 10:30">09:00 - 10:30 (Sáng)</option>
+                  <option value="14:00 - 15:30">14:00 - 15:30 (Chiều)</option>
+                  <option value="16:00 - 17:30">16:00 - 17:30 (Chiều)</option>
+                </select>
+              </Field>
+            </div>
+            <div>
+              <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                Hình thức tư vấn
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                {(["in-person", "online"] as const).map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => setFormat(option)}
+                    aria-pressed={format === option}
+                    className={cn(
+                      "rounded-xl border py-2 text-xs font-bold transition-colors",
+                      format === option
+                        ? "border-emerald-600 bg-emerald-50 text-emerald-800"
+                        : "border-neutral-200 text-neutral-600 hover:bg-neutral-50",
+                    )}
+                  >
+                    {option === "in-person"
+                      ? "Trực tiếp tại Dstation"
+                      : "Online qua Google Meet"}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <Field id="b-notes" label="Nhu cầu cần trao đổi cụ thể">
+              <textarea id="b-notes" name="notes" rows={2} placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..." className={cn(inputClass, "resize-none")} />
+            </Field>
+            <BookingSubmit />
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function BookingSubmit() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-emerald-700 disabled:opacity-60"
+    >
+      <Send className="h-3.5 w-3.5" />
+      <span>{pending ? "Đang gửi..." : "Xác nhận đặt lịch tư vấn"}</span>
+    </button>
+  );
+}
+
+function Field({
+  id,
+  label,
+  required = false,
+  children,
+}: {
+  id: string;
+  label: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+      >
+        {label} {required ? <span className="text-rose-500">*</span> : null}
+      </label>
+      {children}
+    </div>
+  );
+}
