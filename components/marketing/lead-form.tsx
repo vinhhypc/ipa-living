@@ -4,6 +4,8 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { CheckCircle2, Send } from "lucide-react";
 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   submitWorkshopInterest,
   type WorkshopInterestState,
@@ -11,8 +13,9 @@ import {
 
 const INITIAL: WorkshopInterestState = { status: "idle" };
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs text-neutral-800 outline-none transition-all focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-amber-600";
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện PTI (amber).
+const fieldClass =
+  "focus-visible:border-amber-600 focus-visible:ring-amber-600/30";
 
 /**
  * Form "Để lại thông tin" dùng chung cho các trang sản phẩm PTI
@@ -87,34 +90,34 @@ export function LeadForm({
                 </p>
               ) : null}
               <div>
-                <label htmlFor="lead-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label htmlFor="lead-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                   Họ và tên <span className="text-rose-500">*</span>
-                </label>
-                <input id="lead-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={inputClass} />
+                </Label>
+                <Input id="lead-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
               </div>
               <div>
-                <label htmlFor="lead-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label htmlFor="lead-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                   Số điện thoại <span className="text-rose-500">*</span>
-                </label>
-                <input id="lead-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className={inputClass} />
+                </Label>
+                <Input id="lead-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className={fieldClass} />
               </div>
               <div>
-                <label htmlFor="lead-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label htmlFor="lead-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                   Sản phẩm quan tâm
-                </label>
-                <input
+                </Label>
+                <Input
                   id="lead-product"
                   type="text"
                   readOnly
                   value={product}
-                  className="w-full cursor-not-allowed rounded-xl border border-neutral-200 bg-neutral-100 px-4 py-2.5 text-xs font-medium text-neutral-700"
+                  className="cursor-not-allowed bg-muted font-medium text-muted-foreground"
                 />
               </div>
               <div>
-                <label htmlFor="lead-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label htmlFor="lead-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                   Email (không bắt buộc)
-                </label>
-                <input id="lead-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className={inputClass} />
+                </Label>
+                <Input id="lead-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className={fieldClass} />
               </div>
               <div className="pt-2">
                 <SubmitButton label={submitLabel} />

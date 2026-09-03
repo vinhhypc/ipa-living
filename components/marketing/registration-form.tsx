@@ -2,21 +2,19 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import {
-  Award,
-  Briefcase,
-  CheckCircle,
-  FileText,
-  GraduationCap,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  User,
-} from "lucide-react";
+import { Award, CheckCircle, GraduationCap, ShieldCheck } from "lucide-react";
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   submitRegistration,
   type RegistrationState,
@@ -42,8 +40,36 @@ const BENEFITS = [
   },
 ];
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-200 py-2.5 pl-10 pr-4 text-sm text-neutral-800 outline-none transition-colors focus:border-brand-navy focus:ring-1 focus:ring-brand-navy";
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện tuyển dụng (brand navy).
+const fieldClass =
+  "focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
+const selectTriggerClass = cn("w-full", fieldClass);
+
+const CITY_OPTIONS = [
+  {
+    value: "hanoi",
+    label:
+      "Hà Nội (Trần Bình Trọng, Cầu Giấy, Đống Đa, Thanh Xuân, Timecity,...)",
+  },
+  {
+    value: "hcm",
+    label: "TP. Hồ Chí Minh (90 Pasteur - Q1, Sala - TP. Thủ Đức)",
+  },
+  { value: "haiphong", label: "Hải Phòng (5 Nguyễn Tri Phương)" },
+  {
+    value: "other",
+    label:
+      "Các tỉnh thành khác (Bình Dương, Nha Trang, Huế, Ninh Bình, Hòa Bình,...)",
+  },
+] as const;
+
+const EXPERIENCE_OPTIONS = [
+  { value: "finance", label: "Tài chính - Ngân hàng - Chứng khoán" },
+  { value: "health", label: "Y tế - Dinh dưỡng - Chăm sóc sức khỏe" },
+  { value: "insurance", label: "Bảo hiểm - Quản trị rủi ro" },
+  { value: "sales", label: "Bán hàng & Tư vấn Dịch vụ cao cấp" },
+  { value: "fresher", label: "Mới tốt nghiệp / Đã tham gia các khoá học CA" },
+] as const;
 
 export function RegistrationForm() {
   const [state, formAction] = useActionState(submitRegistration, INITIAL_STATE);
@@ -134,10 +160,9 @@ export function RegistrationForm() {
               id="fullName"
               label="Họ và tên ứng viên"
               required
-              icon={<User className="h-4 w-4" />}
               error={state.fieldErrors?.fullName}
             >
-              <input
+              <Input
                 type="text"
                 id="fullName"
                 name="fullName"
@@ -145,7 +170,7 @@ export function RegistrationForm() {
                 autoComplete="name"
                 placeholder="Nguyễn Văn A"
                 aria-invalid={Boolean(state.fieldErrors?.fullName)}
-                className={inputClass}
+                className={fieldClass}
               />
             </Field>
 
@@ -154,10 +179,9 @@ export function RegistrationForm() {
                 id="phone"
                 label="Số điện thoại liên hệ"
                 required
-                icon={<Phone className="h-4 w-4" />}
                 error={state.fieldErrors?.phone}
               >
-                <input
+                <Input
                   type="tel"
                   id="phone"
                   name="phone"
@@ -165,7 +189,7 @@ export function RegistrationForm() {
                   autoComplete="tel"
                   placeholder="0912xxxxxx"
                   aria-invalid={Boolean(state.fieldErrors?.phone)}
-                  className={inputClass}
+                  className={fieldClass}
                 />
               </Field>
 
@@ -173,10 +197,9 @@ export function RegistrationForm() {
                 id="email"
                 label="Email cá nhân"
                 required
-                icon={<Mail className="h-4 w-4" />}
                 error={state.fieldErrors?.email}
               >
-                <input
+                <Input
                   type="email"
                   id="email"
                   name="email"
@@ -184,80 +207,53 @@ export function RegistrationForm() {
                   autoComplete="email"
                   placeholder="example@gmail.com"
                   aria-invalid={Boolean(state.fieldErrors?.email)}
-                  className={inputClass}
+                  className={fieldClass}
                 />
               </Field>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Field
-                id="city"
-                label="Khu vực mong muốn làm việc"
-                icon={<MapPin className="h-4 w-4" />}
-              >
-                <select
-                  id="city"
-                  name="city"
-                  defaultValue="hanoi"
-                  className={cn(inputClass, "cursor-pointer bg-white")}
-                >
-                  <option value="hanoi">
-                    Hà Nội (Trần Bình Trọng, Cầu Giấy, Đống Đa, Thanh Xuân,
-                    Timecity,...)
-                  </option>
-                  <option value="hcm">
-                    TP. Hồ Chí Minh (90 Pasteur - Q1, Sala - TP. Thủ Đức)
-                  </option>
-                  <option value="haiphong">
-                    Hải Phòng (5 Nguyễn Tri Phương)
-                  </option>
-                  <option value="other">
-                    Các tỉnh thành khác (Bình Dương, Nha Trang, Huế, Ninh Bình,
-                    Hòa Bình,...)
-                  </option>
-                </select>
+              <Field id="city" label="Khu vực mong muốn làm việc">
+                <Select name="city" defaultValue="hanoi">
+                  <SelectTrigger id="city" className={selectTriggerClass}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITY_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
 
-              <Field
-                id="experience"
-                label="Lĩnh vực chuyên môn thế mạnh"
-                icon={<Briefcase className="h-4 w-4" />}
-              >
-                <select
-                  id="experience"
-                  name="experience"
-                  defaultValue="finance"
-                  className={cn(inputClass, "cursor-pointer bg-white")}
-                >
-                  <option value="finance">
-                    Tài chính - Ngân hàng - Chứng khoán
-                  </option>
-                  <option value="health">
-                    Y tế - Dinh dưỡng - Chăm sóc sức khỏe
-                  </option>
-                  <option value="insurance">Bảo hiểm - Quản trị rủi ro</option>
-                  <option value="sales">
-                    Bán hàng & Tư vấn Dịch vụ cao cấp
-                  </option>
-                  <option value="fresher">
-                    Mới tốt nghiệp / Đã tham gia các khoá học CA
-                  </option>
-                </select>
+              <Field id="experience" label="Lĩnh vực chuyên môn thế mạnh">
+                <Select name="experience" defaultValue="finance">
+                  <SelectTrigger id="experience" className={selectTriggerClass}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {EXPERIENCE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
 
             <Field
               id="message"
               label="Giới thiệu bản thân / Link CV hoặc Lý do muốn trở thành CA"
-              icon={<FileText className="h-4 w-4" />}
-              alignTop
             >
-              <textarea
+              <Textarea
                 id="message"
                 name="message"
                 rows={3}
                 placeholder="Ví dụ: Tôi có 3 năm kinh nghiệm tư vấn tài chính cá nhân, mong muốn mở rộng kiến thức y tế lối sống để trở thành Bạn Đồng Hành toàn diện..."
-                className={cn(inputClass, "resize-none")}
+                className={cn(fieldClass, "resize-none")}
               />
             </Field>
 
@@ -273,17 +269,13 @@ function Field({
   id,
   label,
   required = false,
-  icon,
   error,
-  alignTop = false,
   children,
 }: {
   id: string;
   label: string;
   required?: boolean;
-  icon: React.ReactNode;
   error?: string;
-  alignTop?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -294,17 +286,7 @@ function Field({
       >
         {label} {required ? <span className="text-red-500">*</span> : null}
       </label>
-      <div className="relative">
-        <span
-          className={cn(
-            "pointer-events-none absolute left-0 flex items-center pl-3.5 text-neutral-400",
-            alignTop ? "top-3" : "inset-y-0",
-          )}
-        >
-          {icon}
-        </span>
-        {children}
-      </div>
+      {children}
       {error ? (
         <p className="mt-1 text-xs font-medium text-red-600">{error}</p>
       ) : null}

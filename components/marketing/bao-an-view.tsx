@@ -132,7 +132,7 @@ const PRODUCT_LINES: {
     eyebrow: "Bảo hiểm xe cơ giới & du lịch",
     title: "PTISOS — Bảo hiểm xe cơ giới & du lịch",
     quote: "An toàn trên mọi hành trình.",
-    quoteClass: "border-blue-100 bg-blue-50 text-blue-800",
+    quoteClass: "border-protection-500/20 bg-protection-50 text-protection-700",
     desc: "Nền tảng cứu hộ & giám định hiện trường: đội ngũ 300 chuyên viên trên 34 tỉnh thành, có mặt nhanh khi bạn cần — từ tai nạn trên đường đến sự cố khi du lịch nước ngoài.",
     scopeTitle: "Phạm vi bảo vệ trọng tâm",
     scope: [
@@ -148,7 +148,7 @@ const PRODUCT_LINES: {
     ],
     href: routes.ptiSos,
     ctaLabel: "Xem chi tiết PTI SOS",
-    ctaClass: "bg-brand-bluegray hover:bg-brand-bluegray-dark",
+    ctaClass: "bg-protection-600 hover:bg-protection-700",
     image: localImage(
       "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600",
     ),
@@ -234,30 +234,30 @@ export function BaoAnView() {
   return (
     <div className="bg-white font-sans">
       {/* Hero */}
-      <section className="overflow-hidden border-b border-neutral-200 bg-neutral-50 py-6 sm:py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative flex min-h-130 items-center overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg lg:min-h-144">
-            <div className="absolute inset-0">
-              <Image
-                src={HERO_IMAGE}
-                alt="Bảo An PTICare — gìn giữ bình an cho mỗi gia đình Việt"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-right"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-transparent sm:bg-gradient-to-r sm:via-white/90" />
-            </div>
-            <div className="relative z-10 max-w-2xl space-y-5 px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
+      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+        <div className="absolute inset-0">
+          <Image
+            src={HERO_IMAGE}
+            alt="Bảo An PTICare — gìn giữ bình an cho mỗi gia đình Việt"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right lg:object-center"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-neutral-50 via-neutral-50/90 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-50/80 via-transparent to-neutral-50/20" />
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-2xl space-y-5">
               <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
                 Tháp Bảo An{" "}
-                <span className="text-brand-bluegray-dark">PTICare</span>
+                <span className="text-protection-600">PTICare</span>
               </h1>
               <div className="space-y-1">
-                <p className="font-display text-xs font-bold uppercase tracking-widest text-brand-bluegray-dark sm:text-sm lg:text-base">
+                <p className="font-display text-xs font-bold uppercase tracking-widest text-protection-700 sm:text-sm lg:text-base">
                   Một nếp sống tương hỗ · Triệu mái nhà sống an
                 </p>
-                <p className="text-xs font-medium italic text-sky-800 sm:text-sm">
+                <p className="text-xs font-medium italic text-protection-700 sm:text-sm">
                   “Caring beyond Insurance” — Gìn giữ bình an cho mỗi gia đình
                   Việt
                 </p>
@@ -270,7 +270,7 @@ export function BaoAnView() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <a
                   href="#danh-muc-san-pham"
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-bluegray-dark px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-navy hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+                  className="inline-flex items-center gap-2 rounded-full bg-protection-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-protection-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
                 >
                   <Shield className="h-4 w-4" />
                   <span>Khám phá giải pháp bảo vệ</span>
@@ -281,13 +281,12 @@ export function BaoAnView() {
                   onClick={() => setModalOpen(true)}
                   className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
                 >
-                  <HeartHandshake className="h-4 w-4 text-brand-bluegray-dark" />
+                  <HeartHandshake className="h-4 w-4 text-protection-700" />
                   <span>Đăng ký nhận tư vấn</span>
                 </button>
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* Ba chiều bảo vệ */}
@@ -297,7 +296,7 @@ export function BaoAnView() {
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-14 max-w-3xl space-y-3 text-center">
-            <span className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-blue-800">
+            <span className="inline-flex rounded-full border border-protection-500/25 bg-protection-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-protection-700">
               Không chỉ là bảo hiểm
             </span>
             <h2 className="font-display text-3xl font-black text-brand-navy sm:text-4xl">
@@ -395,7 +394,7 @@ export function BaoAnView() {
       >
         <div className="mx-auto max-w-7xl space-y-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl space-y-3">
-            <span className="inline-flex rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-bluegray-dark">
+            <span className="inline-flex rounded-full bg-neutral-100 px-3 py-1 text-xs font-bold uppercase tracking-widest text-protection-700">
               Bảo vệ đúng điều bạn quan tâm nhất
             </span>
             <h2 className="font-display text-3xl font-black leading-snug text-brand-navy sm:text-4xl">
@@ -438,7 +437,7 @@ export function BaoAnView() {
                       <ul className="grid grid-cols-1 gap-2 text-xs text-neutral-600 sm:grid-cols-2">
                         {line.scope.map((item) => (
                           <li key={item} className="flex items-center">
-                            <CheckCircle2 className="mr-2 h-3.5 w-3.5 shrink-0 text-brand-bluegray" />
+                            <CheckCircle2 className="mr-2 h-3.5 w-3.5 shrink-0 text-protection-600" />
                             {item}
                           </li>
                         ))}
@@ -454,7 +453,7 @@ export function BaoAnView() {
                               key={tag.text}
                               className="flex items-center rounded-lg border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-700"
                             >
-                              <TagIcon className="mr-1.5 h-3.5 w-3.5 text-brand-bluegray" />
+                              <TagIcon className="mr-1.5 h-3.5 w-3.5 text-protection-600" />
                               {tag.text}
                             </span>
                           );

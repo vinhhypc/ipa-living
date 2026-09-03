@@ -5,6 +5,17 @@ import { CheckCircle2, ChevronRight, QrCode, Ticket, X } from "lucide-react";
 import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { submitWorkshopInterest } from "@/lib/actions/registration";
 
 type Info = {
@@ -16,15 +27,26 @@ type Info = {
   completed: boolean;
 };
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm text-neutral-800 outline-none focus-visible:border-brand-navy focus-visible:ring-1 focus-visible:ring-brand-navy";
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện workshop (brand navy).
+const fieldClass =
+  "focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
+const selectTriggerClass = cn("w-full", fieldClass);
+
+const TICKET_OPTIONS = [
+  { value: "1", label: "1 Người (Cá nhân)" },
+  { value: "2", label: "2 Người (Đồng hành cùng người thân)" },
+  { value: "3", label: "3 Người (Đội nhóm)" },
+  { value: "4-5", label: "4-5 Người (Gia đình)" },
+] as const;
 
 export function WorkshopRegistration({ info }: { info: Info }) {
   const [open, setOpen] = useState(false);
-  const [ticket, setTicket] = useState<
-    | null
-    | { code: string; name: string; email: string; tickets: string }
-  >(null);
+  const [ticket, setTicket] = useState<null | {
+    code: string;
+    name: string;
+    email: string;
+    tickets: string;
+  }>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,7 +90,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
           setOpen(true);
           setError(null);
         }}
-        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-brand-navy px-8 py-3.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition-all hover:bg-brand-navy-light hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto"
+        className="group flex w-full items-center justify-center gap-2 rounded-xl bg-brand-navy px-8 py-3.5 text-xs font-bold uppercase text-white shadow-lg transition-all hover:bg-brand-navy-light hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 sm:w-auto"
       >
         <Ticket className="h-4 w-4 text-brand-gold" />
         <span>Đăng ký giữ chỗ ngay</span>
@@ -129,89 +151,102 @@ export function WorkshopRegistration({ info }: { info: Info }) {
 
             <form action={handleSubmit} className="space-y-4" noValidate>
               <div>
-                <label htmlFor="ws-name" className="mb-1 block text-xs font-semibold text-neutral-700">
+                <Label
+                  htmlFor="ws-name"
+                  className="mb-1 block text-xs font-semibold text-neutral-700"
+                >
                   Họ và tên của bạn <span className="text-red-500">*</span>
-                </label>
-                <input
+                </Label>
+                <Input
                   id="ws-name"
                   name="name"
                   type="text"
                   required
                   autoComplete="name"
                   placeholder="Ví dụ: Nguyễn Văn An"
-                  className={inputClass}
+                  className={fieldClass}
                 />
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="ws-phone" className="mb-1 block text-xs font-semibold text-neutral-700">
+                  <Label
+                    htmlFor="ws-phone"
+                    className="mb-1 block text-xs font-semibold text-neutral-700"
+                  >
                     Số điện thoại <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="ws-phone"
                     name="phone"
                     type="tel"
                     required
                     autoComplete="tel"
                     placeholder="0912 345 678"
-                    className={inputClass}
+                    className={fieldClass}
                   />
                 </div>
                 <div>
-                  <label htmlFor="ws-email" className="mb-1 block text-xs font-semibold text-neutral-700">
+                  <Label
+                    htmlFor="ws-email"
+                    className="mb-1 block text-xs font-semibold text-neutral-700"
+                  >
                     Email liên hệ <span className="text-red-500">*</span>
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     id="ws-email"
                     name="email"
                     type="email"
                     required
                     autoComplete="email"
                     placeholder="an.nguyen@example.com"
-                    className={inputClass}
+                    className={fieldClass}
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="ws-tickets" className="mb-1 block text-xs font-semibold text-neutral-700">
-                  Số lượng người tham dự
-                </label>
-                <select
-                  id="ws-tickets"
-                  name="tickets"
-                  defaultValue="1"
-                  className={cn(inputClass, "cursor-pointer bg-white")}
+                <Label
+                  htmlFor="ws-tickets"
+                  className="mb-1 block text-xs font-semibold text-neutral-700"
                 >
-                  <option value="1">1 Người (Cá nhân)</option>
-                  <option value="2">2 Người (Đồng hành cùng người thân)</option>
-                  <option value="3">3 Người (Đội nhóm)</option>
-                  <option value="4-5">4-5 Người (Gia đình)</option>
-                </select>
+                  Số lượng người tham dự
+                </Label>
+                <Select name="tickets" defaultValue="1">
+                  <SelectTrigger id="ws-tickets" className={selectTriggerClass}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TICKET_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>
-                <label htmlFor="ws-note" className="mb-1 block text-xs font-semibold text-neutral-700">
+                <Label
+                  htmlFor="ws-note"
+                  className="mb-1 block text-xs font-semibold text-neutral-700"
+                >
                   Ghi chú / Thắc mắc gửi Ban tổ chức
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="ws-note"
                   name="note"
                   rows={2}
                   placeholder="Ví dụ: Tôi muốn hỏi thêm về gói tư vấn dinh dưỡng AnVie..."
-                  className={cn(inputClass, "resize-none")}
+                  className={cn(fieldClass, "resize-none")}
                 />
               </div>
 
               <label className="flex items-center gap-2 pt-1 text-xs font-light text-neutral-500">
-                <input
-                  type="checkbox"
-                  name="notify"
-                  defaultChecked
-                  className="rounded border-neutral-300 text-brand-navy focus:ring-brand-navy"
-                />
-                <span>Nhận tin nhắc lịch &amp; mã vé qua Zalo / SMS / Email</span>
+                <Checkbox name="notify" defaultChecked />
+                <span>
+                  Nhận tin nhắc lịch &amp; mã vé qua Zalo / SMS / Email
+                </span>
               </label>
 
               <button
@@ -219,7 +254,9 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                 disabled={pending}
                 className="w-full rounded-xl bg-brand-gold px-4 py-3.5 text-xs font-bold uppercase tracking-widest text-brand-navy shadow-md transition-all hover:bg-brand-gold-dark hover:text-white disabled:opacity-60"
               >
-                {pending ? "Đang gửi thông tin đăng ký..." : "Xác nhận giữ chỗ ngay"}
+                {pending
+                  ? "Đang gửi thông tin đăng ký..."
+                  : "Xác nhận giữ chỗ ngay"}
               </button>
             </form>
           </motion.div>
@@ -247,8 +284,8 @@ export function WorkshopRegistration({ info }: { info: Info }) {
               Đăng ký thành công!
             </h2>
             <p className="mt-1.5 text-xs font-light leading-relaxed text-neutral-500">
-              Cảm ơn bạn đã đăng ký. Ban tổ chức IPA Living đã giữ chỗ ưu tiên cho
-              bạn tại Trạm Dstation.
+              Cảm ơn bạn đã đăng ký. Ban tổ chức IPA Living đã giữ chỗ ưu tiên
+              cho bạn tại Trạm Dstation.
             </p>
 
             <div className="relative mt-6 overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-900 p-5 text-left text-white shadow-lg">
@@ -283,7 +320,9 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                   {info.location}
                 </p>
                 <p>
-                  <strong className="font-medium text-white">Số lượng vé:</strong>{" "}
+                  <strong className="font-medium text-white">
+                    Số lượng vé:
+                  </strong>{" "}
                   {ticket.tickets} vé
                 </p>
               </div>

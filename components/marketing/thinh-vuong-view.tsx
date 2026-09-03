@@ -113,7 +113,7 @@ const PRODUCTS: Product[] = [
     slogan: "Tích lũy định kỳ, hình thành nếp đầu tư",
     eyebrow: "Giải pháp tích lũy định kỳ tự động",
     badge: "Tích Lũy Tự Động",
-    badgeClass: "bg-brand-gold-dark text-white",
+    badgeClass: "bg-wealth-600 text-white",
     image: localImage(
       "https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?auto=format&fit=crop&w=700&q=80",
     ),
@@ -319,26 +319,26 @@ export function ThinhVuongView() {
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Hero */}
-      <section className="overflow-hidden border-b border-neutral-200 bg-neutral-50 py-6 sm:py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative flex min-h-130 items-center overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg lg:min-h-144">
-            <div className="absolute inset-0">
-              <Image
-                src={HERO_IMAGE}
-                alt="Thịnh Vượng VNDGO — bản đồ đầu tư và tích sản bền vững"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-right"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-transparent sm:bg-gradient-to-r sm:via-white/90" />
-            </div>
-            <div className="relative z-10 max-w-2xl space-y-5 px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
+      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+        <div className="absolute inset-0">
+          <Image
+            src={HERO_IMAGE}
+            alt="Thịnh Vượng VNDGO — bản đồ đầu tư và tích sản bền vững"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right lg:object-center"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-neutral-50 via-neutral-50/90 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-50/80 via-transparent to-neutral-50/20" />
+        </div>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 max-w-2xl space-y-5">
               <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
                 Tháp Thịnh Vượng{" "}
-                <span className="text-brand-gold-dark">VNDGO</span>
+                <span className="text-wealth-600">VNDGO</span>
               </h1>
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-brand-gold-dark sm:text-sm lg:text-base">
+              <p className="font-display text-xs font-bold uppercase tracking-widest text-wealth-700 sm:text-sm lg:text-base">
                 Một nếp sống đầu tư · Một bản đồ thịnh vượng
               </p>
               <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
@@ -350,7 +350,7 @@ export function ThinhVuongView() {
                 <button
                   type="button"
                   onClick={() => scrollToId("nhom-san-pham")}
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-gold-dark px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-brown-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+                  className="inline-flex items-center gap-2 rounded-full bg-wealth-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-wealth-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
                 >
                   <span>Khám phá 3 nhóm sản phẩm</span>
                   <ArrowRight className="h-4 w-4" />
@@ -360,13 +360,12 @@ export function ThinhVuongView() {
                   onClick={() => scrollToId("chuyen-gia-vndcare")}
                   className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
                 >
-                  <HeartHandshake className="h-4 w-4 text-brand-gold-dark" />
+                  <HeartHandshake className="h-4 w-4 text-wealth-700" />
                   <span>Đồng hành Chuyên gia VNDCARE</span>
                 </button>
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* Sticky quick nav */}
@@ -387,7 +386,7 @@ export function ThinhVuongView() {
                 "shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
                 activeTab === tab.id
                   ? "bg-neutral-900 text-white shadow-sm"
-                  : "border border-neutral-200 bg-white text-neutral-700 hover:bg-wealth-50 hover:text-brand-gold-dark",
+                  : "border border-neutral-200 bg-white text-neutral-700 hover:bg-wealth-50 hover:text-wealth-700",
               )}
             >
               {tab.label}
@@ -395,7 +394,7 @@ export function ThinhVuongView() {
           ))}
           <Link
             href={routes.tuyenDungCa}
-            className="ml-auto hidden shrink-0 items-center gap-1 text-xs font-bold text-brand-gold-dark hover:text-brand-brown-dark sm:flex"
+            className="ml-auto hidden shrink-0 items-center gap-1 text-xs font-bold text-wealth-700 hover:text-brand-brown-dark sm:flex"
           >
             <span>Kết nối Chuyên gia CA</span>
             <ArrowRight className="h-3.5 w-3.5" />
@@ -429,7 +428,7 @@ export function ThinhVuongView() {
           </div>
 
           <div className="space-y-6 lg:col-span-7">
-            <span className="block text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
+            <span className="block text-xs font-bold uppercase tracking-widest text-wealth-700">
               VNDIRECT kiến tạo toàn trình — Your Investment Home
             </span>
             <h2 className="font-display text-2xl font-black leading-tight text-neutral-900 sm:text-4xl lg:text-5xl">
@@ -448,7 +447,7 @@ export function ThinhVuongView() {
                         "border-b border-neutral-200",
                     )}
                   >
-                    <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-amber-300 bg-amber-50 text-brand-gold-dark">
+                    <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-amber-300 bg-amber-50 text-wealth-700">
                       <Icon className="h-5 w-5" />
                     </span>
                     <div className="space-y-1">
@@ -483,7 +482,7 @@ export function ThinhVuongView() {
       <section id="chuyen-gia-vndcare" className={cn(sectionCls, "scroll-mt-32")}>
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
           <div className="space-y-6 lg:col-span-7">
-            <span className="block text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
+            <span className="block text-xs font-bold uppercase tracking-widest text-wealth-700">
               Chuyên gia VNDCARE
             </span>
             <h2 className="font-display text-2xl font-black leading-tight text-neutral-900 sm:text-4xl lg:text-5xl">
@@ -491,7 +490,7 @@ export function ThinhVuongView() {
             </h2>
 
             <div className="space-y-1.5 rounded-2xl border border-amber-200/80 bg-wealth-50 p-4 sm:p-5">
-              <span className="block text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
+              <span className="block text-xs font-bold uppercase tracking-widest text-wealth-700">
                 Nguyên lý lõi
               </span>
               <p className="text-xs italic text-neutral-700 sm:text-sm">
@@ -524,7 +523,7 @@ export function ThinhVuongView() {
                           "border-b border-neutral-200",
                       )}
                     >
-                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-200 bg-white text-brand-gold-dark">
+                      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-200 bg-white text-wealth-700">
                         <Icon className="h-4 w-4" />
                       </span>
                       <div className="space-y-0.5">
@@ -574,7 +573,7 @@ export function ThinhVuongView() {
               <div className="absolute inset-x-6 bottom-6 space-y-1 rounded-2xl border border-white/15 bg-neutral-900/90 p-4 text-white shadow-lg backdrop-blur-md">
                 <div className="flex items-center justify-between">
                   <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-300">
-                    <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-brand-gold motion-reduce:animate-none" />
+                    <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-wealth-500 motion-reduce:animate-none" />
                     Mạng lưới toàn quốc
                   </span>
                   <span className="rounded bg-white/10 px-2 py-0.5 text-xs text-amber-200">
@@ -605,7 +604,7 @@ export function ThinhVuongView() {
             <h2 className="font-display text-2xl font-black leading-tight text-neutral-900 sm:text-4xl lg:text-5xl">
               3 Trụ Cột Sản Phẩm Theo Vòng Đời Tài Chính
             </h2>
-            <p className="mx-auto max-w-3xl text-sm italic text-brand-gold-dark sm:text-lg">
+            <p className="mx-auto max-w-3xl text-sm italic text-wealth-700 sm:text-lg">
               “VNDIRECT đồng hành cùng bạn trọn cuộc đời tài chính: nền vững
               trước, tăng trưởng sau.”
             </p>
@@ -649,7 +648,7 @@ export function ThinhVuongView() {
                   </div>
 
                   <div className="space-y-4 p-6 sm:p-7">
-                    <span className="block text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
+                    <span className="block text-xs font-bold uppercase tracking-widest text-wealth-700">
                       {product.eyebrow}
                     </span>
                     <div>
@@ -687,7 +686,7 @@ export function ThinhVuongView() {
                             key={feat.title}
                             className="flex items-start gap-2.5 rounded-xl border border-amber-100/60 bg-amber-50/50 p-2"
                           >
-                            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-brand-gold-dark">
+                            <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-wealth-700">
                               <Icon className="h-3.5 w-3.5" />
                             </span>
                             <span>
@@ -733,7 +732,7 @@ export function ThinhVuongView() {
                       idx === 2 && "pt-4 md:pl-4 md:pt-0",
                     )}
                   >
-                    <span className="flex items-center justify-center gap-2 text-brand-gold-dark md:justify-start">
+                    <span className="flex items-center justify-center gap-2 text-wealth-700 md:justify-start">
                       <Icon className="h-4 w-4" />
                       <span className="text-xs font-bold uppercase">
                         {stage.tag}
@@ -757,7 +756,7 @@ export function ThinhVuongView() {
       <section id="cong-dong" className="scroll-mt-32 bg-neutral-50 py-16 sm:py-24">
         <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl space-y-3 text-center">
-            <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-brand-gold-dark">
+            <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-wealth-700">
               <Users className="h-3.5 w-3.5" />
               Cộng đồng Nhà đầu tư VNDGO
             </span>
@@ -779,7 +778,7 @@ export function ThinhVuongView() {
                   key={value.title}
                   className="space-y-3 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-50 text-brand-gold-dark">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-amber-50 text-wealth-700">
                     <Icon className="h-5 w-5" />
                   </span>
                   <h3 className="text-base font-bold text-neutral-900">
@@ -796,7 +795,7 @@ export function ThinhVuongView() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="flex flex-col justify-between space-y-4 rounded-3xl border border-neutral-200 bg-white p-8 shadow-sm">
               <div className="space-y-2">
-                <span className="text-xs font-bold uppercase text-brand-gold-dark">
+                <span className="text-xs font-bold uppercase text-wealth-700">
                   Kênh tương tác online
                 </span>
                 <h3 className="font-display text-xl font-black text-neutral-900">
@@ -821,7 +820,7 @@ export function ThinhVuongView() {
 
             <div className="flex flex-col justify-between space-y-4 rounded-3xl border border-amber-300 bg-wealth-50 p-8 shadow-sm">
               <div className="space-y-2">
-                <span className="text-xs font-bold uppercase text-brand-gold-dark">
+                <span className="text-xs font-bold uppercase text-wealth-700">
                   Điểm chạm trực tiếp
                 </span>
                 <h3 className="font-display text-xl font-black text-neutral-900">
@@ -861,7 +860,7 @@ export function ThinhVuongView() {
           >
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
+                <span className="text-xs font-bold uppercase tracking-widest text-wealth-700">
                   {PRODUCT_DETAIL[modalProduct].eyebrow}
                 </span>
                 <h3 className="mt-1 font-display text-2xl font-black text-neutral-900">

@@ -16,6 +16,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 import { ARTICLES, WORKSHOPS } from "@/lib/data";
 import type { Tower } from "@/lib/types";
 import { MapSection } from "@/components/marketing/map-section";
@@ -284,7 +285,7 @@ export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }
                     <label htmlFor="article-search" className="sr-only">
                       Tìm bài viết
                     </label>
-                    <input
+                    <Input
                       id="article-search"
                       type="search"
                       placeholder="Tìm bài viết, chủ đề..."

@@ -203,47 +203,46 @@ export function SucKhoeView() {
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Hero */}
-      <section className="overflow-hidden border-b border-neutral-200 bg-neutral-50 py-6 sm:py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative flex min-h-130 items-center overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg lg:min-h-144">
-            <div className="absolute inset-0">
-              <Image
-                src={HERO_IMAGE}
-                alt="Sống Khỏe AnVie — ẩm thực và nếp sống tự nhiên"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-right"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-transparent sm:bg-gradient-to-r sm:via-white/90" />
-            </div>
+      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+        <div className="absolute inset-0">
+          <Image
+            src={HERO_IMAGE}
+            alt="Sống Khỏe AnVie — ẩm thực và nếp sống tự nhiên"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right lg:object-center"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-neutral-50 via-neutral-50/90 to-transparent" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-50/80 via-transparent to-neutral-50/20" />
+        </div>
 
-            <div className="relative z-10 max-w-2xl space-y-5 px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
-              <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-                Tháp Sức Khỏe <span className="text-brand-green-dark">AnVie</span>
-              </h1>
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-brand-green-dark sm:text-sm lg:text-base">
-                Một nếp sống · Một bản đồ · Một gia tài Việt
-              </p>
-              <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
-                AnVie gìn giữ nếp nhà Việt, di sản thiên nhiên và gia tài trí tuệ
-                bản địa của người Việt — qua nếp sống thuận tự nhiên.
-              </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link
-                  href={routes.anvieGobio}
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-green-dark px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-green-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  <span>Khám phá AnVie</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <a
-                  href="#pillars-overview"
-                  className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  Tư vấn giải pháp
-                </a>
-              </div>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl space-y-5">
+            <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+              Tháp Sức Khỏe <span className="text-health-700">AnVie</span>
+            </h1>
+            <p className="font-display text-xs font-bold uppercase tracking-widest text-health-700 sm:text-sm lg:text-base">
+              Một nếp sống · Một bản đồ · Một gia tài Việt
+            </p>
+            <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
+              AnVie gìn giữ nếp nhà Việt, di sản thiên nhiên và gia tài trí tuệ
+              bản địa của người Việt — qua nếp sống thuận tự nhiên.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link
+                href={routes.anvieGobio}
+                className="inline-flex items-center gap-2 rounded-full bg-health-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-health-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                <span>Khám phá AnVie</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <a
+                href="#pillars-overview"
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                Tư vấn giải pháp
+              </a>
             </div>
           </div>
         </div>
@@ -256,7 +255,7 @@ export function SucKhoeView() {
       >
         <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl space-y-3 text-center">
-            <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-emerald-800">
+            <span className="inline-flex rounded-full border border-health-500/30 bg-health-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-health-700">
               Hệ thống kiến trúc AnVie
             </span>
             <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-4xl">
@@ -363,7 +362,7 @@ export function SucKhoeView() {
       <section className="border-b border-neutral-200 bg-neutral-50 py-16">
         <div className="mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl space-y-3 text-center">
-            <span className="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase text-emerald-800">
+            <span className="inline-flex rounded-full bg-health-50 px-3 py-1 text-xs font-bold uppercase text-health-700">
               AnVie Network
             </span>
             <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-3xl">
@@ -437,15 +436,15 @@ export function SucKhoeView() {
       </section>
 
       {/* CTA */}
-      <section className="bg-emerald-900 py-14 text-white">
+      <section className="bg-health-700 py-14 text-white">
         <div className="mx-auto max-w-7xl space-y-6 px-4 text-center sm:px-6 lg:px-8">
-          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-800 text-emerald-300">
+          <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-health-600 text-health-50">
             <Heart className="h-6 w-6" />
           </span>
           <h2 className="font-display text-2xl font-black text-white sm:text-4xl">
             Bắt đầu hành trình sống khỏe cùng AnVie ngay hôm nay
           </h2>
-          <p className="mx-auto max-w-2xl text-xs font-light leading-relaxed text-emerald-100 sm:text-sm">
+          <p className="mx-auto max-w-2xl text-xs font-light leading-relaxed text-health-50 sm:text-sm">
             Kết nối cùng đội ngũ chuyên gia tư vấn dinh dưỡng và chăm sóc sức
             khỏe của IPA Living để nhận thực đơn và lộ trình chăm sóc cá nhân hóa
             cho gia đình bạn.
@@ -453,13 +452,13 @@ export function SucKhoeView() {
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <Link
               href={routes.dCare}
-              className="rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-widest text-emerald-950 shadow-md transition-all hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-widest text-health-700 shadow-md transition-all hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Đặt lịch tư vấn D-Care
             </Link>
             <Link
               href={routes.diemCham}
-              className="rounded-full border border-emerald-600 bg-emerald-800 px-6 py-3 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="rounded-full border border-health-500 bg-health-600 px-6 py-3 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-health-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Tìm trạm Dstation gần nhất
             </Link>

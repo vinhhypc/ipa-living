@@ -5,6 +5,16 @@ import { useFormStatus } from "react-dom";
 import { CheckCircle2, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   submitWorkshopInterest,
   type WorkshopInterestState,
@@ -12,8 +22,10 @@ import {
 
 const INITIAL: WorkshopInterestState = { status: "idle" };
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-300 px-3.5 py-2.5 text-neutral-800 outline-none focus-visible:ring-2 focus-visible:ring-brand-gold";
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện Dstation (brand gold).
+const fieldClass =
+  "focus-visible:border-brand-gold focus-visible:ring-brand-gold/30";
+const selectTriggerClass = cn("w-full", fieldClass);
 
 export type ModalSelect = {
   name: string;
@@ -126,83 +138,87 @@ export function WorkshopInterestModal({
             ) : null}
 
             <div>
-              <label htmlFor="lead-name" className="mb-1 block font-bold text-neutral-700">
+              <Label htmlFor="lead-name" className="mb-1 block font-bold text-neutral-700">
                 Họ và tên <span className="text-red-500">*</span>
-              </label>
-              <input
+              </Label>
+              <Input
                 id="lead-name"
                 name="name"
                 type="text"
                 required
                 autoComplete="name"
                 placeholder="Nguyễn Văn A"
-                className={inputClass}
+                className={fieldClass}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label htmlFor="lead-phone" className="mb-1 block font-bold text-neutral-700">
+                <Label htmlFor="lead-phone" className="mb-1 block font-bold text-neutral-700">
                   Số điện thoại <span className="text-red-500">*</span>
-                </label>
-                <input
+                </Label>
+                <Input
                   id="lead-phone"
                   name="phone"
                   type="tel"
                   required
                   autoComplete="tel"
                   placeholder="0912 345 678"
-                  className={inputClass}
+                  className={fieldClass}
                 />
               </div>
               <div>
-                <label htmlFor="lead-email" className="mb-1 block font-bold text-neutral-700">
+                <Label htmlFor="lead-email" className="mb-1 block font-bold text-neutral-700">
                   Email
-                </label>
-                <input
+                </Label>
+                <Input
                   id="lead-email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   placeholder="email@example.com"
-                  className={inputClass}
+                  className={fieldClass}
                 />
               </div>
             </div>
 
             {selects.map((select) => (
               <div key={select.name}>
-                <label
+                <Label
                   htmlFor={`lead-${select.name}`}
                   className="mb-1 block font-bold text-neutral-700"
                 >
                   {select.label}
-                </label>
-                <select
-                  id={`lead-${select.name}`}
-                  name={select.name}
-                  className={cn(inputClass, "bg-white")}
-                >
-                  {select.options.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                </Label>
+                <Select name={select.name} defaultValue={select.options[0]}>
+                  <SelectTrigger
+                    id={`lead-${select.name}`}
+                    className={selectTriggerClass}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {select.options.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             ))}
 
             {withMessage ? (
               <div>
-                <label htmlFor="lead-message" className="mb-1 block font-bold text-neutral-700">
+                <Label htmlFor="lead-message" className="mb-1 block font-bold text-neutral-700">
                   Ghi chú thêm (không bắt buộc)
-                </label>
-                <textarea
+                </Label>
+                <Textarea
                   id="lead-message"
                   name="message"
                   rows={2}
                   placeholder="Lời nhắn hoặc thời gian thuận tiện nhận cuộc gọi..."
-                  className={cn(inputClass, "resize-none")}
+                  className={cn(fieldClass, "resize-none")}
                 />
               </div>
             ) : null}

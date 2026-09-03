@@ -158,20 +158,25 @@
   --color-neutral-800: #2c2722;
   --color-neutral-900: #171411;
 
-  --color-health-50: #f0f6ec;
-  --color-health-500: #5c8f3e;
-  --color-health-600: #4e7935;
-  --color-health-700: #3f6727;
+  /* Màu thương hiệu 3 tháp — lấy từ bảng token đơn vị:
+     health = AnVie (Sức Khỏe), wealth = VNDGO (Thịnh Vượng), protection = PTI (Bảo An).
+     Giữ 4 bậc 50/500/600/700 như thiết kế cũ. AnVie & PTI neo ở bậc 900 (anchorStep=900):
+     bậc -700 = JSON 900 (dùng cho hero/eyebrow), -600 = JSON 800, -500 = JSON 700.
+     VNDGO neo ở bậc 500 nên giữ nguyên JSON 500/600/700. */
+  --color-health-50: #f7f8f7;
+  --color-health-500: #50734f; /* JSON 700 */
+  --color-health-600: #425d41; /* JSON 800 */
+  --color-health-700: #314730; /* JSON 900 */
 
-  --color-wealth-50: #fdf4e8;
-  --color-wealth-500: #e28f26;
-  --color-wealth-600: #c77712;
-  --color-wealth-700: #9c5b09;
+  --color-wealth-50: #fbf8f3;
+  --color-wealth-500: #f7941d;
+  --color-wealth-600: #e37f08;
+  --color-wealth-700: #b86909;
 
-  --color-protection-50: #edf4fb;
-  --color-protection-500: #1b5ea4;
-  --color-protection-600: #164c84;
-  --color-protection-700: #0e3d70;
+  --color-protection-50: #f3f7fc;
+  --color-protection-500: #0357bf; /* JSON 700 */
+  --color-protection-600: #064798; /* JSON 800 */
+  --color-protection-700: #00377b; /* JSON 900 */
 
   --color-surface-page: #fbfaf8;
   --color-surface-card: #ffffff;
@@ -189,6 +194,30 @@
   /* Layout-level tokens: values with no matching Tailwind default scale step.
      Reference these via `max-w-[var(--container-2xl)]`, never hardcode the px. */
   --container-2xl: 90rem; /* 1440px — content cap on very large (2xl) screens */
+
+  /* Token ngữ nghĩa của shadcn/ui — ánh xạ sang bảng màu sẵn có của IPA Living
+     để các component shadcn (Select, Input, Checkbox...) dùng nguyên bản không
+     cần sửa class. Site chỉ có light mode nên không khai báo `.dark`. */
+  --radius: 0.75rem;
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-primary-500);
+  --background: var(--color-surface-page);
+  --foreground: var(--color-neutral-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-neutral-900);
+  --accent: var(--color-neutral-100);
+  --accent-foreground: var(--color-neutral-900);
+  --muted: var(--color-neutral-100);
+  --muted-foreground: var(--color-neutral-500);
+  --primary: var(--color-primary-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-neutral-100);
+  --secondary-foreground: var(--color-neutral-900);
+  --card: #ffffff;
+  --card-foreground: var(--color-neutral-900);
+  --destructive: #e11d48;
+  --destructive-foreground: #ffffff;
 }
 
 /*
@@ -281,6 +310,26 @@
   --color-protection-500: var(--color-protection-500);
   --color-protection-600: var(--color-protection-600);
   --color-protection-700: var(--color-protection-700);
+
+  /* Đăng ký token ngữ nghĩa shadcn thành utility (`bg-popover`, `border-input`,
+     `ring-ring`, `bg-accent`, `text-muted-foreground`, `bg-primary`...). */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
 }
 
 /* Default border color (Tailwind v3-style). Must live in `@layer base` so that

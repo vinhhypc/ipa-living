@@ -24,6 +24,16 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { EXPERTS } from "@/lib/data";
 import type { Expert, ExpertCategory } from "@/lib/types";
 import {
@@ -34,28 +44,58 @@ import {
 type Filter = "all" | ExpertCategory;
 const INITIAL: WorkshopInterestState = { status: "idle" };
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-2.5 text-xs text-neutral-800 outline-none focus-visible:ring-2 focus-visible:ring-amber-500";
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện tuyển dụng (amber).
+const fieldClass =
+  "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
+const selectTriggerClass = cn("w-full", fieldClass);
+
+const POSITION_OPTIONS = [
+  { value: "ca", label: "Client Advisor (Tư vấn viên lối sống & gia sản)" },
+  { value: "doctor", label: "Bác sĩ / Dược sĩ Y học lối sống Anvie" },
+  { value: "financial", label: "Chuyên viên Hoạch định Tài chính VNDGO" },
+  { value: "insurance", label: "Chuyên viên Tư vấn Bảo hiểm PTI" },
+  { value: "station", label: "Quản lý / Vận hành Trạm Dstation" },
+] as const;
+
+const LOCATION_OPTIONS = [
+  { value: "hanoi", label: "Hà Nội (Tây Hồ, Hai Bà Trưng)" },
+  { value: "hcm", label: "TP. HCM (Quận 1, Quận 5)" },
+  { value: "danang", label: "Đà Nẵng" },
+  { value: "haiphong", label: "Hải Phòng" },
+] as const;
+
+const EXPERIENCE_YEARS_OPTIONS = [
+  { value: "fresh", label: "Mới tốt nghiệp / Đam mê phong cách sống" },
+  { value: "1-3", label: "1 - 3 năm kinh nghiệm" },
+  { value: "3-5", label: "3 - 5 năm kinh nghiệm" },
+  { value: "5+", label: "Trên 5 năm kinh nghiệm" },
+] as const;
+
+const TIME_SLOT_OPTIONS = [
+  { value: "09:00 - 10:30", label: "09:00 - 10:30 (Sáng)" },
+  { value: "14:00 - 15:30", label: "14:00 - 15:30 (Chiều)" },
+  { value: "16:00 - 17:30", label: "16:00 - 17:30 (Chiều)" },
+] as const;
 
 const CATEGORY_PILLS: { key: Filter; label: string; icon?: LucideIcon; active: string }[] = [
   { key: "all", label: `Tất cả (${EXPERTS.length})`, active: "bg-neutral-900 text-white" },
   { key: "ca", label: "Client Advisor (CA)", icon: Users, active: "bg-amber-600 text-white" },
-  { key: "anvie", label: "Bác sĩ Anvie Health", icon: Heart, active: "bg-emerald-600 text-white" },
-  { key: "vndgo", label: "Tài chính VNDGO", icon: TrendingUp, active: "bg-amber-800 text-white" },
-  { key: "pticare", label: "Bảo an PTI", icon: Shield, active: "bg-sky-600 text-white" },
+  { key: "anvie", label: "Bác sĩ Anvie Health", icon: Heart, active: "bg-health-600 text-white" },
+  { key: "vndgo", label: "Tài chính VNDGO", icon: TrendingUp, active: "bg-wealth-700 text-white" },
+  { key: "pticare", label: "Bảo an PTI", icon: Shield, active: "bg-protection-600 text-white" },
 ];
 
 const CATEGORY_BADGE: Record<ExpertCategory, string> = {
-  anvie: "border-emerald-200 bg-emerald-100 text-emerald-900",
+  anvie: "border-health-500/25 bg-health-50 text-health-700",
   ca: "border-amber-200 bg-amber-100 text-amber-900",
-  vndgo: "border-orange-200 bg-orange-100 text-orange-900",
-  pticare: "border-sky-200 bg-sky-100 text-sky-900",
+  vndgo: "border-wealth-500/25 bg-wealth-50 text-wealth-700",
+  pticare: "border-protection-500/25 bg-protection-50 text-protection-700",
 };
 
 const STATS = [
   { icon: Users, tone: "text-brand-gold", value: "2.000+", label: "Đội ngũ chuyên gia", desc: "Chuyên viên & Cố vấn gia sản, y học lối sống và bảo an được đào tạo bài bản trên toàn quốc." },
-  { icon: MapPin, tone: "text-brand-green", value: "34 Tỉnh/TP", label: "Mạng lưới phủ sóng", desc: "Hệ thống trạm Dstation và chi nhánh dịch vụ hiện diện khắp các tỉnh thành cả nước." },
-  { icon: HeartHandshake, tone: "text-brand-bluegray", value: "500.000+", label: "Khách hàng đồng hành", desc: "Gia đình và hội viên tin tưởng đồng hành trọn đời trên hành trình Sống Vui - Khỏe - Giàu." },
+  { icon: MapPin, tone: "text-health-600", value: "34 Tỉnh/TP", label: "Mạng lưới phủ sóng", desc: "Hệ thống trạm Dstation và chi nhánh dịch vụ hiện diện khắp các tỉnh thành cả nước." },
+  { icon: HeartHandshake, tone: "text-protection-600", value: "500.000+", label: "Khách hàng đồng hành", desc: "Gia đình và hội viên tin tưởng đồng hành trọn đời trên hành trình Sống Vui - Khỏe - Giàu." },
   { icon: Star, tone: "text-amber-500", value: "98.6%", label: "Mức độ hài lòng", desc: "Đánh giá hài lòng từ các phiên tư vấn, dịch vụ bồi thường và hội thảo chuyển hóa." },
 ];
 
@@ -106,7 +146,7 @@ export function DCareView() {
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <a
               href="#danh-sach-chuyen-gia"
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="inline-flex items-center gap-2 rounded-xl bg-health-600 px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-health-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <Users className="h-4 w-4" />
               <span>Gặp gỡ chuyên gia</span>
@@ -165,7 +205,7 @@ export function DCareView() {
         className="mx-auto max-w-7xl space-y-8 px-4 pt-12 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-3xl space-y-2 text-center">
-          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-emerald-700">
+          <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-health-700">
             <Sparkles className="h-3.5 w-3.5" />
             <span>Phần 1: Đội ngũ Cố vấn &amp; Chuyên gia</span>
           </span>
@@ -207,13 +247,13 @@ export function DCareView() {
             <label htmlFor="expert-search" className="sr-only">
               Tìm chuyên gia
             </label>
-            <input
+            <Input
               id="expert-search"
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm theo tên hoặc chuyên môn..."
-              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-xs outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 py-2.5 pl-10 pr-4 text-xs outline-none focus-visible:ring-2 focus-visible:ring-health-500"
             />
           </div>
         </div>
@@ -289,7 +329,7 @@ export function DCareView() {
                 <button
                   type="button"
                   onClick={() => setBooking(expert)}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-colors hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-colors hover:bg-health-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
                 >
                   <Calendar className="h-4 w-4" />
                   <span>Đặt lịch tư vấn</span>
@@ -333,7 +373,7 @@ export function DCareView() {
                 <ul className="space-y-3.5 border-t border-white/10 pt-4 text-xs text-neutral-200">
                   {JOIN_BENEFITS.map((benefit) => (
                     <li key={benefit.title} className="flex items-start gap-2.5">
-                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-health-500" />
                       <span>
                         <strong>{benefit.title}:</strong> {benefit.desc}
                       </span>
@@ -367,7 +407,7 @@ function RecruitmentForm() {
   if (state.status === "success") {
     return (
       <div className="space-y-4 py-12 text-center">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-health-50 text-health-700">
           <CheckCircle2 className="h-10 w-10" />
         </span>
         <h3 className="font-display text-2xl font-black text-neutral-900">
@@ -402,49 +442,66 @@ function RecruitmentForm() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-name" label="Họ và tên ứng viên" required>
-          <input id="r-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Trần Quốc Bảo" className={inputClass} />
+          <Input id="r-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Trần Quốc Bảo" className={fieldClass} />
         </Field>
         <Field id="r-phone" label="Số điện thoại" required>
-          <input id="r-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0909 123 456" className={inputClass} />
+          <Input id="r-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0909 123 456" className={fieldClass} />
         </Field>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-email" label="Email liên hệ">
-          <input id="r-email" name="email" type="email" autoComplete="email" placeholder="baotran@gmail.com" className={inputClass} />
+          <Input id="r-email" name="email" type="email" autoComplete="email" placeholder="baotran@gmail.com" className={fieldClass} />
         </Field>
         <Field id="r-position" label="Vị trí mong muốn ứng tuyển">
-          <select id="r-position" name="position" defaultValue="ca" className={inputClass}>
-            <option value="ca">Client Advisor (Tư vấn viên lối sống & gia sản)</option>
-            <option value="doctor">Bác sĩ / Dược sĩ Y học lối sống Anvie</option>
-            <option value="financial">Chuyên viên Hoạch định Tài chính VNDGO</option>
-            <option value="insurance">Chuyên viên Tư vấn Bảo hiểm PTI</option>
-            <option value="station">Quản lý / Vận hành Trạm Dstation</option>
-          </select>
+          <Select name="position" defaultValue="ca">
+            <SelectTrigger id="r-position" className={selectTriggerClass}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {POSITION_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-location" label="Khu vực làm việc mong muốn">
-          <select id="r-location" name="location" defaultValue="hanoi" className={inputClass}>
-            <option value="hanoi">Hà Nội (Tây Hồ, Hai Bà Trưng)</option>
-            <option value="hcm">TP. HCM (Quận 1, Quận 5)</option>
-            <option value="danang">Đà Nẵng</option>
-            <option value="haiphong">Hải Phòng</option>
-          </select>
+          <Select name="location" defaultValue="hanoi">
+            <SelectTrigger id="r-location" className={selectTriggerClass}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LOCATION_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
         <Field id="r-exp" label="Kinh nghiệm làm việc">
-          <select id="r-exp" name="experienceYears" defaultValue="1-3" className={inputClass}>
-            <option value="fresh">Mới tốt nghiệp / Đam mê phong cách sống</option>
-            <option value="1-3">1 - 3 năm kinh nghiệm</option>
-            <option value="3-5">3 - 5 năm kinh nghiệm</option>
-            <option value="5+">Trên 5 năm kinh nghiệm</option>
-          </select>
+          <Select name="experienceYears" defaultValue="1-3">
+            <SelectTrigger id="r-exp" className={selectTriggerClass}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {EXPERIENCE_YEARS_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </Field>
       </div>
       <Field id="r-cv" label="Link CV / Hồ sơ năng lực (Google Drive / LinkedIn / PDF)">
-        <input id="r-cv" name="cvLink" type="url" placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..." className={inputClass} />
+        <Input id="r-cv" name="cvLink" type="url" placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..." className={fieldClass} />
       </Field>
       <Field id="r-bg" label="Kinh nghiệm / Thông điệp gửi tới IPA Living">
-        <textarea id="r-bg" name="background" rows={2} placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..." className={cn(inputClass, "resize-none")} />
+        <Textarea id="r-bg" name="background" rows={2} placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..." className={cn(fieldClass, "resize-none")} />
       </Field>
 
       <RecruitSubmit />
@@ -499,7 +556,7 @@ function BookingModal({
 
         {state.status === "success" ? (
           <div className="space-y-4 py-8 text-center">
-            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+            <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-health-50 text-health-700">
               <CheckCircle2 className="h-8 w-8" />
             </span>
             <h3 className="font-display text-xl font-bold text-neutral-900">
@@ -547,22 +604,35 @@ function BookingModal({
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Field id="b-name" label="Họ và tên của bạn" required>
-                <input id="b-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={inputClass} />
+                <Input id="b-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
               </Field>
               <Field id="b-phone" label="Số điện thoại" required>
-                <input id="b-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={inputClass} />
+                <Input id="b-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={fieldClass} />
               </Field>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Field id="b-date" label="Ngày tư vấn">
-                <input id="b-date" name="date" type="date" className={inputClass} />
+                <DatePicker
+                  id="b-date"
+                  name="date"
+                  placeholder="Chọn ngày tư vấn"
+                  disablePast
+                  triggerClassName={fieldClass}
+                />
               </Field>
               <Field id="b-slot" label="Khung giờ">
-                <select id="b-slot" name="timeSlot" defaultValue="09:00 - 10:30" className={inputClass}>
-                  <option value="09:00 - 10:30">09:00 - 10:30 (Sáng)</option>
-                  <option value="14:00 - 15:30">14:00 - 15:30 (Chiều)</option>
-                  <option value="16:00 - 17:30">16:00 - 17:30 (Chiều)</option>
-                </select>
+                <Select name="timeSlot" defaultValue="09:00 - 10:30">
+                  <SelectTrigger id="b-slot" className={selectTriggerClass}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIME_SLOT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
             <div>
@@ -579,7 +649,7 @@ function BookingModal({
                     className={cn(
                       "rounded-xl border py-2 text-xs font-bold transition-colors",
                       format === option
-                        ? "border-emerald-600 bg-emerald-50 text-emerald-800"
+                        ? "border-health-600 bg-health-50 text-health-700"
                         : "border-neutral-200 text-neutral-600 hover:bg-neutral-50",
                     )}
                   >
@@ -591,7 +661,7 @@ function BookingModal({
               </div>
             </div>
             <Field id="b-notes" label="Nhu cầu cần trao đổi cụ thể">
-              <textarea id="b-notes" name="notes" rows={2} placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..." className={cn(inputClass, "resize-none")} />
+              <Textarea id="b-notes" name="notes" rows={2} placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..." className={cn(fieldClass, "resize-none")} />
             </Field>
             <BookingSubmit />
           </form>
@@ -607,7 +677,7 @@ function BookingSubmit() {
     <button
       type="submit"
       disabled={pending}
-      className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-emerald-700 disabled:opacity-60"
+      className="flex w-full items-center justify-center gap-2 rounded-xl bg-health-600 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition-colors hover:bg-health-700 disabled:opacity-60"
     >
       <Send className="h-3.5 w-3.5" />
       <span>{pending ? "Đang gửi..." : "Xác nhận đặt lịch tư vấn"}</span>

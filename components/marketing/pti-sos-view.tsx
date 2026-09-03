@@ -23,6 +23,15 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
 import {
@@ -31,6 +40,11 @@ import {
 } from "@/lib/actions/registration";
 
 const INITIAL: WorkshopInterestState = { status: "idle" };
+
+// shadcn UI thuần — chỉ override màu focus ring theo nhận diện PTI SOS (amber).
+const fieldClass =
+  "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
+const selectTriggerClass = cn("w-full", fieldClass);
 
 const HERO_IMAGE = localImage(
   "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=600",
@@ -550,46 +564,52 @@ export function PtiSosView() {
                       </p>
                     ) : null}
                     <div>
-                      <label htmlFor="sos-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label htmlFor="sos-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                         Sản phẩm quan tâm
-                      </label>
-                      <select
-                        id="sos-product"
+                      </Label>
+                      <Select
                         name="product"
                         value={selectedLabel}
-                        onChange={(e) => setSelectedLabel(e.target.value)}
-                        className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-medium text-neutral-800 outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                        onValueChange={(value) => setSelectedLabel(value as string)}
                       >
-                        {ALL_SELECT.map((label) => (
-                          <option key={label} value={label}>
-                            {label}
-                          </option>
-                        ))}
-                      </select>
+                        <SelectTrigger
+                          id="sos-product"
+                          className={selectTriggerClass}
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="text-xs">
+                          {ALL_SELECT.map((label) => (
+                            <SelectItem key={label} value={label}>
+                              {label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
-                      <label htmlFor="sos-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label htmlFor="sos-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                         Họ và tên <span className="text-rose-500">*</span>
-                      </label>
-                      <input id="sos-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs outline-none transition-all focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-amber-500" />
+                      </Label>
+                      <Input id="sos-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
                     </div>
                     <div>
-                      <label htmlFor="sos-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label htmlFor="sos-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                         Số điện thoại <span className="text-rose-500">*</span>
-                      </label>
-                      <input id="sos-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs outline-none transition-all focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-amber-500" />
+                      </Label>
+                      <Input id="sos-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className={fieldClass} />
                     </div>
                     <div>
-                      <label htmlFor="sos-detail" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label htmlFor="sos-detail" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                         Thông tin xe / chuyến đi / nhà
-                      </label>
-                      <input id="sos-detail" name="detail" type="text" placeholder="VD: Mazda CX-5 / Nhật Bản 5 ngày / Chung cư 70m²" className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs outline-none transition-all focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-amber-500" />
+                      </Label>
+                      <Input id="sos-detail" name="detail" type="text" placeholder="VD: Mazda CX-5 / Nhật Bản 5 ngày / Chung cư 70m²" className={fieldClass} />
                     </div>
                     <div>
-                      <label htmlFor="sos-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label htmlFor="sos-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
                         Email (không bắt buộc)
-                      </label>
-                      <input id="sos-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs outline-none transition-all focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-amber-500" />
+                      </Label>
+                      <Input id="sos-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className={fieldClass} />
                     </div>
                     <div className="pt-2">
                       <SosSubmit />

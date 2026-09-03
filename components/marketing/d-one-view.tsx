@@ -21,6 +21,15 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   submitWorkshopInterest,
   type WorkshopInterestState,
@@ -29,10 +38,47 @@ import {
 type TabId = "member" | "supplier";
 const INITIAL: WorkshopInterestState = { status: "idle" };
 
-const inputClass =
-  "w-full rounded-xl border border-neutral-200 px-3.5 py-2.5 text-xs text-neutral-800 outline-none focus-visible:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500";
-const inputAmber =
-  "w-full rounded-xl border border-neutral-200 px-3.5 py-2.5 text-xs text-neutral-800 outline-none focus-visible:border-amber-500 focus-visible:ring-2 focus-visible:ring-amber-500";
+// shadcn UI thuần — chỉ override màu focus ring theo tab (member = emerald, supplier = amber).
+const fieldClass =
+  "focus-visible:border-emerald-500 focus-visible:ring-emerald-500/30";
+const fieldAmber =
+  "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
+const selectTriggerClass = cn("w-full", fieldClass);
+const selectTriggerAmber = cn("w-full", fieldAmber);
+
+const CITY_OPTIONS = [
+  { value: "Hà Nội", label: "Hà Nội" },
+  { value: "TP. Hồ Chí Minh", label: "TP. Hồ Chí Minh" },
+  { value: "Đà Nẵng", label: "Đà Nẵng" },
+  { value: "Khác", label: "Tỉnh thành khác" },
+] as const;
+
+const TOWER_OPTIONS = [
+  {
+    value: "all",
+    label: "Toàn diện cả 3 Trụ cột (Sức khỏe - Đầu tư - Bảo an)",
+  },
+  {
+    value: "anvie",
+    label: "Sức khỏe Anvie (Y học lối sống & Dược liệu Gobio)",
+  },
+  {
+    value: "vndgo",
+    label: "Thịnh vượng VNDGO (Tích sản VNDSIP & Lớp học tài chính)",
+  },
+  {
+    value: "pticare",
+    label: "Bảo an PTI (Bảo hiểm sức khỏe PTI Health & SOS)",
+  },
+] as const;
+
+const PRODUCT_CATEGORY_OPTIONS = [
+  { value: "herbal", label: "Dược liệu & Thảo mộc bản địa" },
+  { value: "food", label: "Thực phẩm dinh dưỡng & Lên men" },
+  { value: "cosmetic", label: "Mỹ phẩm tự nhiên & Chăm sóc cá nhân" },
+  { value: "eco", label: "Đồ dùng sinh thái & Đời sống xanh" },
+  { value: "service", label: "Dịch vụ chăm sóc sức khỏe / Đào tạo" },
+] as const;
 const labelClass =
   "mb-1.5 block text-xs font-bold uppercase tracking-wider text-neutral-700";
 
@@ -315,35 +361,47 @@ function MemberTab() {
                 ) : null}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="m-name" label="Họ và tên" required>
-                    <input id="m-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Nguyễn Văn An" className={inputClass} />
+                    <Input id="m-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Nguyễn Văn An" className={fieldClass} />
                   </Field>
                   <Field id="m-phone" label="Số điện thoại" required>
-                    <input id="m-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={inputClass} />
+                    <Input id="m-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={fieldClass} />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="m-email" label="Email nhận thông báo">
-                    <input id="m-email" name="email" type="email" autoComplete="email" placeholder="email@example.com" className={inputClass} />
+                    <Input id="m-email" name="email" type="email" autoComplete="email" placeholder="email@example.com" className={fieldClass} />
                   </Field>
                   <Field id="m-city" label="Khu vực sinh sống">
-                    <select id="m-city" name="city" defaultValue="Hà Nội" className={cn(inputClass, "bg-white")}>
-                      <option>Hà Nội</option>
-                      <option>TP. Hồ Chí Minh</option>
-                      <option>Đà Nẵng</option>
-                      <option value="Khác">Tỉnh thành khác</option>
-                    </select>
+                    <Select name="city" defaultValue="Hà Nội">
+                      <SelectTrigger id="m-city" className={selectTriggerClass}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CITY_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </Field>
                 </div>
                 <Field id="m-tower" label="Trụ cột bạn quan tâm nhất">
-                  <select id="m-tower" name="interestedTower" defaultValue="all" className={cn(inputClass, "bg-white")}>
-                    <option value="all">Toàn diện cả 3 Trụ cột (Sức khỏe - Đầu tư - Bảo an)</option>
-                    <option value="anvie">Sức khỏe Anvie (Y học lối sống & Dược liệu Gobio)</option>
-                    <option value="vndgo">Thịnh vượng VNDGO (Tích sản VNDSIP & Lớp học tài chính)</option>
-                    <option value="pticare">Bảo an PTI (Bảo hiểm sức khỏe PTI Health & SOS)</option>
-                  </select>
+                  <Select name="interestedTower" defaultValue="all">
+                    <SelectTrigger id="m-tower" className={selectTriggerClass}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TOWER_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </Field>
                 <Field id="m-note" label="Ghi chú / Nhu cầu cụ thể (nếu có)">
-                  <textarea id="m-note" name="note" rows={2} placeholder="Ví dụ: Tôi muốn tham gia workshop Bếp nhà Delivie làm bánh men sống..." className={cn(inputClass, "resize-none")} />
+                  <Textarea id="m-note" name="note" rows={2} placeholder="Ví dụ: Tôi muốn tham gia workshop Bếp nhà Delivie làm bánh men sống..." className={cn(fieldClass, "resize-none")} />
                 </Field>
                 <div className="pt-2">
                   <SubmitButton tone="emerald" label="Trở thành thành viên D-one" />
@@ -439,36 +497,41 @@ function SupplierTab() {
                 ) : null}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-company" label="Tên Đơn vị / Doanh nghiệp" required>
-                    <input id="s-company" name="companyName" type="text" required placeholder="Công ty / Hợp tác xã / Xưởng..." className={inputAmber} />
+                    <Input id="s-company" name="companyName" type="text" required placeholder="Công ty / Hợp tác xã / Xưởng..." className={fieldAmber} />
                   </Field>
                   <Field id="s-name" label="Người đại diện liên hệ" required>
-                    <input id="s-name" name="name" type="text" required autoComplete="name" placeholder="Họ và tên người đại diện" className={inputAmber} />
+                    <Input id="s-name" name="name" type="text" required autoComplete="name" placeholder="Họ và tên người đại diện" className={fieldAmber} />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-phone" label="Số điện thoại" required>
-                    <input id="s-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0988 123 456" className={inputAmber} />
+                    <Input id="s-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0988 123 456" className={fieldAmber} />
                   </Field>
                   <Field id="s-email" label="Email liên hệ">
-                    <input id="s-email" name="email" type="email" autoComplete="email" placeholder="contact@company.com" className={inputAmber} />
+                    <Input id="s-email" name="email" type="email" autoComplete="email" placeholder="contact@company.com" className={fieldAmber} />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-category" label="Nhóm sản phẩm / Dịch vụ">
-                    <select id="s-category" name="productCategory" defaultValue="herbal" className={cn(inputAmber, "bg-white")}>
-                      <option value="herbal">Dược liệu & Thảo mộc bản địa</option>
-                      <option value="food">Thực phẩm dinh dưỡng & Lên men</option>
-                      <option value="cosmetic">Mỹ phẩm tự nhiên & Chăm sóc cá nhân</option>
-                      <option value="eco">Đồ dùng sinh thái & Đời sống xanh</option>
-                      <option value="service">Dịch vụ chăm sóc sức khỏe / Đào tạo</option>
-                    </select>
+                    <Select name="productCategory" defaultValue="herbal">
+                      <SelectTrigger id="s-category" className={selectTriggerAmber}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {PRODUCT_CATEGORY_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </Field>
                   <Field id="s-cert" label="Chứng nhận chất lượng (nếu có)">
-                    <input id="s-cert" name="certification" type="text" placeholder="VietGAP, HACCP, Organic, ISO..." className={inputAmber} />
+                    <Input id="s-cert" name="certification" type="text" placeholder="VietGAP, HACCP, Organic, ISO..." className={fieldAmber} />
                   </Field>
                 </div>
                 <Field id="s-desc" label="Mô tả chi tiết sản phẩm & Năng lực cung ứng">
-                  <textarea id="s-desc" name="productDescription" rows={3} placeholder="Giới thiệu quy trình sản xuất, công suất cung ứng hàng tháng, đặc điểm nổi bật..." className={cn(inputAmber, "resize-none")} />
+                  <Textarea id="s-desc" name="productDescription" rows={3} placeholder="Giới thiệu quy trình sản xuất, công suất cung ứng hàng tháng, đặc điểm nổi bật..." className={cn(fieldAmber, "resize-none")} />
                 </Field>
                 <SubmitButton tone="amber" label="Gửi hồ sơ đăng ký Nhà cung cấp" />
               </form>

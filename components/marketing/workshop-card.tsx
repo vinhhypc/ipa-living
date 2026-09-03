@@ -121,7 +121,9 @@ export function WorkshopCard({ workshop }: { workshop: Workshop }) {
             </p>
             <p className="flex items-center gap-2">
               <MapPin className="h-4 w-4 shrink-0 text-neutral-400" />
-              <span className="truncate">{workshop.location || "Dstation"}</span>
+              <span className="truncate">
+                {workshop.location || "Dstation"}
+              </span>
             </p>
           </div>
         </div>
@@ -132,7 +134,7 @@ export function WorkshopCard({ workshop }: { workshop: Workshop }) {
           </span>
           <Link
             href={routes.workshop(workshop.id)}
-            className="group/link inline-flex items-center gap-1 rounded text-xs font-bold uppercase tracking-widest text-brand-green transition-colors hover:text-brand-green-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="group/link inline-flex items-center gap-1 rounded text-xs font-bold uppercase  text-brand-green transition-colors hover:text-brand-green-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <span>Đăng ký giữ chỗ</span>
             <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1 motion-reduce:transition-none" />
