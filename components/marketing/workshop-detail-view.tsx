@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
   Calendar,
   CheckCircle2,
   Clock,
@@ -20,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
 import type { Tower, Workshop } from "@/lib/types";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { WorkshopRegistration } from "@/components/marketing/workshop-registration";
 
 const TOWER_META: Record<
@@ -118,16 +118,14 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
   const completed = workshop.status === "completed";
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-10">
-      <div className="mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <Link
-            href={`${routes.diemCham}#workshop`}
-            className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2.5 text-xs font-bold text-neutral-600 shadow-sm transition-colors hover:text-brand-navy"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Quay lại danh sách Workshop</span>
-          </Link>
+    <div className="min-h-screen bg-neutral-50 pb-10">
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Workshop & Sự kiện", href: `${routes.diemCham}#workshop` },
+          { label: workshop.title },
+        ]}
+        trailing={
           <span
             className={cn(
               "flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold",
@@ -137,8 +135,9 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
             <TowerIcon className="h-3.5 w-3.5" />
             <span>{tower.label}</span>
           </span>
-        </div>
-
+        }
+      />
+      <div className="mx-auto max-w-7xl space-y-10 px-4 pt-10 sm:px-6 lg:px-8">
         {/* Hero */}
         <div className="grid grid-cols-1 overflow-hidden rounded-3xl border border-neutral-100 bg-white shadow-lg lg:grid-cols-12">
           <div className="relative min-h-80 overflow-hidden bg-neutral-900 lg:col-span-5">
@@ -182,8 +181,16 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
               </p>
 
               <dl className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border border-neutral-100 bg-neutral-50 p-4 sm:grid-cols-2 sm:p-5">
-                <MetaItem icon={Calendar} label="Thời gian ngày" value={workshop.date} />
-                <MetaItem icon={Clock} label="Khung giờ" value={workshop.time} />
+                <MetaItem
+                  icon={Calendar}
+                  label="Thời gian ngày"
+                  value={workshop.date}
+                />
+                <MetaItem
+                  icon={Clock}
+                  label="Khung giờ"
+                  value={workshop.time}
+                />
                 <MetaItem
                   icon={MapPin}
                   label="Địa điểm tổ chức"
@@ -219,10 +226,10 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
           <div className="space-y-8 lg:col-span-8">
             <SectionCard icon={Sparkles} title="Giá Trị Nhận Được Từ Workshop">
               <p className="text-sm font-light leading-relaxed text-neutral-600">
-                Workshop không chỉ đơn thuần là buổi học lý thuyết mà là một trải
-                nghiệm sống động. Bạn sẽ được đắm mình trong không gian thư thái
-                của Trạm Dstation, giao lưu cùng những người bạn đồng điệu và tiếp
-                cận nguồn tri thức chuẩn xác được chứng minh thực tiễn.
+                Workshop không chỉ đơn thuần là buổi học lý thuyết mà là một
+                trải nghiệm sống động. Bạn sẽ được đắm mình trong không gian thư
+                thái của Trạm Dstation, giao lưu cùng những người bạn đồng điệu
+                và tiếp cận nguồn tri thức chuẩn xác được chứng minh thực tiễn.
               </p>
               <div className="grid grid-cols-1 gap-4 pt-2 sm:grid-cols-2">
                 {VALUE_POINTS.map((point) => (
@@ -239,7 +246,10 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
               </div>
             </SectionCard>
 
-            <SectionCard icon={Clock} title="Chương Trình & Lịch Trình Chi Tiết">
+            <SectionCard
+              icon={Clock}
+              title="Chương Trình & Lịch Trình Chi Tiết"
+            >
               <ol className="relative space-y-6 before:absolute before:bottom-3 before:left-4 before:top-3 before:w-0.5 before:bg-neutral-200 sm:before:left-6">
                 {AGENDA.map((item) => (
                   <li key={item.time} className="relative pl-10 sm:pl-14">
@@ -303,7 +313,9 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
                 </p>
                 <p className="flex items-center gap-2 text-neutral-500">
                   <Coffee className="h-4 w-4 text-amber-600" />
-                  <span>Có phục vụ trà thảo mộc &amp; bánh nhẹ hữu cơ miễn phí</span>
+                  <span>
+                    Có phục vụ trà thảo mộc &amp; bánh nhẹ hữu cơ miễn phí
+                  </span>
                 </p>
                 <p className="flex items-center gap-2 text-neutral-500">
                   <MapIcon className="h-4 w-4 text-blue-600" />
@@ -328,8 +340,8 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
                 Bạn cần hỗ trợ thêm thông tin?
               </h2>
               <p className="text-xs font-light leading-relaxed text-neutral-300">
-                Đội ngũ Client Advisor (CA) luôn túc trực hỗ trợ bạn giải đáp thắc
-                mắc và sắp xếp vị trí ngồi ưu tiên.
+                Đội ngũ Client Advisor (CA) luôn túc trực hỗ trợ bạn giải đáp
+                thắc mắc và sắp xếp vị trí ngồi ưu tiên.
               </p>
               <Link
                 href={routes.tuyenDungCa}
@@ -367,7 +379,9 @@ function MetaItem({
         <Icon className="h-4 w-4 text-brand-gold" />
       </span>
       <span className="min-w-0">
-        <span className="block text-xs uppercase text-neutral-400">{label}</span>
+        <span className="block text-xs uppercase text-neutral-400">
+          {label}
+        </span>
         <span className="block truncate">{value}</span>
       </span>
     </div>

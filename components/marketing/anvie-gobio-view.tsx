@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
   Baby,
   BookOpen,
   Clock,
@@ -21,6 +20,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 type MainSection = "portfolio" | "shop" | "tu-sach";
 type BioCategory = "bep-bio" | "nha-bio" | "me-bio" | "im-bio" | "vietcharm";
@@ -33,17 +33,45 @@ const MAIN_SECTIONS: {
   subtitle: string;
   icon: LucideIcon;
 }[] = [
-  { id: "portfolio", number: "01", title: "AnVie Gobio", subtitle: "Portfolio Hệ Sản Phẩm Bio", icon: Leaf },
-  { id: "shop", number: "02", title: "Gobio Shop", subtitle: "Kênh Phân Phối & Tiêu Dùng", icon: ShoppingBag },
-  { id: "tu-sach", number: "03", title: "Tủ Sách Phương Bối", subtitle: "Di Sản Tri Thức", icon: BookOpen },
+  {
+    id: "portfolio",
+    number: "01",
+    title: "AnVie Gobio",
+    subtitle: "Portfolio Hệ Sản Phẩm Bio",
+    icon: Leaf,
+  },
+  {
+    id: "shop",
+    number: "02",
+    title: "Gobio Shop",
+    subtitle: "Kênh Phân Phối & Tiêu Dùng",
+    icon: ShoppingBag,
+  },
+  {
+    id: "tu-sach",
+    number: "03",
+    title: "Tủ Sách Phương Bối",
+    subtitle: "Di Sản Tri Thức",
+    icon: BookOpen,
+  },
 ];
 
-const BIO_CATEGORIES: { id: BioCategory; name: string; icon: LucideIcon; tag: string }[] = [
+const BIO_CATEGORIES: {
+  id: BioCategory;
+  name: string;
+  icon: LucideIcon;
+  tag: string;
+}[] = [
   { id: "bep-bio", name: "Bếp Bio", icon: Utensils, tag: "4 Giải pháp Bếp" },
   { id: "nha-bio", name: "Nhà Bio", icon: HomeIcon, tag: "Chăm sóc nhà cửa" },
   { id: "me-bio", name: "Mẹ Bio", icon: Baby, tag: "Chăm sóc mẹ & bé" },
   { id: "im-bio", name: "I'm Bio", icon: Sparkles, tag: "Chăm sóc cơ thể" },
-  { id: "vietcharm", name: "Vietcharm Gift", icon: Gift, tag: "Quà Tặng Di Sản" },
+  {
+    id: "vietcharm",
+    name: "Vietcharm Gift",
+    icon: Gift,
+    tag: "Quà Tặng Di Sản",
+  },
 ];
 
 const BEP_TABS: { id: BepTab; label: string }[] = [
@@ -59,35 +87,91 @@ const BEP_CONTENT: Record<BepTab, { lead: string; groups: Group[] }> = {
   oshawa: {
     lead: "Thực dưỡng Ohsawa — khi cơ thể cần nghỉ ngơi và đào thải",
     groups: [
-      { badge: "Nhóm 01", title: "Ngũ Cốc", body: "Gạo lứt đen · Gạo lứt đỏ · Vừng đen" },
-      { badge: "Nhóm 02", title: "Bột Dưỡng", body: "Bột sắn dây · Bột thảo mộc Kokko · Bột gạo lứt nảy mầm" },
-      { badge: "Nhóm 03", title: "Lên Men", body: "Tamari ủ trên 4 năm · Tamari tỏi · Chanh muối · Mơ muối · Miso" },
-      { badge: "Nhóm 04", title: "Dưỡng sinh mỗi ngày", body: "Canh dưỡng sinh · Trà bình minh" },
+      {
+        badge: "Nhóm 01",
+        title: "Ngũ Cốc",
+        body: "Gạo lứt đen · Gạo lứt đỏ · Vừng đen",
+      },
+      {
+        badge: "Nhóm 02",
+        title: "Bột Dưỡng",
+        body: "Bột sắn dây · Bột thảo mộc Kokko · Bột gạo lứt nảy mầm",
+      },
+      {
+        badge: "Nhóm 03",
+        title: "Lên Men",
+        body: "Tamari ủ trên 4 năm · Tamari tỏi · Chanh muối · Mơ muối · Miso",
+      },
+      {
+        badge: "Nhóm 04",
+        title: "Dưỡng sinh mỗi ngày",
+        body: "Canh dưỡng sinh · Trà bình minh",
+      },
     ],
   },
   homefood: {
     lead: "Bữa cơm Homefood chuẩn Việt — ăn đúng & cân bằng mỗi ngày",
     groups: [
-      { badge: "Nhóm 01", title: "NAO – Gạo & Ngũ Cốc", body: "Hạt Mầm & Cơm Lành: Gạo Séng Cù (xát trắng/dối/lứt) · Đậu · đỗ · lạc · Bún · miến · phở" },
-      { badge: "Nhóm 02", title: "Bộ Gia Vị", body: "Tamari ủ 3 năm · Muối khoáng biển · Hạt nêm nấm & củ quả · Nước mắm chay thực dưỡng · Tương ớt tự nhiên · Dầu vừng/phộng ép · Dấm táo/mơ" },
-      { badge: "Nhóm 03", title: "Nature's Garden", body: "Đồ khô (bột sắn, măng...) · Rau củ quả tươi mùa vụ (đông/hè) · Trái cây theo mùa" },
+      {
+        badge: "Nhóm 01",
+        title: "NAO – Gạo & Ngũ Cốc",
+        body: "Hạt Mầm & Cơm Lành: Gạo Séng Cù (xát trắng/dối/lứt) · Đậu · đỗ · lạc · Bún · miến · phở",
+      },
+      {
+        badge: "Nhóm 02",
+        title: "Bộ Gia Vị",
+        body: "Tamari ủ 3 năm · Muối khoáng biển · Hạt nêm nấm & củ quả · Nước mắm chay thực dưỡng · Tương ớt tự nhiên · Dầu vừng/phộng ép · Dấm táo/mơ",
+      },
+      {
+        badge: "Nhóm 03",
+        title: "Nature's Garden",
+        body: "Đồ khô (bột sắn, măng...) · Rau củ quả tươi mùa vụ (đông/hè) · Trái cây theo mùa",
+      },
     ],
   },
   "hoa-vi": {
     lead: "Bữa cơm tròn vị, nhẹ công bếp — sốt, cốt canh, mắm làm sẵn (Quy trình: Ủ · Om · Nén)",
     groups: [
-      { badge: "Hoa Vị Mộc", title: "Giỏ Mắm", body: "Mắm Sung · Mắm Sấu · Mắm Cà — những vị mắm mộc mạc, tiện dùng cùng rau luộc, cơm nóng và các món ăn hằng ngày." },
-      { badge: "Hoa Vị Mộc", title: "Giỏ Cốt Canh", body: "Nước dùng phở · rau củ · Canh dưỡng sinh · Tomyum — cốt nền làm sẵn, chỉ cần đun nóng, thêm rau/nấm/măng/đậu phụ là có bát canh nóng." },
-      { badge: "Chefcook", title: "Giỏ Sốt", body: "Sốt kho (ướp & kho) · Sốt xào · Sốt salad" },
+      {
+        badge: "Hoa Vị Mộc",
+        title: "Giỏ Mắm",
+        body: "Mắm Sung · Mắm Sấu · Mắm Cà — những vị mắm mộc mạc, tiện dùng cùng rau luộc, cơm nóng và các món ăn hằng ngày.",
+      },
+      {
+        badge: "Hoa Vị Mộc",
+        title: "Giỏ Cốt Canh",
+        body: "Nước dùng phở · rau củ · Canh dưỡng sinh · Tomyum — cốt nền làm sẵn, chỉ cần đun nóng, thêm rau/nấm/măng/đậu phụ là có bát canh nóng.",
+      },
+      {
+        badge: "Chefcook",
+        title: "Giỏ Sốt",
+        body: "Sốt kho (ướp & kho) · Sốt xào · Sốt salad",
+      },
     ],
   },
   delivie: {
     lead: "Tinh hoa Pháp, chạm vị Việt — bánh tiện lợi, nướng nóng tại nhà",
     groups: [
-      { badge: "Nhóm 01", title: "Bánh mì sourdough", body: "Bánh mì men tự nhiên lên men chậm, vỏ giòn ruột ẩm." },
-      { badge: "Nhóm 02", title: "Bánh mì Việt Nam", body: "Bánh mì đặc ruột kiểu Việt, thơm mềm." },
-      { badge: "Nhóm 03", title: "Viennoiseries", body: "Croissant, pain au chocolat và các loại bánh ngàn lớp." },
-      { badge: "Nhóm 04", title: "Bộ Pairing", body: "Combo bánh — trà — mứt để thưởng thức trọn vị." },
+      {
+        badge: "Nhóm 01",
+        title: "Bánh mì sourdough",
+        body: "Bánh mì men tự nhiên lên men chậm, vỏ giòn ruột ẩm.",
+      },
+      {
+        badge: "Nhóm 02",
+        title: "Bánh mì Việt Nam",
+        body: "Bánh mì đặc ruột kiểu Việt, thơm mềm.",
+      },
+      {
+        badge: "Nhóm 03",
+        title: "Viennoiseries",
+        body: "Croissant, pain au chocolat và các loại bánh ngàn lớp.",
+      },
+      {
+        badge: "Nhóm 04",
+        title: "Bộ Pairing",
+        body: "Combo bánh — trà — mứt để thưởng thức trọn vị.",
+      },
     ],
   },
 };
@@ -101,8 +185,16 @@ const SIMPLE_BIO: Record<
     title: "NhàBio — Chăm nhà lành, nuôi nếp sống xanh",
     lead: "NhàBio mang đến giải pháp chăm sóc mái ấm từ nguyên liệu tự nhiên và nền tảng sinh học, giúp làm sạch không gian, bảo vệ gia đình và gìn giữ môi trường sống.",
     items: [
-      { badge: "Chăm Bếp", title: "Chăm Bếp Tự Nhiên", body: "Rửa bát · Tẩy rửa đa năng." },
-      { badge: "Chăm Nhà", title: "Chăm Nhà Sinh Học", body: "Tẩy rửa bồn cầu & nhà tắm · Lau sàn · Giặt xả · Giặt đồ lót." },
+      {
+        badge: "Chăm Bếp",
+        title: "Chăm Bếp Tự Nhiên",
+        body: "Rửa bát · Tẩy rửa đa năng.",
+      },
+      {
+        badge: "Chăm Nhà",
+        title: "Chăm Nhà Sinh Học",
+        body: "Tẩy rửa bồn cầu & nhà tắm · Lau sàn · Giặt xả · Giặt đồ lót.",
+      },
     ],
   },
   "me-bio": {
@@ -110,8 +202,16 @@ const SIMPLE_BIO: Record<
     title: "Gieo nếp lành từ vòng tay mẹ",
     lead: "MẹBio mang đến những giải pháp chăm sóc dịu lành cho mẹ và bé, để mỗi lựa chọn nhỏ không chỉ giúp con lớn lên khỏe mạnh mà còn gieo một nếp sống gần gũi với tự nhiên và trân trọng môi trường.",
     items: [
-      { badge: "Sản phẩm 01", title: "Giặt Cho Bé", body: "Giặt cho bé (lá ổi: 2L / 3.8L · than tre: 750ml / 2L)" },
-      { badge: "Sản phẩm 02", title: "Rửa Bình Sữa & Đồ Dùng", body: "Rửa bình sữa & đồ dùng cho bé (than tre 750ml)" },
+      {
+        badge: "Sản phẩm 01",
+        title: "Giặt Cho Bé",
+        body: "Giặt cho bé (lá ổi: 2L / 3.8L · than tre: 750ml / 2L)",
+      },
+      {
+        badge: "Sản phẩm 02",
+        title: "Rửa Bình Sữa & Đồ Dùng",
+        body: "Rửa bình sữa & đồ dùng cho bé (than tre 750ml)",
+      },
     ],
   },
   "im-bio": {
@@ -119,23 +219,67 @@ const SIMPLE_BIO: Record<
     title: "Chăm cơ thể lành từ những điều gần gũi.",
     lead: "Mang đến giải pháp chăm sóc cá nhân từ thảo mộc và nền tảng sinh học, dịu lành với cơ thể và gần gũi với tự nhiên.",
     items: [
-      { badge: "Nhánh 01", title: "Vệ Sinh Tay Kháng Khuẩn", body: "Rửa tay than tre hoạt tính (500ml · 5L)" },
-      { badge: "Nhánh 02", title: "Chăm Sóc Tóc & Da Đầu", body: "Gội thảo dược (400ml)" },
+      {
+        badge: "Nhánh 01",
+        title: "Vệ Sinh Tay Kháng Khuẩn",
+        body: "Rửa tay than tre hoạt tính (500ml · 5L)",
+      },
+      {
+        badge: "Nhánh 02",
+        title: "Chăm Sóc Tóc & Da Đầu",
+        body: "Gội thảo dược (400ml)",
+      },
     ],
   },
 };
 
 const VIETCHARM_CARDS: Group[] = [
-  { badge: "Card · Vinabee", title: "Vinabee", body: "Mật ong nguyên chất - được chăm sóc và thu hoạch bởi những người nuôi ong lâu năm, giàu kinh nghiệm, để gìn giữ hương vị tự nhiên từ mỗi mùa hoa." },
-  { badge: "Card · Trà Shantra", title: "Trà Shantra", body: "Trà Shantra mang theo hương vị của rừng trà cổ thụ Tây Bắc, từ những búp non được hái thủ công theo mùa." },
-  { badge: "Card · NAO Coffee", title: "NAO Coffee", body: "NAO Coffee - từ những giống cà phê tuyển chọn sinh trưởng thuận tự nhiên dưới tán rừng cao nguyên, được thu hái thủ công khi quả chín đúng mùa." },
-  { badge: "Card · NAO Cacao", title: "NAO Cacao", body: "NAO Cacao - từ những vùng cacao lâu năm của Việt Nam, được tuyển chọn và làm cẩn trọng để gìn giữ hương vị nguyên bản." },
+  {
+    badge: "Card · Vinabee",
+    title: "Vinabee",
+    body: "Mật ong nguyên chất - được chăm sóc và thu hoạch bởi những người nuôi ong lâu năm, giàu kinh nghiệm, để gìn giữ hương vị tự nhiên từ mỗi mùa hoa.",
+  },
+  {
+    badge: "Card · Trà Shantra",
+    title: "Trà Shantra",
+    body: "Trà Shantra mang theo hương vị của rừng trà cổ thụ Tây Bắc, từ những búp non được hái thủ công theo mùa.",
+  },
+  {
+    badge: "Card · NAO Coffee",
+    title: "NAO Coffee",
+    body: "NAO Coffee - từ những giống cà phê tuyển chọn sinh trưởng thuận tự nhiên dưới tán rừng cao nguyên, được thu hái thủ công khi quả chín đúng mùa.",
+  },
+  {
+    badge: "Card · NAO Cacao",
+    title: "NAO Cacao",
+    body: "NAO Cacao - từ những vùng cacao lâu năm của Việt Nam, được tuyển chọn và làm cẩn trọng để gìn giữ hương vị nguyên bản.",
+  },
 ];
 
-const SHOP_PILLARS: { icon: LucideIcon; tone: string; title: string; desc: string }[] = [
-  { icon: ShoppingBag, tone: "bg-amber-600", title: "Hàng Thương Mại Tuyển Chọn", desc: "Sàng lọc các nhà sản xuất nông nghiệp hữu cơ uy tín đạt chuẩn kiểm nghiệm vi sinh và không tồn dư thuốc bảo vệ thực vật." },
-  { icon: Clock, tone: "bg-emerald-700", title: "Giao Định Kỳ Hằng Tuần", desc: "Gói giao thực phẩm sạch và gia vị dưỡng sinh định kỳ tận cửa nhà, đảm bảo căn bếp gia đình luôn dồi dào nguyên liệu tươi mới." },
-  { icon: MapPin, tone: "bg-sky-700", title: "Điểm Chạm Dstation", desc: "Trực tiếp dùng thử sản phẩm, thưởng thức món ngon tại quầy Bistro và nhận tư vấn dinh dưỡng trực tiếp từ chuyên gia." },
+const SHOP_PILLARS: {
+  icon: LucideIcon;
+  tone: string;
+  title: string;
+  desc: string;
+}[] = [
+  {
+    icon: ShoppingBag,
+    tone: "bg-amber-600",
+    title: "Hàng Thương Mại Tuyển Chọn",
+    desc: "Sàng lọc các nhà sản xuất nông nghiệp hữu cơ uy tín đạt chuẩn kiểm nghiệm vi sinh và không tồn dư thuốc bảo vệ thực vật.",
+  },
+  {
+    icon: Clock,
+    tone: "bg-emerald-700",
+    title: "Giao Định Kỳ Hằng Tuần",
+    desc: "Gói giao thực phẩm sạch và gia vị dưỡng sinh định kỳ tận cửa nhà, đảm bảo căn bếp gia đình luôn dồi dào nguyên liệu tươi mới.",
+  },
+  {
+    icon: MapPin,
+    tone: "bg-sky-700",
+    title: "Điểm Chạm Dstation",
+    desc: "Trực tiếp dùng thử sản phẩm, thưởng thức món ngon tại quầy Bistro và nhận tư vấn dinh dưỡng trực tiếp từ chuyên gia.",
+  },
 ];
 
 const BOOK_CARDS = [
@@ -221,20 +365,18 @@ export function AnvieGobioView({
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
-      <div className="sticky top-16 z-20 border-b border-neutral-200 bg-white shadow-sm sm:top-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link
-            href={routes.sucKhoe}
-            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-emerald-800"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Trở về Tháp Sức Khỏe AnVie</span>
-          </Link>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Sức Khỏe AnVie", href: routes.sucKhoe },
+          { label: "AnVie Gobio" },
+        ]}
+        trailing={
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold uppercase text-emerald-900">
             AnVie Gobio · Cửa Hàng &amp; Tiêu Dùng Sinh Học
           </span>
-        </div>
-      </div>
+        }
+      />
 
       <section className="relative overflow-hidden bg-emerald-950 px-4 py-12 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-12">
@@ -247,8 +389,8 @@ export function AnvieGobioView({
               AnVie Gobio
             </h1>
             <p className="max-w-2xl text-sm font-light leading-relaxed text-emerald-100 sm:text-base">
-              AnVie Gobio đưa những lựa chọn thuận tự nhiên, rõ nguồn gốc vào từng
-              nếp sinh hoạt mỗi ngày.
+              AnVie Gobio đưa những lựa chọn thuận tự nhiên, rõ nguồn gốc vào
+              từng nếp sinh hoạt mỗi ngày.
             </p>
           </div>
           <div className="space-y-2.5 rounded-2xl border border-white/20 bg-white/10 p-5 text-xs backdrop-blur-md lg:col-span-4">
@@ -261,8 +403,8 @@ export function AnvieGobioView({
               nguồn nước thanh khiết.
               <br />• <strong>Chuẩn NAO:</strong> Quy trình chế biến giữ nguyên
               phôi mầm sống và vi chất.
-              <br />• <strong>Thuần khiết:</strong> 0% hóa chất bảo quản, phụ gia
-              tạo màu, mùi nhân tạo.
+              <br />• <strong>Thuần khiết:</strong> 0% hóa chất bảo quản, phụ
+              gia tạo màu, mùi nhân tạo.
             </p>
           </div>
         </div>
@@ -294,7 +436,9 @@ export function AnvieGobioView({
                 <span
                   className={cn(
                     "shrink-0 rounded-xl p-2.5",
-                    active ? "bg-emerald-800 text-emerald-200" : "bg-emerald-50 text-emerald-800",
+                    active
+                      ? "bg-emerald-800 text-emerald-200"
+                      : "bg-emerald-50 text-emerald-800",
                   )}
                 >
                   <Icon className="h-5 w-5" />
@@ -304,7 +448,9 @@ export function AnvieGobioView({
                     <span
                       className={cn(
                         "rounded px-1.5 py-0.5 text-xs font-bold uppercase",
-                        active ? "bg-emerald-800 text-emerald-200" : "bg-neutral-100 text-neutral-600",
+                        active
+                          ? "bg-emerald-800 text-emerald-200"
+                          : "bg-neutral-100 text-neutral-600",
                       )}
                     >
                       Section {sec.number}
@@ -366,9 +512,19 @@ export function AnvieGobioView({
                           : "border-neutral-200 bg-neutral-50 text-neutral-700 hover:bg-neutral-100",
                       )}
                     >
-                      <Icon className={cn("h-4 w-4", active ? "text-emerald-200" : "text-emerald-700")} />
+                      <Icon
+                        className={cn(
+                          "h-4 w-4",
+                          active ? "text-emerald-200" : "text-emerald-700",
+                        )}
+                      />
                       <span className="text-xs font-bold">{cat.name}</span>
-                      <span className={cn("text-xs", active ? "text-emerald-200" : "text-neutral-500")}>
+                      <span
+                        className={cn(
+                          "text-xs",
+                          active ? "text-emerald-200" : "text-neutral-500",
+                        )}
+                      >
                         {cat.tag}
                       </span>
                     </button>
@@ -453,8 +609,8 @@ export function AnvieGobioView({
               </h2>
               <p className="mt-1 max-w-3xl text-xs font-light text-neutral-600 sm:text-sm">
                 Cung cấp các sản phẩm tiêu dùng hữu cơ, đặc sản vùng miền được
-                tuyển chọn khắt khe qua hệ thống cửa hàng trực tuyến và mạng lưới
-                trạm Dstation toàn quốc.
+                tuyển chọn khắt khe qua hệ thống cửa hàng trực tuyến và mạng
+                lưới trạm Dstation toàn quốc.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -465,7 +621,12 @@ export function AnvieGobioView({
                     key={pillar.title}
                     className="space-y-2.5 rounded-2xl border border-neutral-200 bg-neutral-50 p-5"
                   >
-                    <span className={cn("flex h-10 w-10 items-center justify-center rounded-xl text-white", pillar.tone)}>
+                    <span
+                      className={cn(
+                        "flex h-10 w-10 items-center justify-center rounded-xl text-white",
+                        pillar.tone,
+                      )}
+                    >
                       <Icon className="h-5 w-5" />
                     </span>
                     <h3 className="font-display text-base font-bold text-neutral-900">
@@ -520,7 +681,12 @@ export function AnvieGobioView({
                     key={card.title}
                     className="space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-6"
                   >
-                    <span className={cn("flex h-10 w-10 items-center justify-center rounded-xl text-white", card.tone)}>
+                    <span
+                      className={cn(
+                        "flex h-10 w-10 items-center justify-center rounded-xl text-white",
+                        card.tone,
+                      )}
+                    >
                       <Icon className="h-5 w-5" />
                     </span>
                     <h3 className="font-display text-base font-bold text-neutral-900">

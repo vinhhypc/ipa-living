@@ -64,7 +64,7 @@ export function HeroSection() {
     <section
       id="hero-section"
       aria-roledescription="carousel"
-      className="h-hero relative flex min-h-140 w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-160 sm:py-0"
+      className="h-hero hero-bleed relative flex min-h-140 w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-160 sm:pb-0"
     >
       <div className="absolute inset-0">
         {HERO_SLIDES.map((slide, idx) => (

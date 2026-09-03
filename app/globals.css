@@ -8,6 +8,7 @@
 @source inline("text-{health,wealth,protection}-{50,500,600,700}");
 @source inline("border-{health,wealth,protection}-{500,600,700}");
 @source inline("hover:bg-{health,wealth,protection}-{600,700}");
+@source inline("hover:border-{health,wealth,protection}-{600,700}");
 @source inline("group-hover:text-{health,wealth,protection}-700");
 
 /* Self-hosted static Inter — the site's single base font (no next/font, no Google Fonts network fetch). */
@@ -194,6 +195,12 @@
   /* Layout-level tokens: values with no matching Tailwind default scale step.
      Reference these via `max-w-[var(--container-2xl)]`, never hardcode the px. */
   --container-2xl: 90rem; /* 1440px — content cap on very large (2xl) screens */
+  --header-h: 4.3125rem; /* 69px — chiều cao header lúc đã cuộn (logo h-11 + py-3 +
+     border-b) trong components/layout/site-header.tsx. Không có step Tailwind khớp;
+     dùng cho sticky offset của sub-nav: `top-[var(--header-h)]`. */
+  --header-h-top: 4.8125rem; /* 77px — header lúc chưa cuộn (py-4), tức phần header
+     chiếm chỗ trong flow. Dùng để kéo hero full-bleed lên dưới header trong suốt:
+     `-mt-[var(--header-h-top)]` + bù lại `pt-[var(--header-h-top)]`. */
 
   /* Token ngữ nghĩa của shadcn/ui — ánh xạ sang bảng màu sẵn có của IPA Living
      để các component shadcn (Select, Input, Checkbox...) dùng nguyên bản không
@@ -424,6 +431,15 @@ h6 {
 /* Viewport-relative sizes: outside the spacing scale, so kept as named classes instead of `[80vh]`/`[90vh]`. */
 .h-hero {
   height: 88vh;
+}
+
+/* Hero full-bleed: kéo section lên dưới header trong suốt (`-mt`) rồi bù padding-top
+   để nội dung không bị header che. Cặp giá trị bám token `--header-h-top` (77px).
+   Dùng cho hero là phần tử đầu trang + route nằm trong HERO_OVERLAY_ROUTES của site-header. */
+.hero-bleed {
+  margin-top: calc(-1 * var(--header-h-top));
+  /* chừa chỗ cho header trong suốt + dòng breadcrumb overlay ngay dưới nó */
+  padding-top: calc(var(--header-h-top) + 2.75rem);
 }
 
 .max-h-modal {

@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -77,12 +79,41 @@ const TIME_SLOT_OPTIONS = [
   { value: "16:00 - 17:30", label: "16:00 - 17:30 (Chiều)" },
 ] as const;
 
-const CATEGORY_PILLS: { key: Filter; label: string; icon?: LucideIcon; active: string }[] = [
-  { key: "all", label: `Tất cả (${EXPERTS.length})`, active: "bg-neutral-900 text-white" },
-  { key: "ca", label: "Client Advisor (CA)", icon: Users, active: "bg-amber-600 text-white" },
-  { key: "anvie", label: "Bác sĩ Anvie Health", icon: Heart, active: "bg-health-600 text-white" },
-  { key: "vndgo", label: "Tài chính VNDGO", icon: TrendingUp, active: "bg-wealth-700 text-white" },
-  { key: "pticare", label: "Bảo an PTI", icon: Shield, active: "bg-protection-600 text-white" },
+const CATEGORY_PILLS: {
+  key: Filter;
+  label: string;
+  icon?: LucideIcon;
+  active: string;
+}[] = [
+  {
+    key: "all",
+    label: `Tất cả (${EXPERTS.length})`,
+    active: "bg-neutral-900 text-white",
+  },
+  {
+    key: "ca",
+    label: "Client Advisor (CA)",
+    icon: Users,
+    active: "bg-amber-600 text-white",
+  },
+  {
+    key: "anvie",
+    label: "Bác sĩ Anvie Health",
+    icon: Heart,
+    active: "bg-health-600 text-white",
+  },
+  {
+    key: "vndgo",
+    label: "Tài chính VNDGO",
+    icon: TrendingUp,
+    active: "bg-wealth-700 text-white",
+  },
+  {
+    key: "pticare",
+    label: "Bảo an PTI",
+    icon: Shield,
+    active: "bg-protection-600 text-white",
+  },
 ];
 
 const CATEGORY_BADGE: Record<ExpertCategory, string> = {
@@ -93,16 +124,49 @@ const CATEGORY_BADGE: Record<ExpertCategory, string> = {
 };
 
 const STATS = [
-  { icon: Users, tone: "text-brand-gold", value: "2.000+", label: "Đội ngũ chuyên gia", desc: "Chuyên viên & Cố vấn gia sản, y học lối sống và bảo an được đào tạo bài bản trên toàn quốc." },
-  { icon: MapPin, tone: "text-health-600", value: "34 Tỉnh/TP", label: "Mạng lưới phủ sóng", desc: "Hệ thống trạm Dstation và chi nhánh dịch vụ hiện diện khắp các tỉnh thành cả nước." },
-  { icon: HeartHandshake, tone: "text-protection-600", value: "500.000+", label: "Khách hàng đồng hành", desc: "Gia đình và hội viên tin tưởng đồng hành trọn đời trên hành trình Sống Vui - Khỏe - Giàu." },
-  { icon: Star, tone: "text-amber-500", value: "98.6%", label: "Mức độ hài lòng", desc: "Đánh giá hài lòng từ các phiên tư vấn, dịch vụ bồi thường và hội thảo chuyển hóa." },
+  {
+    icon: Users,
+    tone: "text-brand-gold",
+    value: "2.000+",
+    label: "Đội ngũ chuyên gia",
+    desc: "Chuyên viên & Cố vấn gia sản, y học lối sống và bảo an được đào tạo bài bản trên toàn quốc.",
+  },
+  {
+    icon: MapPin,
+    tone: "text-health-600",
+    value: "34 Tỉnh/TP",
+    label: "Mạng lưới phủ sóng",
+    desc: "Hệ thống trạm Dstation và chi nhánh dịch vụ hiện diện khắp các tỉnh thành cả nước.",
+  },
+  {
+    icon: HeartHandshake,
+    tone: "text-protection-600",
+    value: "500.000+",
+    label: "Khách hàng đồng hành",
+    desc: "Gia đình và hội viên tin tưởng đồng hành trọn đời trên hành trình Sống Vui - Khỏe - Giàu.",
+  },
+  {
+    icon: Star,
+    tone: "text-amber-500",
+    value: "98.6%",
+    label: "Mức độ hài lòng",
+    desc: "Đánh giá hài lòng từ các phiên tư vấn, dịch vụ bồi thường và hội thảo chuyển hóa.",
+  },
 ];
 
 const JOIN_BENEFITS = [
-  { title: "Môi trường làm việc văn minh", desc: "Làm việc tại chuỗi không gian sáng tạo Dstation sang trọng, gần gũi thiên nhiên." },
-  { title: "Thu nhập & Đãi ngộ xứng đáng", desc: "Cơ chế lương cứng cạnh tranh, hoa hồng đa hệ sinh thái và bảo hiểm sức khỏe VIP." },
-  { title: "Đào tạo liên tục", desc: "Được kèm cặp bởi các chuyên gia hàng đầu về Y học lối sống, Hoạch định tài chính và Thẩm định bảo an." },
+  {
+    title: "Môi trường làm việc văn minh",
+    desc: "Làm việc tại chuỗi không gian sáng tạo Dstation sang trọng, gần gũi thiên nhiên.",
+  },
+  {
+    title: "Thu nhập & Đãi ngộ xứng đáng",
+    desc: "Cơ chế lương cứng cạnh tranh, hoa hồng đa hệ sinh thái và bảo hiểm sức khỏe VIP.",
+  },
+  {
+    title: "Đào tạo liên tục",
+    desc: "Được kèm cặp bởi các chuyên gia hàng đầu về Y học lối sống, Hoạch định tài chính và Thẩm định bảo an.",
+  },
 ];
 
 export function DCareView() {
@@ -114,8 +178,7 @@ export function DCareView() {
   const experts = useMemo(
     () =>
       EXPERTS.filter((expert) => {
-        const matchesCategory =
-          filter === "all" || expert.category === filter;
+        const matchesCategory = filter === "all" || expert.category === filter;
         const matchesSearch =
           !query ||
           expert.name.toLowerCase().includes(query) ||
@@ -128,20 +191,27 @@ export function DCareView() {
 
   return (
     <div className="min-h-screen bg-neutral-50 pb-20 font-sans text-neutral-800">
-      <section className="relative overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white md:py-24">
+      <section className="hero-bleed relative overflow-hidden border-b border-neutral-800 bg-neutral-950 pb-16 text-white md:pb-24">
+        <Breadcrumbs
+          variant="overlay-dark"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "D-Care" },
+          ]}
+        />
         <div className="bg-glow-gold-top pointer-events-none absolute inset-0" />
         <div className="relative z-10 mx-auto max-w-7xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-300 backdrop-blur-md">
-            <span className="h-2 w-2 rounded-full bg-amber-400" /> D-Care · Đội ngũ
-            đồng hành &amp; Chuyên gia
+            <span className="h-2 w-2 rounded-full bg-amber-400" /> D-Care · Đội
+            ngũ đồng hành &amp; Chuyên gia
           </span>
           <h1 className="mx-auto max-w-4xl font-display text-3xl font-black leading-tight text-white sm:text-5xl">
             Người Đồng Hành Tận Tâm Cho Cuộc Sống Vui - Khỏe - Giàu
           </h1>
           <p className="mx-auto max-w-2xl text-sm font-light leading-relaxed text-neutral-300 sm:text-base">
-            Mạng lưới <strong>Client Advisor (CA)</strong>, Bác sĩ Y học lối sống
-            Anvie, Chuyên gia Tích sản VNDGO và Chuyên gia Bảo an PTI — sẵn sàng
-            tư vấn và kiến tạo an tâm cho gia đình bạn.
+            Mạng lưới <strong>Client Advisor (CA)</strong>, Bác sĩ Y học lối
+            sống Anvie, Chuyên gia Tích sản VNDGO và Chuyên gia Bảo an PTI — sẵn
+            sàng tư vấn và kiến tạo an tâm cho gia đình bạn.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <a
@@ -213,8 +283,8 @@ export function DCareView() {
             Chuyên gia Đồng hành Cùng Bạn
           </h2>
           <p className="text-xs leading-relaxed text-neutral-600 sm:text-sm">
-            Chọn chuyên gia theo lĩnh vực quan tâm để nhận tư vấn chuyên sâu hoặc
-            đặt lịch gặp trực tiếp tại Dstation.
+            Chọn chuyên gia theo lĩnh vực quan tâm để nhận tư vấn chuyên sâu
+            hoặc đặt lịch gặp trực tiếp tại Dstation.
           </p>
         </div>
 
@@ -366,13 +436,16 @@ export function DCareView() {
                   </span>
                 </h2>
                 <p className="text-xs font-light leading-relaxed text-neutral-300 sm:text-sm">
-                  Trở thành người kiến tạo nếp sống an tâm cho hàng ngàn gia đình.
-                  Chúng tôi chào đón các bạn trẻ nhiệt huyết, chuyên gia y tế, tài
-                  chính và bảo hiểm cùng chung triết lý phụng sự.
+                  Trở thành người kiến tạo nếp sống an tâm cho hàng ngàn gia
+                  đình. Chúng tôi chào đón các bạn trẻ nhiệt huyết, chuyên gia y
+                  tế, tài chính và bảo hiểm cùng chung triết lý phụng sự.
                 </p>
                 <ul className="space-y-3.5 border-t border-white/10 pt-4 text-xs text-neutral-200">
                   {JOIN_BENEFITS.map((benefit) => (
-                    <li key={benefit.title} className="flex items-start gap-2.5">
+                    <li
+                      key={benefit.title}
+                      className="flex items-start gap-2.5"
+                    >
                       <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-health-500" />
                       <span>
                         <strong>{benefit.title}:</strong> {benefit.desc}
@@ -383,7 +456,9 @@ export function DCareView() {
               </div>
               <p className="flex items-center gap-2 border-t border-white/10 pt-6 text-xs text-neutral-400">
                 <Clock className="h-4 w-4 text-amber-400" />
-                <span>Phản hồi hồ sơ nhanh chóng trong vòng 3 ngày làm việc</span>
+                <span>
+                  Phản hồi hồ sơ nhanh chóng trong vòng 3 ngày làm việc
+                </span>
               </p>
             </div>
 
@@ -442,15 +517,38 @@ function RecruitmentForm() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-name" label="Họ và tên ứng viên" required>
-          <Input id="r-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Trần Quốc Bảo" className={fieldClass} />
+          <Input
+            id="r-name"
+            name="name"
+            type="text"
+            required
+            autoComplete="name"
+            placeholder="Ví dụ: Trần Quốc Bảo"
+            className={fieldClass}
+          />
         </Field>
         <Field id="r-phone" label="Số điện thoại" required>
-          <Input id="r-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0909 123 456" className={fieldClass} />
+          <Input
+            id="r-phone"
+            name="phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            placeholder="0909 123 456"
+            className={fieldClass}
+          />
         </Field>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-email" label="Email liên hệ">
-          <Input id="r-email" name="email" type="email" autoComplete="email" placeholder="baotran@gmail.com" className={fieldClass} />
+          <Input
+            id="r-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            placeholder="baotran@gmail.com"
+            className={fieldClass}
+          />
         </Field>
         <Field id="r-position" label="Vị trí mong muốn ứng tuyển">
           <Select name="position" defaultValue="ca">
@@ -497,11 +595,26 @@ function RecruitmentForm() {
           </Select>
         </Field>
       </div>
-      <Field id="r-cv" label="Link CV / Hồ sơ năng lực (Google Drive / LinkedIn / PDF)">
-        <Input id="r-cv" name="cvLink" type="url" placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..." className={fieldClass} />
+      <Field
+        id="r-cv"
+        label="Link CV / Hồ sơ năng lực (Google Drive / LinkedIn / PDF)"
+      >
+        <Input
+          id="r-cv"
+          name="cvLink"
+          type="url"
+          placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..."
+          className={fieldClass}
+        />
       </Field>
       <Field id="r-bg" label="Kinh nghiệm / Thông điệp gửi tới IPA Living">
-        <Textarea id="r-bg" name="background" rows={2} placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..." className={cn(fieldClass, "resize-none")} />
+        <Textarea
+          id="r-bg"
+          name="background"
+          rows={2}
+          placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..."
+          className={cn(fieldClass, "resize-none")}
+        />
       </Field>
 
       <RecruitSubmit />
@@ -604,10 +717,26 @@ function BookingModal({
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Field id="b-name" label="Họ và tên của bạn" required>
-                <Input id="b-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
+                <Input
+                  id="b-name"
+                  name="name"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Nguyễn Văn A"
+                  className={fieldClass}
+                />
               </Field>
               <Field id="b-phone" label="Số điện thoại" required>
-                <Input id="b-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={fieldClass} />
+                <Input
+                  id="b-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  placeholder="0912 345 678"
+                  className={fieldClass}
+                />
               </Field>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -661,7 +790,13 @@ function BookingModal({
               </div>
             </div>
             <Field id="b-notes" label="Nhu cầu cần trao đổi cụ thể">
-              <Textarea id="b-notes" name="notes" rows={2} placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..." className={cn(fieldClass, "resize-none")} />
+              <Textarea
+                id="b-notes"
+                name="notes"
+                rows={2}
+                placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..."
+                className={cn(fieldClass, "resize-none")}
+              />
             </Field>
             <BookingSubmit />
           </form>

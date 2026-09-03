@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Activity,
-  ArrowLeft,
   BookOpen,
   GraduationCap,
   Heart,
@@ -19,25 +18,32 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 type TabId = "academy" | "network";
 
-const TABS: { id: TabId; label: string; subtitle: string; icon: LucideIcon }[] = [
-  {
-    id: "academy",
-    label: "1. AnVie Academy",
-    subtitle: "Không gian học tập & trao truyền tri thức",
-    icon: GraduationCap,
-  },
-  {
-    id: "network",
-    label: "2. Chuỗi Phòng Khám",
-    subtitle: "Mạng lưới tư vấn sức khỏe gia đình",
-    icon: Stethoscope,
-  },
-];
+const TABS: { id: TabId; label: string; subtitle: string; icon: LucideIcon }[] =
+  [
+    {
+      id: "academy",
+      label: "1. AnVie Academy",
+      subtitle: "Không gian học tập & trao truyền tri thức",
+      icon: GraduationCap,
+    },
+    {
+      id: "network",
+      label: "2. Chuỗi Phòng Khám",
+      subtitle: "Mạng lưới tư vấn sức khỏe gia đình",
+      icon: Stethoscope,
+    },
+  ];
 
-const ACADEMY_ITEMS: { icon: LucideIcon; tone: string; title: string; desc: string }[] = [
+const ACADEMY_ITEMS: {
+  icon: LucideIcon;
+  tone: string;
+  title: string;
+  desc: string;
+}[] = [
   {
     icon: BookOpen,
     tone: "bg-purple-100 text-purple-900",
@@ -58,7 +64,12 @@ const ACADEMY_ITEMS: { icon: LucideIcon; tone: string; title: string; desc: stri
   },
 ];
 
-const NETWORK_ITEMS: { icon: LucideIcon; tone: string; title: string; desc: string }[] = [
+const NETWORK_ITEMS: {
+  icon: LucideIcon;
+  tone: string;
+  title: string;
+  desc: string;
+}[] = [
   {
     icon: Activity,
     tone: "bg-sky-100 text-sky-900",
@@ -86,25 +97,27 @@ const NETWORK_IMG = localImage(
   "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80",
 );
 
-export function AnvieLifeView({ initialTab = "academy" }: { initialTab?: TabId }) {
+export function AnvieLifeView({
+  initialTab = "academy",
+}: {
+  initialTab?: TabId;
+}) {
   const [tab, setTab] = useState<TabId>(initialTab);
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
-      <div className="sticky top-16 z-20 border-b border-neutral-200 bg-white shadow-sm sm:top-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-          <Link
-            href={routes.sucKhoe}
-            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-purple-800"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Trở về Tháp Sức Khỏe AnVie</span>
-          </Link>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Sức Khỏe AnVie", href: routes.sucKhoe },
+          { label: "AnVie Life" },
+        ]}
+        trailing={
           <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-bold uppercase text-purple-900">
             AnVie Life · Chăm Sóc Sức Khỏe
           </span>
-        </div>
-      </div>
+        }
+      />
 
       <section className="relative overflow-hidden bg-purple-950 px-4 py-12 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-12">
@@ -117,8 +130,8 @@ export function AnvieLifeView({ initialTab = "academy" }: { initialTab?: TabId }
               AnVie Life
             </h1>
             <p className="max-w-2xl text-sm font-light leading-relaxed text-purple-100 sm:text-base">
-              AnVie Life đồng hành cùng bạn chăm sóc sức khỏe chủ động, thông qua
-              tri thức nếp sống và mạng lưới tư vấn sức khỏe đáng tin cậy.
+              AnVie Life đồng hành cùng bạn chăm sóc sức khỏe chủ động, thông
+              qua tri thức nếp sống và mạng lưới tư vấn sức khỏe đáng tin cậy.
             </p>
           </div>
           <div className="space-y-2 rounded-2xl border border-white/20 bg-white/10 p-5 text-xs backdrop-blur-md lg:col-span-4">
@@ -126,11 +139,11 @@ export function AnvieLifeView({ initialTab = "academy" }: { initialTab?: TabId }
               2 Trụ Cột AnVie Life
             </span>
             <p className="font-light leading-relaxed text-purple-100">
-              1. <strong>AnVie Academy:</strong> Không gian học tập và trao truyền
-              tri thức.
+              1. <strong>AnVie Academy:</strong> Không gian học tập và trao
+              truyền tri thức.
               <br />
-              2. <strong>Chuỗi phòng khám:</strong> Mạng lưới tư vấn sức khỏe gia
-              đình.
+              2. <strong>Chuỗi phòng khám:</strong> Mạng lưới tư vấn sức khỏe
+              gia đình.
             </p>
           </div>
         </div>
@@ -162,7 +175,9 @@ export function AnvieLifeView({ initialTab = "academy" }: { initialTab?: TabId }
                 <span
                   className={cn(
                     "rounded-xl p-2",
-                    active ? "bg-purple-800 text-purple-200" : "bg-purple-50 text-purple-900",
+                    active
+                      ? "bg-purple-800 text-purple-200"
+                      : "bg-purple-50 text-purple-900",
                   )}
                 >
                   <Icon className="h-5 w-5" />
@@ -262,7 +277,9 @@ function TabPanel({
                   key={item.title}
                   className="flex items-start gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-4"
                 >
-                  <span className={cn("mt-0.5 shrink-0 rounded-xl p-2", item.tone)}>
+                  <span
+                    className={cn("mt-0.5 shrink-0 rounded-xl p-2", item.tone)}
+                  >
                     <Icon className="h-4 w-4" />
                   </span>
                   <div>

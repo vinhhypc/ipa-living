@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 type BranchKey = "anvie" | "vndirect" | "pti";
 type TabKey = "all" | BranchKey;
@@ -42,6 +43,8 @@ type Branch = {
   accentText: string;
   accentHover: string;
   accentBtn: string;
+  /** Hover fill cho CTA phụ (nút viền sáng → tô đậm màu tháp khi hover). */
+  ctaHover: string;
   overviewHref: string;
   quickCard: {
     image: string;
@@ -62,7 +65,9 @@ type Branch = {
 };
 
 const img = (id: string) =>
-  localImage(`https://images.unsplash.com/photo-${id}?q=80&w=800&auto=format&fit=crop`);
+  localImage(
+    `https://images.unsplash.com/photo-${id}?q=80&w=800&auto=format&fit=crop`,
+  );
 
 const BRANCHES: Branch[] = [
   {
@@ -73,9 +78,10 @@ const BRANCHES: Branch[] = [
     title: "AnVie — Nếp Sống Thuận Tự Nhiên",
     motto:
       'Khẩu quyết: "Một nếp sống khỏe · một gia tài Việt · một hệ sinh thái xanh."',
-    accentText: "text-brand-green-dark",
-    accentHover: "group-hover:text-brand-green-dark",
-    accentBtn: "bg-brand-green-dark hover:bg-brand-forest",
+    accentText: "text-health-700",
+    accentHover: "group-hover:text-health-700",
+    accentBtn: "bg-health-600 hover:bg-health-700",
+    ctaHover: "hover:border-health-600 hover:bg-health-700 hover:text-white",
     overviewHref: routes.sucKhoe,
     quickCard: {
       image: img("1556911073-38141963c9e0"),
@@ -83,8 +89,7 @@ const BRANCHES: Branch[] = [
       brand: "AnVie",
       icon: Heart,
       title: "AnVie — Nếp Sống Thuận Tự Nhiên",
-      quote:
-        '"Một nếp sống khỏe · một gia tài Việt · một hệ sinh thái xanh."',
+      quote: '"Một nếp sống khỏe · một gia tài Việt · một hệ sinh thái xanh."',
       cta: "Khám phá Tháp Sức Khỏe",
     },
     vision:
@@ -92,11 +97,11 @@ const BRANCHES: Branch[] = [
     mission:
       '"Tiếp nối một gia tài Việt, bồi đắp một hệ sinh thái xanh cho thế hệ mai sau — qua nếp sống thuận tự nhiên."',
     extra: (
-      <div className="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4">
+      <div className="rounded-2xl border border-health-500/25 bg-health-50 p-4">
         <p className="text-xs font-medium leading-relaxed text-neutral-800 sm:text-sm">
           <strong>AnVie — Nếp nhà Việt · AnVie — Nếp nhà Trúc Lâm:</strong> Mọi
-          thứ bắt đầu từ AnVie. AnVie không phải một nhãn hàng — là một nếp sống:
-          không ai “mua AnVie” — người ta sống AnVie.
+          thứ bắt đầu từ AnVie. AnVie không phải một nhãn hàng — là một nếp
+          sống: không ai “mua AnVie” — người ta sống AnVie.
         </p>
       </div>
     ),
@@ -126,8 +131,7 @@ const BRANCHES: Branch[] = [
       {
         badge: "Trục 3 · Chăm Sóc Sức Khỏe",
         title: "AnVie Life (Y Học Lối Sống & Bác Sĩ)",
-        quote:
-          '"Một nếp y dưỡng — một bác sĩ gia đình — trọn đời sống an vui"',
+        quote: '"Một nếp y dưỡng — một bác sĩ gia đình — trọn đời sống an vui"',
         desc: "Xây dựng nếp chăm sóc sức khỏe chủ động qua học viện đào tạo y học lối sống AnVie Academy, chuỗi phòng khám tư vấn dự phòng và đội ngũ bác sĩ gia đình đồng hành.",
         href: routes.anvieLife,
         ctaLabel: "Xem chi tiết AnVie Life",
@@ -137,8 +141,8 @@ const BRANCHES: Branch[] = [
     banner: (
       <p className="text-xs leading-relaxed text-neutral-700 sm:text-sm">
         <strong>Mạch vận hành:</strong> Gobio (Đưa cái sạch vào đời sống) &rarr;
-        Health (Đánh thức nhận thức bằng trải nghiệm) &rarr; Life (Biến thành nếp
-        chăm sóc chủ động &amp; toàn diện).
+        Health (Đánh thức nhận thức bằng trải nghiệm) &rarr; Life (Biến thành
+        nếp chăm sóc chủ động &amp; toàn diện).
       </p>
     ),
   },
@@ -150,9 +154,10 @@ const BRANCHES: Branch[] = [
     title: "VNDIRECT — Sức Khỏe Tài Chính",
     motto:
       'Khẩu quyết: "Một nếp sống đầu tư — một bản đồ thịnh vượng — một hành trình trí tuệ."',
-    accentText: "text-brand-gold-dark",
-    accentHover: "group-hover:text-brand-gold-dark",
-    accentBtn: "bg-brand-gold-dark hover:bg-brand-brown-dark",
+    accentText: "text-wealth-700",
+    accentHover: "group-hover:text-wealth-700",
+    accentBtn: "bg-wealth-600 hover:bg-wealth-700",
+    ctaHover: "hover:border-wealth-600 hover:bg-wealth-700 hover:text-white",
     overviewHref: routes.thinhVuong,
     quickCard: {
       image: img("1551836022-d5d88e9218df"),
@@ -170,8 +175,8 @@ const BRANCHES: Branch[] = [
       '"Vun bồi sức khỏe tài chính và thịnh vượng bền vững cho mỗi gia đình Việt — nền vững trước, tăng trưởng sau."',
     extra: (
       <div className="grid grid-cols-1 gap-4 border-t border-neutral-100 pt-4 md:grid-cols-2">
-        <div className="space-y-1 rounded-2xl border border-amber-200/80 bg-amber-50/60 p-4">
-          <span className="text-xs font-bold uppercase text-brand-gold-dark">
+        <div className="space-y-1 rounded-2xl border border-wealth-500/30 bg-wealth-50 p-4">
+          <span className="text-xs font-bold uppercase text-wealth-700">
             Tagline VNDGO
           </span>
           <p className="text-xs italic leading-relaxed text-neutral-800">
@@ -184,8 +189,8 @@ const BRANCHES: Branch[] = [
             Tagline VNDCARE
           </span>
           <p className="text-xs italic leading-relaxed text-neutral-800">
-            “Mỗi người tôi gặp ở VNDIRECT là một Người bạn — tư vấn vì lợi ích của
-            tôi, vì hành trình trọn đời của gia đình tôi.”
+            “Mỗi người tôi gặp ở VNDIRECT là một Người bạn — tư vấn vì lợi ích
+            của tôi, vì hành trình trọn đời của gia đình tôi.”
           </p>
         </div>
       </div>
@@ -227,9 +232,11 @@ const BRANCHES: Branch[] = [
     title: "PTI — Bảo An Cho Đời Sống",
     motto:
       'Khẩu quyết: "Một nếp sống tương hỗ — trọn giải pháp bảo hiểm — triệu mái nhà sống an."',
-    accentText: "text-brand-bluegray",
-    accentHover: "group-hover:text-brand-bluegray",
-    accentBtn: "bg-brand-bluegray hover:bg-brand-bluegray-dark",
+    accentText: "text-protection-700",
+    accentHover: "group-hover:text-protection-700",
+    accentBtn: "bg-protection-600 hover:bg-protection-700",
+    ctaHover:
+      "hover:border-protection-600 hover:bg-protection-700 hover:text-white",
     overviewHref: routes.baoAn,
     quickCard: {
       image: img("1576765608535-5f04d1e3f289"),
@@ -245,8 +252,8 @@ const BRANCHES: Branch[] = [
       '"Một Việt Nam, nơi bảo an tương hỗ trở thành nếp sống — mỗi người được che chở bởi sự chuẩn bị tỉnh thức của chính mình và của cộng đồng."',
     mission: '"Gìn giữ sự bình an cho mỗi gia đình Việt."',
     extra: (
-      <div className="space-y-1 rounded-2xl border border-sky-200/80 bg-sky-50/60 p-4">
-        <span className="text-xs font-bold uppercase text-brand-bluegray">
+      <div className="space-y-1 rounded-2xl border border-protection-500/25 bg-protection-50 p-4">
+        <span className="text-xs font-bold uppercase text-protection-700">
           Câu ba lớp của gian
         </span>
         <p className="text-xs italic text-neutral-800 sm:text-sm">
@@ -302,7 +309,9 @@ const TABS: { id: TabKey; label: string }[] = [
 ];
 
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export function VeIpaLivingView() {
@@ -315,14 +324,20 @@ export function VeIpaLivingView() {
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Về IPA Living" },
+        ]}
+      />
       {/* Hero */}
       <section className="border-b border-neutral-200 bg-neutral-50 pb-16 pt-14 sm:pb-20 sm:pt-20">
         <div className="mx-auto max-w-7xl space-y-6 px-4 text-center sm:space-y-8 sm:px-6 lg:px-8">
           <p className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-4 py-1.5 shadow-sm backdrop-blur-md">
             <span className="mr-1 flex items-center gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-brand-green" />
-              <span className="h-2.5 w-2.5 rounded-full bg-brand-gold" />
-              <span className="h-2.5 w-2.5 rounded-full bg-brand-bluegray" />
+              <span className="h-2.5 w-2.5 rounded-full bg-health-600" />
+              <span className="h-2.5 w-2.5 rounded-full bg-wealth-500" />
+              <span className="h-2.5 w-2.5 rounded-full bg-protection-600" />
             </span>
             <span className="text-xs font-bold uppercase tracking-widest text-neutral-800">
               Hệ sinh thái IPA Living
@@ -422,7 +437,7 @@ export function VeIpaLivingView() {
                   "whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
                   tab === t.id
                     ? "bg-neutral-900 text-white shadow-sm"
-                    : "border border-neutral-200 bg-white text-neutral-700 hover:bg-wealth-50 hover:text-neutral-900",
+                    : "border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900",
                 )}
               >
                 {t.label}
@@ -549,7 +564,9 @@ function BranchSection({ branch }: { branch: Branch }) {
             </p>
           </div>
           {branch.extra ? (
-            <div className="border-t border-neutral-100 pt-4">{branch.extra}</div>
+            <div className="border-t border-neutral-100 pt-4">
+              {branch.extra}
+            </div>
           ) : null}
         </div>
 
@@ -601,7 +618,10 @@ function BranchSection({ branch }: { branch: Branch }) {
                   </div>
                   <Link
                     href={product.href}
-                    className="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-bold text-neutral-800 transition-all hover:bg-neutral-900 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                    className={cn(
+                      "mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-2.5 text-xs font-bold text-neutral-800 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+                      branch.ctaHover,
+                    )}
                   >
                     <span>{product.ctaLabel}</span>
                     <ChevronRight className="h-3.5 w-3.5" />

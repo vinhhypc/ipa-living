@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { WorkshopInterestModal } from "@/components/marketing/workshop-interest-modal";
 
 const HERO_IMAGE = localImage(
@@ -234,7 +235,14 @@ export function BaoAnView() {
   return (
     <div className="bg-white font-sans">
       {/* Hero */}
-      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+      <section className="h-hero hero-bleed relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-[48rem] sm:pb-0 lg:min-h-[54rem]">
+        <Breadcrumbs
+          variant="overlay-light"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "Tháp Bảo An PTICare" },
+          ]}
+        />
         <div className="absolute inset-0">
           <Image
             src={HERO_IMAGE}
@@ -249,44 +257,43 @@ export function BaoAnView() {
         </div>
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative z-10 max-w-2xl space-y-5">
-              <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-                Tháp Bảo An{" "}
-                <span className="text-protection-600">PTICare</span>
-              </h1>
-              <div className="space-y-1">
-                <p className="font-display text-xs font-bold uppercase tracking-widest text-protection-700 sm:text-sm lg:text-base">
-                  Một nếp sống tương hỗ · Triệu mái nhà sống an
-                </p>
-                <p className="text-xs font-medium italic text-protection-700 sm:text-sm">
-                  “Caring beyond Insurance” — Gìn giữ bình an cho mỗi gia đình
-                  Việt
-                </p>
-              </div>
-              <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
-                PTI bảo vệ tài chính, sức khỏe và mọi tài sản của bạn bằng sự
-                minh bạch, chuẩn mực và đồng hành xuyên suốt — xây dựng lá chắn
-                bảo an vững chãi trước mọi biến động cuộc sống.
+            <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+              Tháp Bảo An <span className="text-protection-600">PTICare</span>
+            </h1>
+            <div className="space-y-1">
+              <p className="font-display text-xs font-bold uppercase tracking-widest text-protection-700 sm:text-sm lg:text-base">
+                Một nếp sống tương hỗ · Triệu mái nhà sống an
               </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <a
-                  href="#danh-muc-san-pham"
-                  className="inline-flex items-center gap-2 rounded-full bg-protection-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-protection-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  <Shield className="h-4 w-4" />
-                  <span>Khám phá giải pháp bảo vệ</span>
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  <HeartHandshake className="h-4 w-4 text-protection-700" />
-                  <span>Đăng ký nhận tư vấn</span>
-                </button>
-              </div>
+              <p className="text-xs font-medium italic text-protection-700 sm:text-sm">
+                “Caring beyond Insurance” — Gìn giữ bình an cho mỗi gia đình
+                Việt
+              </p>
+            </div>
+            <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
+              PTI bảo vệ tài chính, sức khỏe và mọi tài sản của bạn bằng sự minh
+              bạch, chuẩn mực và đồng hành xuyên suốt — xây dựng lá chắn bảo an
+              vững chãi trước mọi biến động cuộc sống.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <a
+                href="#danh-muc-san-pham"
+                className="inline-flex items-center gap-2 rounded-full bg-protection-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-protection-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                <Shield className="h-4 w-4" />
+                <span>Khám phá giải pháp bảo vệ</span>
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <button
+                type="button"
+                onClick={() => setModalOpen(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                <HeartHandshake className="h-4 w-4 text-protection-700" />
+                <span>Đăng ký nhận tư vấn</span>
+              </button>
             </div>
           </div>
+        </div>
       </section>
 
       {/* Ba chiều bảo vệ */}
@@ -303,8 +310,8 @@ export function BaoAnView() {
               Ba Tầng Bảo Vệ Toàn Diện
             </h2>
             <p className="text-sm font-light leading-relaxed text-neutral-600 sm:text-base">
-              Tạo lập thế trận phòng vệ vững chãi 3 chiều từ sức khỏe thể chất, an
-              toàn tài chính gia đình cho đến sự đồng hành dài lâu trọn đời.
+              Tạo lập thế trận phòng vệ vững chãi 3 chiều từ sức khỏe thể chất,
+              an toàn tài chính gia đình cho đến sự đồng hành dài lâu trọn đời.
             </p>
           </div>
 
@@ -339,10 +346,7 @@ export function BaoAnView() {
 
                     <div className={cn("rounded-2xl border p-3.5", tone.note)}>
                       <span
-                        className={cn(
-                          "block text-xs font-bold",
-                          tone.noteText,
-                        )}
+                        className={cn("block text-xs font-bold", tone.noteText)}
                       >
                         {dim.noteTitle}
                       </span>
@@ -503,8 +507,8 @@ export function BaoAnView() {
           </h2>
           <p className="mx-auto max-w-xl text-sm font-light leading-relaxed text-slate-300">
             Sự cố không báo trước, nhưng bạn có quyền chuẩn bị tâm thế chủ động
-            nhất để đón nhận. Hãy liên hệ ngay với Bạn Đồng Hành (CA) để thiết kế
-            gói phòng vệ PTI tối ưu nhất.
+            nhất để đón nhận. Hãy liên hệ ngay với Bạn Đồng Hành (CA) để thiết
+            kế gói phòng vệ PTI tối ưu nhất.
           </p>
           <div className="flex flex-col justify-center gap-4 pt-4 sm:flex-row">
             <button

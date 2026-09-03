@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Anchor,
-  ArrowLeft,
   Briefcase,
   CheckCircle2,
   FileSpreadsheet,
@@ -13,6 +12,7 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 const HERO_IMAGE = localImage(
   "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=600",
@@ -52,15 +52,13 @@ const SOLUTIONS = [
 export function PtiCommercialView() {
   return (
     <div className="min-h-screen bg-neutral-50 font-sans">
-      <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-        <Link
-          href={routes.baoAn}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-brand-bluegray transition-colors hover:text-brand-navy"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Quay lại Tháp Bảo An</span>
-        </Link>
-      </div>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Bảo An PTICare", href: routes.baoAn },
+          { label: "PTI Commercial" },
+        ]}
+      />
 
       <section className="relative overflow-hidden py-12 sm:py-16">
         <div className="bg-glow-bluegray-tr pointer-events-none absolute inset-0" />
@@ -131,8 +129,8 @@ export function PtiCommercialView() {
             </h2>
             <p className="text-sm font-light text-neutral-500">
               Chúng tôi sở hữu đội ngũ chuyên gia tư vấn am hiểu ngành nghề sâu
-              sắc, đồng hành cùng sự vững vàng tài chính và phát triển dài lâu của
-              quý công ty.
+              sắc, đồng hành cùng sự vững vàng tài chính và phát triển dài lâu
+              của quý công ty.
             </p>
           </div>
 

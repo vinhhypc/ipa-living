@@ -5,11 +5,7 @@ import { routes } from "@/lib/routes";
 import type { Article } from "@/lib/types";
 import { KnowledgeCard } from "@/components/marketing/knowledge-card";
 
-export function KnowledgeTeaserSection({
-  articles,
-}: {
-  articles: Article[];
-}) {
+export function KnowledgeTeaserSection({ articles }: { articles: Article[] }) {
   return (
     <section
       id="knowledge-teaser"
@@ -30,7 +26,7 @@ export function KnowledgeTeaserSection({
           </div>
           <Link
             href={routes.triThuc}
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded text-xs font-bold uppercase tracking-widest text-brand-bluegray transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded text-xs font-bold uppercase text-brand-bluegray transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <span>Xem tất cả bài viết</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />

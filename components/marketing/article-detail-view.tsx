@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   Calendar,
   CheckCircle2,
@@ -20,6 +19,7 @@ import { ARTICLES } from "@/lib/data";
 import { routes } from "@/lib/routes";
 import type { Article, Tower } from "@/lib/types";
 import { ArticleActions } from "@/components/marketing/article-actions";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 const TOWER_META: Record<
   Tower,
@@ -67,35 +67,15 @@ export function ArticleDetailView({ article }: { article: Article }) {
 
   return (
     <div className="min-h-screen bg-neutral-50 pb-20 font-sans text-neutral-800">
-      <div className="sticky top-16 z-30 border-b border-neutral-200 bg-white shadow-sm sm:top-20">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3.5 sm:px-6">
-          <Link
-            href={routes.triThuc}
-            className="group inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-neutral-900"
-          >
-            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1 motion-reduce:transition-none" />
-            <span>Quay lại Góc Tri Thức</span>
-          </Link>
-          <nav
-            aria-label="Breadcrumb"
-            className="hidden items-center gap-2 text-xs text-neutral-400 sm:flex"
-          >
-            <Link href={routes.home} className="hover:text-neutral-700">
-              Trang chủ
-            </Link>
-            <span>/</span>
-            <Link href={routes.triThuc} className="hover:text-neutral-700">
-              Tri thức Wellbeing
-            </Link>
-            <span>/</span>
-            <span className="max-w-[12rem] truncate font-medium text-neutral-800">
-              {tower.label}
-            </span>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tri thức Wellbeing", href: routes.triThuc },
+          { label: tower.label },
+        ]}
+      />
 
-      <article className="mx-auto max-w-4xl px-4 pt-8 sm:px-6 sm:pt-12">
+      <article className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2.5">
             <span
@@ -152,7 +132,7 @@ export function ArticleDetailView({ article }: { article: Article }) {
           </p>
         </div>
 
-        <div className="relative mt-8 aspect-[16/9] max-h-110 overflow-hidden rounded-3xl bg-neutral-100 shadow-md">
+        <div className="relative mx-auto mt-8 aspect-[16/9] w-full max-w-4xl overflow-hidden rounded-3xl bg-neutral-100 shadow-md">
           <Image
             src={article.image}
             alt={article.title}
@@ -172,8 +152,8 @@ export function ArticleDetailView({ article }: { article: Article }) {
           <p>
             Trong nhịp sống hiện đại nhiều áp lực, việc xây dựng và duy trì thói
             quen dựa trên 3 trụ cột Wellbeing (Sức Khỏe, Thịnh Vượng, Bảo An) là
-            kim chỉ nam giúp mỗi cá nhân và gia đình đạt được sự tự do và bình an
-            nội tại.
+            kim chỉ nam giúp mỗi cá nhân và gia đình đạt được sự tự do và bình
+            an nội tại.
           </p>
           <p>
             Không chỉ là những lời khuyên lý thuyết, các chương trình thực hành
@@ -203,8 +183,8 @@ export function ArticleDetailView({ article }: { article: Article }) {
           </h2>
           <p>
             Bạn có thể trải nghiệm trực tiếp các sản phẩm, tham gia các buổi
-            Workshop tương tác chuyên sâu, hoặc lắng nghe tư vấn trực tiếp 1:1 từ
-            đội ngũ chuyên gia tại hệ thống Trạm điểm chạm{" "}
+            Workshop tương tác chuyên sâu, hoặc lắng nghe tư vấn trực tiếp 1:1
+            từ đội ngũ chuyên gia tại hệ thống Trạm điểm chạm{" "}
             <strong>Dstation</strong> trên toàn quốc.
           </p>
 
@@ -245,8 +225,8 @@ export function ArticleDetailView({ article }: { article: Article }) {
             </div>
             <p className="text-xs leading-relaxed text-neutral-600">
               Cố vấn và nghiên cứu phát triển các giải pháp Wellbeing thuộc hệ
-              sinh thái IPA Living, cam kết mang đến giá trị thực tiễn và bền vững
-              cho cộng đồng.
+              sinh thái IPA Living, cam kết mang đến giá trị thực tiễn và bền
+              vững cho cộng đồng.
             </p>
           </div>
         </div>
@@ -267,7 +247,8 @@ export function ArticleDetailView({ article }: { article: Article }) {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {related.map((item) => {
-              const relTower = TOWER_META[item.category] ?? TOWER_META["suc-khoe"];
+              const relTower =
+                TOWER_META[item.category] ?? TOWER_META["suc-khoe"];
               const RelIcon = relTower.icon;
               return (
                 <article

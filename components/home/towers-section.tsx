@@ -206,7 +206,7 @@ export function TowersSection() {
           <div
             role="tablist"
             aria-label="Ba tháp giá trị"
-            className="flex flex-col gap-1.5 lg:col-span-3 lg:gap-3"
+            className="flex flex-col gap-1.5 lg:col-span-2 lg:gap-2"
           >
             {TOWER_ORDER.map((key) => {
               const t = TOWERS[key];
@@ -219,18 +219,18 @@ export function TowersSection() {
                   aria-selected={active}
                   onClick={() => selectTab(key)}
                   className={cn(
-                    "w-full rounded-2xl px-4 py-3.5 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:px-6 sm:py-5",
+                    "w-full rounded-xl px-3 py-3 text-left transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:px-4 sm:py-3.5",
                     active
                       ? t.tab
                       : "bg-transparent text-neutral-800 hover:bg-neutral-200/50",
                   )}
                 >
-                  <span className="block font-display text-base font-bold leading-snug tracking-tight sm:text-xl">
+                  <span className="block font-display text-sm font-bold leading-tight tracking-tight lg:text-[13px]">
                     {t.title}
                   </span>
                   <span
                     className={cn(
-                      "mt-0.5 block text-xs font-medium tracking-wide sm:mt-1",
+                      "mt-0.5 block text-[11px] font-medium tracking-wide",
                       active ? t.tabText : "text-neutral-400",
                     )}
                   >
@@ -244,16 +244,16 @@ export function TowersSection() {
           {/* Showcase */}
           <div
             role="tabpanel"
-            className="relative flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white p-7 shadow-lg sm:p-10 md:min-h-[46rem] lg:col-span-9 lg:p-12 xl:min-h-[44rem]"
+            className="relative flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white p-7 shadow-lg sm:p-10 md:min-h-[40rem] lg:col-span-10 lg:p-12"
           >
-            <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:flex-1 md:items-stretch lg:gap-11">
-              <div className="group relative -mx-7 -mt-7 overflow-hidden rounded-t-3xl shadow-none sm:-mx-10 sm:-mt-10 md:col-span-5 md:-my-10 md:-ml-10 md:mr-0 md:rounded-l-3xl md:rounded-t-none md:shadow-md lg:-my-12 lg:-ml-12">
-                <div className="relative aspect-[16/10] h-full w-full overflow-hidden bg-neutral-200 sm:aspect-[16/9] md:aspect-auto md:min-h-[26rem]">
+            <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-12 md:flex-1 lg:gap-10">
+              <div className="group relative overflow-hidden rounded-2xl bg-neutral-200 shadow-md md:col-span-6">
+                <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[16/11] md:absolute md:inset-0 md:aspect-auto md:h-full">
                   <Image
                     src={tower.image}
                     alt={tower.title}
                     fill
-                    sizes="(min-width: 768px) 40vw, 100vw"
+                    sizes="(min-width: 768px) 42vw, 100vw"
                     className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
                 </div>
@@ -263,7 +263,7 @@ export function TowersSection() {
                 </p>
               </div>
 
-              <div className="space-y-7 md:col-span-7 md:flex md:flex-col md:justify-center md:py-2">
+              <div className="space-y-7 md:col-span-6 md:flex md:flex-col md:justify-center md:py-2">
                 <div className="space-y-1.5">
                   <span
                     className={cn(

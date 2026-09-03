@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Users } from "lucide-react";
 
 import { localImage } from "@/lib/images";
+import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { RegistrationForm } from "@/components/marketing/registration-form";
 
 const PILLARS = [
@@ -61,7 +63,14 @@ const TESTIMONIALS = [
 export function TuyenDungCaView() {
   return (
     <div className="min-h-screen bg-neutral-50 pb-20 font-sans">
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-navy via-brand-navy-light to-brand-navy py-16 text-white sm:py-24">
+      <section className="hero-bleed relative overflow-hidden bg-gradient-to-b from-brand-navy via-brand-navy-light to-brand-navy pb-16 text-white sm:pb-24">
+        <Breadcrumbs
+          variant="overlay-dark"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "Tuyển dụng Client Advisor" },
+          ]}
+        />
         <div className="bg-glow-gold-center pointer-events-none absolute inset-0" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-4 inline-flex items-center rounded-full border border-brand-gold/20 bg-brand-gold/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-gold">
@@ -75,8 +84,8 @@ export function TuyenDungCaView() {
           <p className="mx-auto max-w-3xl text-sm font-light leading-relaxed text-slate-300 sm:text-base md:text-lg">
             Hệ sinh thái IPA Living liên tục chiêu mộ các nhân sự tâm huyết, am
             hiểu và khao khát phát triển sự nghiệp để trở thành những Bạn Đồng
-            Hành (CA) chuyên nghiệp — lực lượng nòng cốt thiết kế bản đồ Wellbeing
-            bền vững cho hàng triệu gia đình Việt.
+            Hành (CA) chuyên nghiệp — lực lượng nòng cốt thiết kế bản đồ
+            Wellbeing bền vững cho hàng triệu gia đình Việt.
           </p>
         </div>
       </section>

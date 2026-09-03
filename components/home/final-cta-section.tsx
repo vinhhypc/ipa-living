@@ -37,14 +37,14 @@ export function FinalCtaSection() {
             <div className="flex flex-col gap-4 pt-2 sm:flex-row">
               <Link
                 href={routes.tuyenDungCa}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-brand-navy shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-gold-dark hover:text-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-7 py-3.5 text-xs font-bold uppercase text-brand-navy shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-gold-dark hover:text-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
               >
-                <span>Ứng tuyển CA ngay</span>
-                <ArrowRight className="h-4 w-4" />
+                <span className="text-white">Ứng tuyển CA ngay</span>
+                <ArrowRight className="h-4 w-4 text-white" />
               </Link>
               <Link
                 href={`${routes.dCare}#experts`}
-                className="inline-flex items-center justify-center rounded-xl border border-neutral-300 bg-white px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-neutral-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-neutral-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
+                className="inline-flex items-center justify-center rounded-xl border border-neutral-300 bg-white px-7 py-3.5 text-xs font-bold uppercase text-neutral-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-neutral-50 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
               >
                 Danh sách chuyên gia
               </Link>

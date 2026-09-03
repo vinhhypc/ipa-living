@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   BookOpen,
   Calendar,
@@ -16,9 +16,12 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { routes } from "@/lib/routes";
+import { useHashSync } from "@/lib/use-hash-sync";
 import { Input } from "@/components/ui/input";
 import { ARTICLES, WORKSHOPS } from "@/lib/data";
 import type { Tower } from "@/lib/types";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { MapSection } from "@/components/marketing/map-section";
 import { WorkshopCard } from "@/components/marketing/workshop-card";
 import { KnowledgeCard } from "@/components/marketing/knowledge-card";
@@ -46,28 +49,48 @@ const CATEGORY_FILTERS: {
   icon: LucideIcon;
   active: string;
 }[] = [
-  { key: "all", label: "Tất cả chủ đề", icon: BookOpen, active: "bg-neutral-900 text-white" },
-  { key: "suc-khoe", label: "Sức Khỏe & Dinh Dưỡng", icon: Heart, active: "bg-emerald-700 text-white" },
-  { key: "thinh-vuong", label: "Thịnh Vượng & Đầu Tư", icon: TrendingUp, active: "bg-amber-700 text-white" },
-  { key: "bao-an", label: "Bảo An & Phòng Vệ", icon: Shield, active: "bg-sky-700 text-white" },
+  {
+    key: "all",
+    label: "Tất cả chủ đề",
+    icon: BookOpen,
+    active: "bg-neutral-900 text-white",
+  },
+  {
+    key: "suc-khoe",
+    label: "Sức Khỏe & Dinh Dưỡng",
+    icon: Heart,
+    active: "bg-emerald-700 text-white",
+  },
+  {
+    key: "thinh-vuong",
+    label: "Thịnh Vượng & Đầu Tư",
+    icon: TrendingUp,
+    active: "bg-amber-700 text-white",
+  },
+  {
+    key: "bao-an",
+    label: "Bảo An & Phòng Vệ",
+    icon: Shield,
+    active: "bg-sky-700 text-white",
+  },
 ];
 
 const PILLAR_INSIGHTS = [
   {
     icon: Heart,
-    tone: "border-emerald-200/80 bg-emerald-50/70 text-emerald-800",
+    tone: "border-health-500/25 bg-health-50 text-health-700",
     title: "Trụ Cột Sức Khỏe",
     desc: "Phương pháp dinh dưỡng thuận tự nhiên, cân bằng hệ vi sinh đường ruột với men sống Bếp nhà Delivie và trà thảo mộc bản địa.",
   },
   {
     icon: TrendingUp,
-    tone: "border-amber-200/80 bg-amber-50/70 text-amber-800",
+    tone: "border-wealth-500/30 bg-wealth-50 text-wealth-700",
     title: "Trụ Cột Thịnh Vượng",
     desc: "Kỷ luật tích sản bền vững VNDSIP, hoạch định tháp tài sản trọn đời và quản lý dòng tiền an tâm cho hưu trí.",
   },
   {
     icon: Shield,
-    tone: "border-sky-200/80 bg-sky-50/70 text-sky-800",
+    tone: "border-protection-500/25 bg-protection-50 text-protection-700",
     title: "Trụ Cột Bảo An",
     desc: "Lưới an sinh vững chắc, lá chắn bảo vệ sức khỏe và cứu hộ khẩn cấp PTISOS cho cả gia đình trước mọi biến cố.",
   },
@@ -85,21 +108,19 @@ const HASH_TO_TAB: Record<string, TabId> = {
   blog: "tri-thuc",
 };
 
-export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }) {
+export function DiemChamView({
+  initialTab = "dstation",
+}: {
+  initialTab?: TabId;
+}) {
   const [tab, setTab] = useState<TabId>(initialTab);
   const [dongFilter, setDongFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    const syncFromHash = () => {
-      const hash = window.location.hash.replace("#", "");
-      if (hash && HASH_TO_TAB[hash]) setTab(HASH_TO_TAB[hash]);
-    };
-    syncFromHash();
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
+  useHashSync((hash) => {
+    if (hash && HASH_TO_TAB[hash]) setTab(HASH_TO_TAB[hash]);
+  });
 
   const workshops = WORKSHOPS.filter(
     (ws) => dongFilter === "all" || ws.dongWorkshop === dongFilter,
@@ -117,10 +138,23 @@ export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }
     return matchesCategory && matchesSearch;
   });
 
+  const breadcrumbItems =
+    initialTab === "tri-thuc"
+      ? [
+          { label: "Trang chủ", href: routes.home },
+          { label: "Điểm Chạm Trải Nghiệm", href: routes.diemCham },
+          { label: "Tri Thức Wellbeing" },
+        ]
+      : [
+          { label: "Trang chủ", href: routes.home },
+          { label: "Điểm Chạm Trải Nghiệm" },
+        ];
+
   return (
     <div className="min-h-screen bg-neutral-50 font-sans">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white md:py-24">
+      <section className="hero-bleed relative overflow-hidden border-b border-neutral-800 bg-neutral-950 pb-16 text-white md:pb-24">
+        <Breadcrumbs variant="overlay-dark" items={breadcrumbItems} />
         <div className="bg-glow-gold-top pointer-events-none absolute inset-0" />
         <div className="relative z-10 mx-auto max-w-7xl space-y-4 px-4 text-center sm:px-6 lg:px-8">
           <span className="flex items-center justify-center text-xs font-bold uppercase tracking-widest text-amber-400">
@@ -131,9 +165,9 @@ export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }
             Dstation — Nơi khởi nguồn của lối sống trọn vẹn và an tâm
           </h1>
           <p className="mx-auto max-w-3xl text-sm font-light leading-relaxed text-neutral-300 sm:text-base">
-            Khám phá chuỗi trạm trải nghiệm đa giác quan, chuỗi workshop thực hành
-            thường xuyên và kho tàng tri thức chọn lọc từ 3 trụ cột Sức khỏe,
-            Thịnh vượng và Bảo an.
+            Khám phá chuỗi trạm trải nghiệm đa giác quan, chuỗi workshop thực
+            hành thường xuyên và kho tàng tri thức chọn lọc từ 3 trụ cột Sức
+            khỏe, Thịnh vượng và Bảo an.
           </p>
 
           <div
@@ -248,10 +282,10 @@ export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }
                     Cộng đồng gắn kết
                   </span>
                   <p className="text-base font-light leading-relaxed text-neutral-700 md:text-lg">
-                    Mỗi workshop mang đến nhiều hơn một buổi học. Bạn sẽ gặp những
-                    người đang sống với điều họ chia sẻ: người nghệ nhân trà Shan
-                    Tuyết Vietcharm, thợ làm bánh men sống Delivie, cố vấn thực
-                    dưỡng Bếp Homefood hay chuyên gia thảo mộc bản địa.
+                    Mỗi workshop mang đến nhiều hơn một buổi học. Bạn sẽ gặp
+                    những người đang sống với điều họ chia sẻ: người nghệ nhân
+                    trà Shan Tuyết Vietcharm, thợ làm bánh men sống Delivie, cố
+                    vấn thực dưỡng Bếp Homefood hay chuyên gia thảo mộc bản địa.
                   </p>
                   <button
                     type="button"
@@ -276,8 +310,8 @@ export function DiemChamView({ initialTab = "dstation" }: { initialTab?: TabId }
                     </h2>
                     <p className="mt-1 text-xs leading-relaxed text-neutral-600 sm:text-sm">
                       Tuyển tập các bài nghiên cứu, hướng dẫn thực hành và triết
-                      lý sống từ 3 trụ cột Sức Khỏe (Anvie) — Thịnh Vượng (VNDGO)
-                      — Bảo An (PTI).
+                      lý sống từ 3 trụ cột Sức Khỏe (Anvie) — Thịnh Vượng
+                      (VNDGO) — Bảo An (PTI).
                     </p>
                   </div>
                   <div className="relative w-full lg:w-72">

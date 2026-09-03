@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { SITE_NAME, organizationJsonLd } from "@/lib/seo";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { ScrollToButtons } from "@/components/layout/scroll-to-buttons";
 import { MotionProvider } from "@/components/providers/motion-provider";
 
 import "./globals.css";
@@ -60,6 +61,7 @@ export default function RootLayout({
           <SiteHeader />
           <main className="flex-grow">{children}</main>
           <SiteFooter />
+          <ScrollToButtons />
         </MotionProvider>
       </body>
     </html>

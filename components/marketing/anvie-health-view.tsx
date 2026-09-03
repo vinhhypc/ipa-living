@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowRight,
   Coffee,
   Compass,
@@ -18,19 +17,30 @@ import { cn } from "@/lib/utils";
 import { WORKSHOPS } from "@/lib/data";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { WorkshopCard } from "@/components/marketing/workshop-card";
 
 type TabId = "fb" | "cbx" | "cda" | "workshops";
 
 const TABS: { id: TabId; label: string; icon: LucideIcon }[] = [
-  { id: "fb", label: "1. Ẩm Thực F&B (Hoa Vị & Dstation Bistro)", icon: Utensils },
-  { id: "cbx", label: "2. CBX (Connect · Balance · Experience)", icon: Compass },
+  {
+    id: "fb",
+    label: "1. Ẩm Thực F&B (Hoa Vị & Dstation Bistro)",
+    icon: Utensils,
+  },
+  {
+    id: "cbx",
+    label: "2. CBX (Connect · Balance · Experience)",
+    icon: Compass,
+  },
   { id: "cda", label: "3. CDA — Club des Amis", icon: Palmtree },
   { id: "workshops", label: "4. Workshop Trải Nghiệm", icon: Sparkles },
 ];
 
 const img = (id: string) =>
-  localImage(`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`);
+  localImage(
+    `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=800&q=80`,
+  );
 
 const FB_CARDS = [
   {
@@ -103,20 +113,18 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
-      <div className="sticky top-16 z-20 border-b border-neutral-200 bg-white shadow-sm sm:top-20">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-          <Link
-            href={routes.sucKhoe}
-            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-sky-800"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            <span>Trở về Tháp Sức Khỏe AnVie</span>
-          </Link>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Sức Khỏe AnVie", href: routes.sucKhoe },
+          { label: "AnVie Health" },
+        ]}
+        trailing={
           <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-bold uppercase text-sky-900">
             AnVie Health · Trải Nghiệm
           </span>
-        </div>
-      </div>
+        }
+      />
 
       <section className="relative overflow-hidden bg-sky-950 px-4 py-12 text-white sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-12">
@@ -142,7 +150,8 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
               1. <strong>Hoa Vị & Dstation Bistro</strong>: Ẩm thực thực dưỡng &
               điểm hẹn kết nối.
               <br />
-              2. <strong>CBX</strong>: Hành trình kết nối, cân bằng & trải nghiệm.
+              2. <strong>CBX</strong>: Hành trình kết nối, cân bằng & trải
+              nghiệm.
               <br />
               3. <strong>CDA — Club des Amis</strong>: Không gian nghỉ dưỡng cân
               bằng.
@@ -293,8 +302,9 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
                 CDA — Club des Amis
               </h2>
               <p className="mt-1 text-xs font-light leading-relaxed text-neutral-600 sm:text-sm">
-                Club des Amis: không gian trải nghiệm và nghỉ dưỡng, nơi mỗi người
-                chậm lại, kết nối với tự nhiên và tìm về trạng thái cân bằng.
+                Club des Amis: không gian trải nghiệm và nghỉ dưỡng, nơi mỗi
+                người chậm lại, kết nối với tự nhiên và tìm về trạng thái cân
+                bằng.
               </p>
             </div>
             <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
@@ -364,9 +374,9 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
               </h2>
               <p className="mx-auto max-w-3xl text-xs font-light leading-relaxed text-neutral-600 sm:text-sm md:text-base">
                 Đăng ký tham gia ngay các workshop định kỳ tại Dstation để cùng
-                chuyên gia chăm sóc sức khỏe tế bào, học làm bánh men sống Bếp nhà
-                Delivie, thưởng thức trà đạo thảo mộc và hoạch định tài chính
-                tương lai.
+                chuyên gia chăm sóc sức khỏe tế bào, học làm bánh men sống Bếp
+                nhà Delivie, thưởng thức trà đạo thảo mộc và hoạch định tài
+                chính tương lai.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -380,9 +390,9 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
               </span>
               <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base">
                 Mỗi workshop mang đến nhiều hơn một buổi học. Bạn sẽ gặp những
-                người đang sống với điều họ chia sẻ: người nghệ nhân trà, thợ làm
-                bánh men sống Bếp nhà Delivie, cố vấn dinh dưỡng Anvie hay chuyên
-                gia tài chính gia sản VNDGO.
+                người đang sống với điều họ chia sẻ: người nghệ nhân trà, thợ
+                làm bánh men sống Bếp nhà Delivie, cố vấn dinh dưỡng Anvie hay
+                chuyên gia tài chính gia sản VNDGO.
               </p>
               <Link
                 href={routes.triThuc}

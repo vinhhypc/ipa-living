@@ -57,7 +57,7 @@ export function SiteFooter() {
               <IpaLivingMark
                 aria-label="IPA Living"
                 role="img"
-                className="h-14 w-auto shrink-0 -translate-y-3 brightness-0 invert"
+                className="h-14 w-auto shrink-0 -translate-y-3"
               />
             </Link>
 

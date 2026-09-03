@@ -13,12 +13,20 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 
 type PillarTone = "emerald" | "sky" | "purple";
 
 const PILLAR_TONE: Record<
   PillarTone,
-  { card: string; iconBg: string; badge: string; label: string; cta: string; dot: string }
+  {
+    card: string;
+    iconBg: string;
+    badge: string;
+    label: string;
+    cta: string;
+    dot: string;
+  }
 > = {
   emerald: {
     card: "border-emerald-200/80",
@@ -189,10 +197,26 @@ const NETWORK = [
 ];
 
 const NETWORK_TONE = {
-  emerald: { chip: "bg-emerald-700", link: "text-emerald-800 hover:text-emerald-950", title: "group-hover:text-emerald-800" },
-  amber: { chip: "bg-amber-700", link: "text-amber-800 hover:text-amber-950", title: "group-hover:text-amber-800" },
-  sky: { chip: "bg-sky-700", link: "text-sky-800 hover:text-sky-950", title: "group-hover:text-sky-800" },
-  purple: { chip: "bg-purple-700", link: "text-purple-800 hover:text-purple-950", title: "group-hover:text-purple-800" },
+  emerald: {
+    chip: "bg-emerald-700",
+    link: "text-emerald-800 hover:text-emerald-950",
+    title: "group-hover:text-emerald-800",
+  },
+  amber: {
+    chip: "bg-amber-700",
+    link: "text-amber-800 hover:text-amber-950",
+    title: "group-hover:text-amber-800",
+  },
+  sky: {
+    chip: "bg-sky-700",
+    link: "text-sky-800 hover:text-sky-950",
+    title: "group-hover:text-sky-800",
+  },
+  purple: {
+    chip: "bg-purple-700",
+    link: "text-purple-800 hover:text-purple-950",
+    title: "group-hover:text-purple-800",
+  },
 };
 
 const HERO_IMAGE = localImage(
@@ -203,7 +227,14 @@ export function SucKhoeView() {
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Hero */}
-      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+      <section className="h-hero hero-bleed relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-[48rem] sm:pb-0 lg:min-h-[54rem]">
+        <Breadcrumbs
+          variant="overlay-light"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "Tháp Sức Khỏe AnVie" },
+          ]}
+        />
         <div className="absolute inset-0">
           <Image
             src={HERO_IMAGE}
@@ -222,7 +253,7 @@ export function SucKhoeView() {
             <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
               Tháp Sức Khỏe <span className="text-health-700">AnVie</span>
             </h1>
-            <p className="font-display text-xs font-bold uppercase tracking-widest text-health-700 sm:text-sm lg:text-base">
+            <p className="font-display text-xs font-bold uppercase  text-health-700 sm:text-sm lg:text-base">
               Một nếp sống · Một bản đồ · Một gia tài Việt
             </p>
             <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
@@ -446,8 +477,8 @@ export function SucKhoeView() {
           </h2>
           <p className="mx-auto max-w-2xl text-xs font-light leading-relaxed text-health-50 sm:text-sm">
             Kết nối cùng đội ngũ chuyên gia tư vấn dinh dưỡng và chăm sóc sức
-            khỏe của IPA Living để nhận thực đơn và lộ trình chăm sóc cá nhân hóa
-            cho gia đình bạn.
+            khỏe của IPA Living để nhận thực đơn và lộ trình chăm sóc cá nhân
+            hóa cho gia đình bạn.
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-2">
             <Link

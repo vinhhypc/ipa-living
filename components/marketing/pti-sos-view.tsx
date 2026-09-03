@@ -1,11 +1,10 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft,
   ArrowUpRight,
   Bike,
   Car,
@@ -23,6 +22,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -52,13 +52,46 @@ const HERO_IMAGE = localImage(
 
 type Tone = "amber" | "purple" | "rose" | "blue" | "emerald" | "sky";
 
-const TONE: Record<Tone, { check: string; badge: string; cta: string; price: string }> = {
-  amber: { check: "text-amber-600", badge: "border-amber-100 bg-amber-50 text-amber-800", cta: "bg-amber-700 hover:bg-amber-800", price: "text-amber-900" },
-  purple: { check: "text-purple-600", badge: "border-purple-100 bg-purple-50 text-purple-800", cta: "bg-purple-700 hover:bg-purple-800", price: "text-purple-950" },
-  rose: { check: "text-rose-600", badge: "border-rose-100 bg-rose-50 text-rose-800", cta: "bg-rose-700 hover:bg-rose-800", price: "text-rose-950" },
-  blue: { check: "text-blue-600", badge: "border-blue-100 bg-blue-50 text-blue-800", cta: "bg-blue-700 hover:bg-blue-800", price: "text-blue-950" },
-  emerald: { check: "text-emerald-600", badge: "border-emerald-100 bg-emerald-50 text-emerald-800", cta: "bg-emerald-700 hover:bg-emerald-800", price: "text-emerald-950" },
-  sky: { check: "text-sky-600", badge: "border-sky-100 bg-sky-50 text-sky-800", cta: "bg-sky-700 hover:bg-sky-800", price: "text-sky-950" },
+const TONE: Record<
+  Tone,
+  { check: string; badge: string; cta: string; price: string }
+> = {
+  amber: {
+    check: "text-amber-600",
+    badge: "border-amber-100 bg-amber-50 text-amber-800",
+    cta: "bg-amber-700 hover:bg-amber-800",
+    price: "text-amber-900",
+  },
+  purple: {
+    check: "text-purple-600",
+    badge: "border-purple-100 bg-purple-50 text-purple-800",
+    cta: "bg-purple-700 hover:bg-purple-800",
+    price: "text-purple-950",
+  },
+  rose: {
+    check: "text-rose-600",
+    badge: "border-rose-100 bg-rose-50 text-rose-800",
+    cta: "bg-rose-700 hover:bg-rose-800",
+    price: "text-rose-950",
+  },
+  blue: {
+    check: "text-blue-600",
+    badge: "border-blue-100 bg-blue-50 text-blue-800",
+    cta: "bg-blue-700 hover:bg-blue-800",
+    price: "text-blue-950",
+  },
+  emerald: {
+    check: "text-emerald-600",
+    badge: "border-emerald-100 bg-emerald-50 text-emerald-800",
+    cta: "bg-emerald-700 hover:bg-emerald-800",
+    price: "text-emerald-950",
+  },
+  sky: {
+    check: "text-sky-600",
+    badge: "border-sky-100 bg-sky-50 text-sky-800",
+    cta: "bg-sky-700 hover:bg-sky-800",
+    price: "text-sky-950",
+  },
 };
 
 type Product = {
@@ -203,21 +236,19 @@ const TRAVEL: Product[] = [
 ];
 
 const HOMES_SELECT_LABEL = "PTISOS Homes · Bảo hiểm nhà tư nhân PTI Homecare";
-const ALL_SELECT = [
-  ...CARS,
-  ...BIKES,
-  ...TRAVEL,
-].map((p) => p.selectLabel);
+const ALL_SELECT = [...CARS, ...BIKES, ...TRAVEL].map((p) => p.selectLabel);
 ALL_SELECT.push(HOMES_SELECT_LABEL);
 
 const TIERS = [
-  { id: "tang-1-drive", label: "Tầng 1: Drive (Xe cộ)", icon: Car, active: "bg-neutral-900 text-white", idle: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200" },
-  { id: "tang-2-travel", label: "Tầng 2: Travel (Du lịch)", icon: Plane, active: "bg-sky-900 text-white", idle: "border border-sky-200/60 bg-sky-50 text-sky-900 hover:bg-sky-100" },
-  { id: "tang-3-homes", label: "Tầng 3: Homes (Tổ ấm)", icon: Home, active: "bg-amber-600 text-white", idle: "border border-amber-200/60 bg-amber-50 text-amber-900 hover:bg-amber-100" },
+  { id: "tang-1-drive", label: "Tầng 1: Drive (Xe cộ)", icon: Car },
+  { id: "tang-2-travel", label: "Tầng 2: Travel (Du lịch)", icon: Plane },
+  { id: "tang-3-homes", label: "Tầng 3: Homes (Tổ ấm)", icon: Home },
 ];
 
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function ProductCard({
@@ -232,10 +263,17 @@ function ProductCard({
     <div className="flex flex-col justify-between space-y-5 rounded-3xl border border-neutral-200/80 bg-white p-6 shadow-sm transition-all hover:shadow-md sm:p-7">
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className={cn("rounded-md border px-2.5 py-1 text-xs font-bold uppercase tracking-wider", tone.badge)}>
+          <span
+            className={cn(
+              "rounded-md border px-2.5 py-1 text-xs font-bold uppercase tracking-wider",
+              tone.badge,
+            )}
+          >
             {product.badge}
           </span>
-          <span className="text-xs font-medium text-neutral-400">{product.line}</span>
+          <span className="text-xs font-medium text-neutral-400">
+            {product.line}
+          </span>
         </div>
         <h4 className="text-xl font-bold leading-snug text-neutral-900">
           {product.name}
@@ -257,7 +295,9 @@ function ProductCard({
           <span className="block text-xs font-light text-neutral-400">
             Tham khảo chỉ từ:
           </span>
-          <span className={cn("text-base font-bold", tone.price)}>{product.price}</span>
+          <span className={cn("text-base font-bold", tone.price)}>
+            {product.price}
+          </span>
         </span>
         <button
           type="button"
@@ -275,23 +315,8 @@ function ProductCard({
 }
 
 export function PtiSosView() {
-  const [activeTier, setActiveTier] = useState("tang-1-drive");
   const [selectedLabel, setSelectedLabel] = useState(ALL_SELECT[0]);
   const [state, formAction] = useActionState(submitWorkshopInterest, INITIAL);
-
-  useEffect(() => {
-    const onScroll = () => {
-      for (const tier of [...TIERS].reverse()) {
-        const el = document.getElementById(tier.id);
-        if (el && el.getBoundingClientRect().top <= 160) {
-          setActiveTier(tier.id);
-          break;
-        }
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const selectProduct = (label: string) => {
     setSelectedLabel(label);
@@ -300,15 +325,13 @@ export function PtiSosView() {
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans">
-      <div className="sticky top-0 z-30 border-b border-neutral-200/80 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-          <Link
-            href={routes.baoAn}
-            className="inline-flex items-center gap-2 text-xs font-bold text-neutral-600 transition-colors hover:text-brand-navy"
-          >
-            <ArrowLeft className="h-4 w-4 text-brand-gold" />
-            <span>Quay lại Tháp Bảo An</span>
-          </Link>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Bảo An PTICare", href: routes.baoAn },
+          { label: "PTI SOS" },
+        ]}
+        trailing={
           <a
             href="tel:1900545475"
             className="inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-xs font-bold text-red-700 transition-colors hover:bg-red-100"
@@ -316,24 +339,25 @@ export function PtiSosView() {
             <PhoneCall className="h-3.5 w-3.5" />
             <span>1900 54 54 75</span>
           </a>
-        </div>
-      </div>
+        }
+      />
 
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-navy via-brand-navy-light to-brand-navy py-14 text-white sm:py-20">
         <div className="bg-glow-gold-tr pointer-events-none absolute inset-0" />
         <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
           <div className="space-y-5 lg:col-span-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-500/20 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-300">
-              <ShieldAlert className="h-4 w-4 text-amber-400" />
-              3 Tầng Sản Phẩm PTISOS
+              <ShieldAlert className="h-4 w-4 text-amber-400" />3 Tầng Sản Phẩm
+              PTISOS
             </span>
             <h1 className="font-display text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
               An toàn trên mọi hành trình — Đồng hành cùng PTISOS
             </h1>
             <p className="max-w-2xl text-sm font-light leading-relaxed text-slate-200 sm:text-base">
-              Hệ thống bảo vệ toàn diện 3 tầng từ PTI: Phương tiện di chuyển
-              (<strong>Drive</strong>), Hành trình du lịch (<strong>Travel</strong>)
-              và Tổ ấm gia đình (<strong>Homes</strong>).
+              Hệ thống bảo vệ toàn diện 3 tầng từ PTI: Phương tiện di chuyển (
+              <strong>Drive</strong>), Hành trình du lịch (
+              <strong>Travel</strong>) và Tổ ấm gia đình (<strong>Homes</strong>
+              ).
             </p>
             <div className="grid max-w-xl grid-cols-1 gap-2.5 pt-2 sm:grid-cols-3">
               {TIERS.map((tier) => {
@@ -367,29 +391,6 @@ export function PtiSosView() {
         </div>
       </section>
 
-      <div className="sticky top-14 z-20 border-b border-neutral-200 bg-white shadow-sm">
-        <div className="mx-auto grid max-w-7xl grid-cols-3 gap-2 px-4 py-2.5 sm:px-6 lg:px-8">
-          {TIERS.map((tier) => {
-            const Icon = tier.icon;
-            const active = activeTier === tier.id;
-            return (
-              <button
-                key={tier.id}
-                type="button"
-                onClick={() => scrollToId(tier.id)}
-                className={cn(
-                  "flex items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3 py-2 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:text-sm",
-                  active ? tier.active : tier.idle,
-                )}
-              >
-                <Icon className="h-4 w-4" />
-                <span>{tier.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="mx-auto max-w-7xl space-y-16 px-4 py-12 sm:px-6 lg:px-8">
         {/* Tier 1 */}
         <section id="tang-1-drive" className="scroll-mt-32 space-y-8">
@@ -401,14 +402,31 @@ export function PtiSosView() {
             desc="Bảo vệ toàn diện cho Xe ô tô & Xe máy: vật chất xe, tai nạn va chạm và trách nhiệm dân sự bắt buộc."
             tag="6 Sản phẩm (4 Ô tô · 2 Xe máy)"
           />
-          <SubGroup icon={Car} tone="bg-amber-500/10 text-amber-700" title="Nhóm Sản Phẩm Xe Ô tô (4 sản phẩm)">
+          <SubGroup
+            icon={Car}
+            tone="bg-amber-500/10 text-amber-700"
+            title="Nhóm Sản Phẩm Xe Ô tô (4 sản phẩm)"
+          >
             {CARS.map((product) => (
-              <ProductCard key={product.id} product={product} onSelect={selectProduct} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelect={selectProduct}
+              />
             ))}
           </SubGroup>
-          <SubGroup icon={Bike} tone="bg-emerald-500/10 text-emerald-700" title="Nhóm Sản Phẩm Xe Máy (2 sản phẩm)" divider>
+          <SubGroup
+            icon={Bike}
+            tone="bg-emerald-500/10 text-emerald-700"
+            title="Nhóm Sản Phẩm Xe Máy (2 sản phẩm)"
+            divider
+          >
             {BIKES.map((product) => (
-              <ProductCard key={product.id} product={product} onSelect={selectProduct} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelect={selectProduct}
+              />
             ))}
           </SubGroup>
         </section>
@@ -425,7 +443,11 @@ export function PtiSosView() {
           />
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             {TRAVEL.map((product) => (
-              <ProductCard key={product.id} product={product} onSelect={selectProduct} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelect={selectProduct}
+              />
             ))}
           </div>
         </section>
@@ -460,11 +482,23 @@ export function PtiSosView() {
               </p>
               <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3">
                 {[
-                  ["3 Trong 1 Hợp đồng", "Khung nhà, tài sản bên trong và trách nhiệm với bên thứ 3 trong cùng một hợp đồng."],
-                  ["Giá trị mới 100%", "Tài sản tổn thất được bồi thường theo giá trị mới, không khấu trừ khấu hao."],
-                  ["Tổn thất thực tế", "Bồi thường theo tổn thất thực tế, không giảm trừ do bảo hiểm dưới giá trị."],
+                  [
+                    "3 Trong 1 Hợp đồng",
+                    "Khung nhà, tài sản bên trong và trách nhiệm với bên thứ 3 trong cùng một hợp đồng.",
+                  ],
+                  [
+                    "Giá trị mới 100%",
+                    "Tài sản tổn thất được bồi thường theo giá trị mới, không khấu trừ khấu hao.",
+                  ],
+                  [
+                    "Tổn thất thực tế",
+                    "Bồi thường theo tổn thất thực tế, không giảm trừ do bảo hiểm dưới giá trị.",
+                  ],
                 ].map(([title, desc]) => (
-                  <div key={title} className="space-y-2 rounded-2xl border border-amber-100 bg-white p-4 shadow-sm">
+                  <div
+                    key={title}
+                    className="space-y-2 rounded-2xl border border-amber-100 bg-white p-4 shadow-sm"
+                  >
                     <p className="flex items-center gap-2 text-xs font-bold text-amber-700">
                       <Check className="h-4 w-4 shrink-0" />
                       <span>{title}</span>
@@ -482,7 +516,9 @@ export function PtiSosView() {
                   Mức phí áp dụng:
                 </span>
                 <span className="flex items-baseline gap-1.5">
-                  <span className="text-xs font-medium text-amber-900">Chỉ từ</span>
+                  <span className="text-xs font-medium text-amber-900">
+                    Chỉ từ
+                  </span>
                   <span className="font-display text-xl font-bold text-amber-900">
                     220.000
                   </span>
@@ -559,18 +595,26 @@ export function PtiSosView() {
                 ) : (
                   <form action={formAction} className="space-y-4" noValidate>
                     {state.status === "error" && state.message ? (
-                      <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-xs font-medium text-red-700">
+                      <p
+                        role="alert"
+                        className="rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-xs font-medium text-red-700"
+                      >
                         {state.message}
                       </p>
                     ) : null}
                     <div>
-                      <Label htmlFor="sos-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label
+                        htmlFor="sos-product"
+                        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                      >
                         Sản phẩm quan tâm
                       </Label>
                       <Select
                         name="product"
                         value={selectedLabel}
-                        onValueChange={(value) => setSelectedLabel(value as string)}
+                        onValueChange={(value) =>
+                          setSelectedLabel(value as string)
+                        }
                       >
                         <SelectTrigger
                           id="sos-product"
@@ -588,34 +632,75 @@ export function PtiSosView() {
                       </Select>
                     </div>
                     <div>
-                      <Label htmlFor="sos-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label
+                        htmlFor="sos-name"
+                        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                      >
                         Họ và tên <span className="text-rose-500">*</span>
                       </Label>
-                      <Input id="sos-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
+                      <Input
+                        id="sos-name"
+                        name="name"
+                        type="text"
+                        required
+                        autoComplete="name"
+                        placeholder="Nguyễn Văn A"
+                        className={fieldClass}
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="sos-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label
+                        htmlFor="sos-phone"
+                        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                      >
                         Số điện thoại <span className="text-rose-500">*</span>
                       </Label>
-                      <Input id="sos-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className={fieldClass} />
+                      <Input
+                        id="sos-phone"
+                        name="phone"
+                        type="tel"
+                        required
+                        autoComplete="tel"
+                        placeholder="0901 234 567"
+                        className={fieldClass}
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="sos-detail" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label
+                        htmlFor="sos-detail"
+                        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                      >
                         Thông tin xe / chuyến đi / nhà
                       </Label>
-                      <Input id="sos-detail" name="detail" type="text" placeholder="VD: Mazda CX-5 / Nhật Bản 5 ngày / Chung cư 70m²" className={fieldClass} />
+                      <Input
+                        id="sos-detail"
+                        name="detail"
+                        type="text"
+                        placeholder="VD: Mazda CX-5 / Nhật Bản 5 ngày / Chung cư 70m²"
+                        className={fieldClass}
+                      />
                     </div>
                     <div>
-                      <Label htmlFor="sos-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                      <Label
+                        htmlFor="sos-email"
+                        className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                      >
                         Email (không bắt buộc)
                       </Label>
-                      <Input id="sos-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className={fieldClass} />
+                      <Input
+                        id="sos-email"
+                        name="email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="email@cua-ban.com"
+                        className={fieldClass}
+                      />
                     </div>
                     <div className="pt-2">
                       <SosSubmit />
                       <p className="mt-2.5 text-center text-xs font-light leading-relaxed text-neutral-500">
-                        Bằng việc gửi thông tin, bạn đồng ý để PTI liên hệ tư vấn.
-                        Tổng đài 24/7: 1900 54 54 75.
+                        Bằng việc gửi thông tin, bạn đồng ý để PTI liên hệ tư
+                        vấn. Tổng đài 24/7: 1900 54 54 75.
                       </p>
                     </div>
                   </form>
@@ -635,8 +720,8 @@ export function PtiSosView() {
             </h2>
             <p className="text-xs font-light leading-relaxed text-slate-300 sm:text-sm">
               Đội ngũ Client Advisor của PTI luôn sẵn sàng lắng nghe, phân tích
-              nhu cầu và tư vấn chương trình bảo hiểm với mức phí ưu đãi nhất cho
-              bạn và gia đình.
+              nhu cầu và tư vấn chương trình bảo hiểm với mức phí ưu đãi nhất
+              cho bạn và gia đình.
             </p>
           </div>
           <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row">
@@ -700,7 +785,12 @@ function TierHeader({
     >
       <div className="space-y-1">
         <div className="flex items-center gap-2.5">
-          <span className={cn("rounded-md px-2.5 py-0.5 text-xs font-black", noClass)}>
+          <span
+            className={cn(
+              "rounded-md px-2.5 py-0.5 text-xs font-black",
+              noClass,
+            )}
+          >
             {no}
           </span>
           <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-3xl">
@@ -730,7 +820,9 @@ function SubGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn("space-y-5", divider && "border-t border-neutral-200 pt-6")}>
+    <div
+      className={cn("space-y-5", divider && "border-t border-neutral-200 pt-6")}
+    >
       <div className="flex items-center gap-2 text-neutral-900">
         <span className={cn("rounded-lg p-1.5", tone)}>
           <Icon className="h-4 w-4" />

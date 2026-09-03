@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Activity,
-  ArrowLeft,
   Check,
   CheckCircle2,
   FileText,
@@ -20,6 +19,7 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { LeadForm } from "@/components/marketing/lead-form";
 
 type ProductKey = "elitecare" | "phuc-an-sinh" | "tai-nan-dien";
@@ -155,23 +155,13 @@ export function PtiHealthView() {
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans">
-      <div className="sticky top-0 z-30 border-b border-neutral-200/80 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6 lg:px-8">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs">
-            <Link
-              href={routes.baoAn}
-              className="inline-flex items-center gap-1.5 font-bold text-neutral-600 transition-colors hover:text-brand-navy"
-            >
-              <ArrowLeft className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Tháp Bảo An</span>
-            </Link>
-            <span className="text-neutral-300">/</span>
-            <span className="font-medium text-neutral-500">Bảo hiểm sức khỏe</span>
-            <span className="hidden text-neutral-300 sm:inline">/</span>
-            <span className="hidden font-bold text-emerald-800 sm:inline">
-              {product.breadcrumb}
-            </span>
-          </nav>
+      <Breadcrumbs
+        items={[
+          { label: "Trang chủ", href: routes.home },
+          { label: "Tháp Bảo An PTICare", href: routes.baoAn },
+          { label: "PTI Health" },
+        ]}
+        trailing={
           <a
             href="tel:1900545475"
             className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 transition-colors hover:bg-emerald-100"
@@ -179,8 +169,8 @@ export function PtiHealthView() {
             <PhoneCall className="h-3.5 w-3.5 text-emerald-600" />
             <span>1900 54 54 75</span>
           </a>
-        </div>
-      </div>
+        }
+      />
 
       <div className="border-b border-neutral-100 bg-white shadow-sm">
         <div
@@ -364,8 +354,8 @@ export function PtiHealthView() {
             Sức Khỏe Của Bạn Là Tài Sản Lớn Nhất
           </h2>
           <p className="mx-auto max-w-xl text-sm font-light leading-relaxed text-neutral-500">
-            Gieo hạt mầm bảo vệ hôm nay cùng PTI Health để luôn an tâm vui vầy bên
-            gia đình trước mọi biến cố.
+            Gieo hạt mầm bảo vệ hôm nay cùng PTI Health để luôn an tâm vui vầy
+            bên gia đình trước mọi biến cố.
           </p>
           <div className="flex flex-col justify-center gap-4 pt-2 sm:flex-row">
             <a

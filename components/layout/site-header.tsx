@@ -41,6 +41,21 @@ const ABOUT_ROUTES = [
   routes.baoAn,
 ];
 const DSTATION_ROUTES = [routes.diemCham, routes.triThuc];
+/**
+ * Trang có hero là phần tử đầu trang: header nổi (frosted) đè lên hero khi chưa cuộn.
+ * Phải đi kèm class `hero-bleed` trên `<section>` hero (xem app/globals.css).
+ */
+const HERO_OVERLAY_ROUTES = [
+  routes.home,
+  routes.sucKhoe,
+  routes.thinhVuong,
+  routes.baoAn,
+  routes.diemCham,
+  routes.triThuc,
+  routes.dOne,
+  routes.dCare,
+  routes.tuyenDungCa,
+];
 
 export function SiteHeader() {
   const pathname = usePathname() ?? "/";
@@ -60,30 +75,51 @@ export function SiteHeader() {
     setOpenDropdown(null);
   };
 
-  const isAbout = ABOUT_ROUTES.includes(pathname as (typeof ABOUT_ROUTES)[number]);
+  const isAbout = ABOUT_ROUTES.includes(
+    pathname as (typeof ABOUT_ROUTES)[number],
+  );
   const isDstation = DSTATION_ROUTES.includes(
     pathname as (typeof DSTATION_ROUTES)[number],
   );
+
+  const hasHeroOverlay = HERO_OVERLAY_ROUTES.includes(
+    pathname as (typeof HERO_OVERLAY_ROUTES)[number],
+  );
+  const overlay = hasHeroOverlay && !scrolled && !mobileMenuOpen;
 
   const navPillBase =
     "px-4 py-2 rounded-full font-semibold text-xs uppercase tracking-widest transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2";
   const navPill = (active: boolean) =>
     cn(
       navPillBase,
-      active
-        ? "bg-neutral-200 text-neutral-900"
-        : "text-neutral-700 hover:bg-neutral-200/60 hover:text-neutral-900",
+      overlay
+        ? active
+          ? "bg-white/25 text-white text-shadow-sm"
+          : "text-white text-shadow-md hover:bg-white/15"
+        : active
+          ? "bg-neutral-200 text-neutral-900"
+          : "text-neutral-700 hover:bg-neutral-200/60 hover:text-neutral-900",
     );
 
   return (
     <header
       id="main-header"
       className={cn(
-        "sticky top-0 z-50 border-b border-neutral-200 bg-neutral-50 text-neutral-800 transition-all duration-300",
-        scrolled ? "bg-neutral-50/95 py-3 shadow-sm backdrop-blur-md" : "py-4",
+        "sticky top-0 z-50 text-neutral-800 transition-all duration-300",
+        overlay
+          ? "border-b border-transparent bg-transparent py-4"
+          : scrolled
+            ? "border-b border-neutral-200 bg-neutral-50/95 py-3 shadow-sm backdrop-blur-md"
+            : "border-b border-neutral-200 bg-neutral-50 py-4",
       )}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {overlay && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/65 via-black/35 to-transparent"
+        />
+      )}
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <Link
             href={routes.home}
@@ -94,7 +130,10 @@ export function SiteHeader() {
             <IpaLivingMark
               aria-label="IPA Living"
               role="img"
-              className="h-11 w-auto shrink-0 -translate-y-3 transition-transform group-hover:scale-105"
+              className={cn(
+                "h-11 w-auto shrink-0 -translate-y-3 transition-transform group-hover:scale-105",
+                overlay && "drop-shadow-md",
+              )}
             />
           </Link>
 
@@ -126,9 +165,6 @@ export function SiteHeader() {
                     className="absolute left-0 mt-2 w-90 rounded-2xl border border-neutral-100 bg-white p-4 text-neutral-800 shadow-lg"
                   >
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-100 pb-2">
-                      <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">
-                        3 Trang Con Riêng Biệt
-                      </span>
                       <Link
                         href={routes.veIpaLiving}
                         onClick={closeMenus}
@@ -194,9 +230,6 @@ export function SiteHeader() {
                     className="absolute left-0 mt-2 w-85 rounded-2xl border border-neutral-100 bg-white p-3.5 text-neutral-800 shadow-lg"
                   >
                     <div className="mb-2.5 flex items-center justify-between border-b border-neutral-100 pb-2">
-                      <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">
-                        3 Không Gian Trải Nghiệm
-                      </span>
                       <Link
                         href={routes.diemCham}
                         onClick={closeMenus}
@@ -307,7 +340,12 @@ export function SiteHeader() {
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
             aria-expanded={mobileMenuOpen}
-            className="rounded-lg p-2 text-neutral-800 hover:bg-neutral-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden"
+            className={cn(
+              "rounded-lg p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden",
+              overlay
+                ? "text-white drop-shadow-md hover:bg-white/15"
+                : "text-neutral-800 hover:bg-neutral-200/50",
+            )}
           >
             {mobileMenuOpen ? (
               <X className="h-6 w-6" />
@@ -328,35 +366,79 @@ export function SiteHeader() {
               className="overflow-hidden lg:hidden"
             >
               <div className="mt-4 space-y-3 border-t border-neutral-200 pb-6 pt-4">
-                <MobileGroup label="Về IPA Living" href={routes.veIpaLiving} onNavigate={closeMenus}>
-                  <MobileLink href={routes.sucKhoe} onClick={closeMenus} tone="emerald" icon={<Heart className="h-3.5 w-3.5" />}>
+                <MobileGroup
+                  label="Về IPA Living"
+                  href={routes.veIpaLiving}
+                  onNavigate={closeMenus}
+                >
+                  <MobileLink
+                    href={routes.sucKhoe}
+                    onClick={closeMenus}
+                    tone="emerald"
+                    icon={<Heart className="h-3.5 w-3.5" />}
+                  >
                     Anvie — Sức khỏe & Đời sống
                   </MobileLink>
-                  <MobileLink href={routes.thinhVuong} onClick={closeMenus} tone="amber" icon={<TrendingUp className="h-3.5 w-3.5" />}>
+                  <MobileLink
+                    href={routes.thinhVuong}
+                    onClick={closeMenus}
+                    tone="amber"
+                    icon={<TrendingUp className="h-3.5 w-3.5" />}
+                  >
                     VNDGO — Đầu tư & Đời sống
                   </MobileLink>
-                  <MobileLink href={routes.baoAn} onClick={closeMenus} tone="sky" icon={<Shield className="h-3.5 w-3.5" />}>
+                  <MobileLink
+                    href={routes.baoAn}
+                    onClick={closeMenus}
+                    tone="sky"
+                    icon={<Shield className="h-3.5 w-3.5" />}
+                  >
                     PTICare — Bảo hiểm & Đời sống
                   </MobileLink>
                 </MobileGroup>
 
-                <MobileGroup label="Dstation (3 Điểm Chạm)" onNavigate={closeMenus}>
-                  <MobileLink href={`${routes.diemCham}#dstation`} onClick={closeMenus} icon={<Compass className="h-3.5 w-3.5 text-emerald-700" />}>
+                <MobileGroup
+                  label="Dstation (3 Điểm Chạm)"
+                  onNavigate={closeMenus}
+                >
+                  <MobileLink
+                    href={`${routes.diemCham}#dstation`}
+                    onClick={closeMenus}
+                    icon={<Compass className="h-3.5 w-3.5 text-emerald-700" />}
+                  >
                     Tọa độ kết nối
                   </MobileLink>
-                  <MobileLink href={`${routes.diemCham}#workshop`} onClick={closeMenus} icon={<Calendar className="h-3.5 w-3.5 text-amber-700" />}>
+                  <MobileLink
+                    href={`${routes.diemCham}#workshop`}
+                    onClick={closeMenus}
+                    icon={<Calendar className="h-3.5 w-3.5 text-amber-700" />}
+                  >
                     Workshop & Sự kiện
                   </MobileLink>
-                  <MobileLink href={routes.triThuc} onClick={closeMenus} icon={<BookOpen className="h-3.5 w-3.5 text-sky-700" />}>
+                  <MobileLink
+                    href={routes.triThuc}
+                    onClick={closeMenus}
+                    icon={<BookOpen className="h-3.5 w-3.5 text-sky-700" />}
+                  >
                     Tri thức Wellbeing
                   </MobileLink>
                 </MobileGroup>
 
                 <MobileGroup label="D-One" onNavigate={closeMenus}>
-                  <MobileLink href={`${routes.dOne}#member`} onClick={closeMenus} icon={<CreditCard className="h-3.5 w-3.5 text-emerald-700" />}>
+                  <MobileLink
+                    href={`${routes.dOne}#member`}
+                    onClick={closeMenus}
+                    icon={
+                      <CreditCard className="h-3.5 w-3.5 text-emerald-700" />
+                    }
+                  >
                     Đăng ký thành viên
                   </MobileLink>
-                  <MobileLink href={`${routes.dOne}#supplier`} onClick={closeMenus} icon={<Store className="h-3.5 w-3.5 text-amber-700" />}>
+                  <MobileLink
+                    href={`${routes.dOne}#supplier`}
+                    onClick={closeMenus}
+                    icon={<Store className="h-3.5 w-3.5 text-amber-700" />}
+                  >
                     Đăng ký nhà cung cấp
                   </MobileLink>
                 </MobileGroup>
@@ -426,11 +508,19 @@ function MegaItem({
         t.hover,
       )}
     >
-      <span className={cn("mt-0.5 shrink-0 rounded-lg p-2 transition-transform group-hover:scale-105", t.chip, compact && "mt-0")}>
+      <span
+        className={cn(
+          "mt-0.5 shrink-0 rounded-lg p-2 transition-transform group-hover:scale-105",
+          t.chip,
+          compact && "mt-0",
+        )}
+      >
         {icon}
       </span>
       <span>
-        <span className={cn("block text-xs font-bold text-neutral-900", t.title)}>
+        <span
+          className={cn("block text-xs font-bold text-neutral-900", t.title)}
+        >
           {title}
         </span>
         <span className="mt-0.5 block text-xs text-neutral-500">{desc}</span>

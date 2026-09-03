@@ -42,12 +42,14 @@
 - Sticky/tab bar:
   - Dùng `overflow-x-auto no-scrollbar`
   - Chip/tab cần `shrink-0`
-  - Sticky offset dùng utility có sẵn trong thang Tailwind, **không viết arbitrary px**:
-    `top-16 sm:top-20` (xấp xỉ chiều cao header hiện tại, xem ghi chú dưới).
-    > Header (`components/layout/site-header.tsx`) có chiều cao co giãn theo `py-3/py-4/py-5`,
-    > không có token chiều cao cố định. `top-16`/`top-20` là giá trị gần nhất trong thang
-    > Tailwind (64px/80px), không phải số đo chính xác — nếu layout header thay đổi đáng kể,
-    > cần rà soát lại giá trị này thủ công, không chỉ copy nguyên văn.
+  - Sticky offset của sub-nav bám dưới header: dùng token `top-[var(--header-h)]`
+    (**không** `top-16 sm:top-20`, cũng **không** arbitrary px).
+    > `--header-h` (69px) khai báo trong `app/globals.css`, là chiều cao header
+    > (`components/layout/site-header.tsx`) lúc đã cuộn — thời điểm duy nhất sub-nav bám
+    > vào header. Header co giãn `py-3/py-4` nên không có step Tailwind nào khớp; đây là
+    > token layout hợp lệ giống `--container-2xl`. `top-16` (64px) thì header đè mất ~5px
+    > mép trên thanh; `sm:top-20` (80px) thì hở ~11px. Nếu đổi layout header, cập nhật
+    > `--header-h` một chỗ.
 - Form:
   - Form field giữ `1 cột` đến ít nhất `lg`
   - Nút CTA full width trên mobile, auto width từ `sm` hoặc `md`

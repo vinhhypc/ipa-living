@@ -32,36 +32,31 @@ import {
 import { cn } from "@/lib/utils";
 import { localImage } from "@/lib/images";
 import { routes } from "@/lib/routes";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { WorkshopInterestModal } from "@/components/marketing/workshop-interest-modal";
 
 const HERO_IMAGE = localImage(
   "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=85",
 );
 
-const NAV_TABS = [
-  { id: "toan-trinh", label: "Toàn Trình Đầu Tư" },
-  { id: "chuyen-gia-vndcare", label: "Chuyên Gia VNDCARE" },
-  { id: "nhom-san-pham", label: "3 Nhóm Sản Phẩm VNDGO" },
-  { id: "cong-dong", label: "Cộng Đồng & Workshop" },
-];
-
-const FOUNDATION_PILLARS: { icon: LucideIcon; title: string; desc: string }[] = [
-  {
-    icon: MapIcon,
-    title: "Một Bản Đồ",
-    desc: "Vẽ ra bản đồ tài chính cá nhân của mỗi Khách hàng để hiểu vị thế đầu tư theo nguyên tắc cá nhân hóa.",
-  },
-  {
-    icon: Compass,
-    title: "Một La Bàn",
-    desc: "Hiểu rõ bản chất từng kênh đầu tư, loại tài sản; nắm được các nguyên tắc đầu tư để không lạc hướng, luôn vững tâm duy trì được kỷ luật đầu tư.",
-  },
-  {
-    icon: Layers,
-    title: "Một Tháp Thịnh Vượng",
-    desc: "Phân bổ và quản lý tài sản trong sự hiểu biết tri thức đầu tư.",
-  },
-];
+const FOUNDATION_PILLARS: { icon: LucideIcon; title: string; desc: string }[] =
+  [
+    {
+      icon: MapIcon,
+      title: "Một Bản Đồ",
+      desc: "Vẽ ra bản đồ tài chính cá nhân của mỗi Khách hàng để hiểu vị thế đầu tư theo nguyên tắc cá nhân hóa.",
+    },
+    {
+      icon: Compass,
+      title: "Một La Bàn",
+      desc: "Hiểu rõ bản chất từng kênh đầu tư, loại tài sản; nắm được các nguyên tắc đầu tư để không lạc hướng, luôn vững tâm duy trì được kỷ luật đầu tư.",
+    },
+    {
+      icon: Layers,
+      title: "Một Tháp Thịnh Vượng",
+      desc: "Phân bổ và quản lý tài sản trong sự hiểu biết tri thức đầu tư.",
+    },
+  ];
 
 const VNDCARE_ROLES: { icon: LucideIcon; title: string; desc: string }[] = [
   {
@@ -122,10 +117,26 @@ const PRODUCTS: Product[] = [
       "Giải pháp tích lũy định kỳ tự động, giúp bạn đầu tư một phần thu nhập đều đặn theo lịch cá nhân vào danh mục tài sản đa dạng để khai phóng sức mạnh lãi kép.",
     featTitle: "Đặc tính nổi bật",
     features: [
-      { icon: Repeat, title: "Tích lũy tự động", desc: "Thiết lập lịch và mức đầu tư tự động theo kỳ lương." },
-      { icon: PieChart, title: "Danh mục tối ưu", desc: "Được thẩm định kỹ lưỡng về chất lượng & uy tín." },
-      { icon: TrendingUp, title: "Sức mạnh lãi kép", desc: "Duy trì bền bỉ không phụ thuộc thời điểm thị trường." },
-      { icon: Sliders, title: "Linh hoạt theo nhu cầu", desc: "Tự do tùy biến danh mục, tạm dừng hay rút vốn linh hoạt." },
+      {
+        icon: Repeat,
+        title: "Tích lũy tự động",
+        desc: "Thiết lập lịch và mức đầu tư tự động theo kỳ lương.",
+      },
+      {
+        icon: PieChart,
+        title: "Danh mục tối ưu",
+        desc: "Được thẩm định kỹ lưỡng về chất lượng & uy tín.",
+      },
+      {
+        icon: TrendingUp,
+        title: "Sức mạnh lãi kép",
+        desc: "Duy trì bền bỉ không phụ thuộc thời điểm thị trường.",
+      },
+      {
+        icon: Sliders,
+        title: "Linh hoạt theo nhu cầu",
+        desc: "Tự do tùy biến danh mục, tạm dừng hay rút vốn linh hoạt.",
+      },
     ],
   },
   {
@@ -145,10 +156,26 @@ const PRODUCTS: Product[] = [
     featTitle: "Vai trò trọng tâm",
     highlight: "Gia Sản & Trao Truyền",
     features: [
-      { icon: Target, title: "Hoạch định theo mục tiêu gia đình", desc: "Xây dựng kế hoạch tài sản theo từng cột mốc cuộc sống." },
-      { icon: PieChart, title: "Phân bổ & quản trị tài sản", desc: "Đa dạng hóa danh mục theo khẩu vị và hành trình riêng." },
-      { icon: ShieldCheck, title: "Gìn giữ thành quả", desc: "Bảo vệ và duy trì giá trị tài sản đã tích lũy bền vững." },
-      { icon: Users, title: "Chuẩn bị cho trao truyền", desc: "Cơ chế chuyển giao di sản tài chính cho thế hệ kế tiếp." },
+      {
+        icon: Target,
+        title: "Hoạch định theo mục tiêu gia đình",
+        desc: "Xây dựng kế hoạch tài sản theo từng cột mốc cuộc sống.",
+      },
+      {
+        icon: PieChart,
+        title: "Phân bổ & quản trị tài sản",
+        desc: "Đa dạng hóa danh mục theo khẩu vị và hành trình riêng.",
+      },
+      {
+        icon: ShieldCheck,
+        title: "Gìn giữ thành quả",
+        desc: "Bảo vệ và duy trì giá trị tài sản đã tích lũy bền vững.",
+      },
+      {
+        icon: Users,
+        title: "Chuẩn bị cho trao truyền",
+        desc: "Cơ chế chuyển giao di sản tài chính cho thế hệ kế tiếp.",
+      },
     ],
   },
   {
@@ -167,10 +194,26 @@ const PRODUCTS: Product[] = [
       "Giải pháp giao dịch toàn diện cho nhà đầu tư chủ động, tích hợp bảng giá DBOARD thông minh, lệnh điều kiện tự động và hệ sinh thái sản phẩm tài chính đa dạng.",
     featTitle: "Đặc tính nổi bật",
     features: [
-      { icon: Zap, title: "Bảng giá DBOARD thông minh", desc: "Tốc độ xử lý siêu tốc, giao diện trực quan và sắc sảo." },
-      { icon: Sliders, title: "Bộ lệnh điều kiện tự động", desc: "Cắt lỗ, chốt lời chủ động, quản trị rủi ro đa chiều." },
-      { icon: FileText, title: "Báo cáo phân tích chuyên sâu", desc: "Cập nhật vĩ mô, ngành và doanh nghiệp định kỳ." },
-      { icon: Scale, title: "Sản phẩm tài chính đa dạng", desc: "Cổ phiếu, D-Bond, D-Fund, Chứng quyền & Phái sinh." },
+      {
+        icon: Zap,
+        title: "Bảng giá DBOARD thông minh",
+        desc: "Tốc độ xử lý siêu tốc, giao diện trực quan và sắc sảo.",
+      },
+      {
+        icon: Sliders,
+        title: "Bộ lệnh điều kiện tự động",
+        desc: "Cắt lỗ, chốt lời chủ động, quản trị rủi ro đa chiều.",
+      },
+      {
+        icon: FileText,
+        title: "Báo cáo phân tích chuyên sâu",
+        desc: "Cập nhật vĩ mô, ngành và doanh nghiệp định kỳ.",
+      },
+      {
+        icon: Scale,
+        title: "Sản phẩm tài chính đa dạng",
+        desc: "Cổ phiếu, D-Bond, D-Fund, Chứng quyền & Phái sinh.",
+      },
     ],
   },
 ];
@@ -198,16 +241,16 @@ const PRODUCT_DETAIL: Record<
               an nhàn tuổi 50+.
             </li>
             <li>
-              <strong>Gói Quỹ An Cư Mua Nhà:</strong> Tích lũy vốn đối ứng 30-50%
-              không lo áp lực nợ vay.
+              <strong>Gói Quỹ An Cư Mua Nhà:</strong> Tích lũy vốn đối ứng
+              30-50% không lo áp lực nợ vay.
             </li>
             <li>
-              <strong>Gói Quỹ Giáo Dục Du Học:</strong> Đảm bảo tài chính cho con
-              bước vào đại học.
+              <strong>Gói Quỹ Giáo Dục Du Học:</strong> Đảm bảo tài chính cho
+              con bước vào đại học.
             </li>
             <li>
-              <strong>Gói Tích Lũy Tự Do:</strong> Linh hoạt lựa chọn danh mục cổ
-              phiếu / chứng chỉ quỹ theo ý muốn.
+              <strong>Gói Tích Lũy Tự Do:</strong> Linh hoạt lựa chọn danh mục
+              cổ phiếu / chứng chỉ quỹ theo ý muốn.
             </li>
           </ul>
         </div>
@@ -221,8 +264,8 @@ const PRODUCT_DETAIL: Record<
       <>
         <p>
           <strong>VNDWealth</strong> mang đến giải pháp Private Wealth toàn diện
-          cho khách hàng có quy mô tài sản lớn, kết hợp giữa tư vấn độc lập và hệ
-          thống công cụ quản trị danh mục hiện đại.
+          cho khách hàng có quy mô tài sản lớn, kết hợp giữa tư vấn độc lập và
+          hệ thống công cụ quản trị danh mục hiện đại.
         </p>
         <div className="space-y-2 rounded-2xl border border-amber-200/80 bg-wealth-50 p-4">
           <h4 className="text-sm font-bold text-neutral-900">
@@ -230,12 +273,12 @@ const PRODUCT_DETAIL: Record<
           </h4>
           <ol className="list-inside list-decimal space-y-1.5">
             <li>
-              <strong>Khảo sát & Định vị:</strong> Xác định khẩu vị rủi ro và các
-              mục tiêu tài chính gia đình.
+              <strong>Khảo sát & Định vị:</strong> Xác định khẩu vị rủi ro và
+              các mục tiêu tài chính gia đình.
             </li>
             <li>
-              <strong>Thiết kế Danh mục Đa tầng:</strong> Phân bổ vào các lớp tài
-              sản Bảo toàn, Thu nhập và Tăng trưởng.
+              <strong>Thiết kế Danh mục Đa tầng:</strong> Phân bổ vào các lớp
+              tài sản Bảo toàn, Thu nhập và Tăng trưởng.
             </li>
             <li>
               <strong>Tái cân bằng Định kỳ:</strong> Theo dõi và điều chỉnh danh
@@ -260,7 +303,9 @@ const PRODUCT_DETAIL: Record<
           dành cho nhà đầu tư chủ động với bảng giá DBOARD hàng đầu thị trường.
         </p>
         <div className="space-y-2 rounded-2xl border border-amber-200/80 bg-wealth-50 p-4">
-          <h4 className="text-sm font-bold text-neutral-900">Tính năng vượt trội</h4>
+          <h4 className="text-sm font-bold text-neutral-900">
+            Tính năng vượt trội
+          </h4>
           <ul className="list-inside list-disc space-y-1.5">
             <li>
               <strong>Lệnh Điều Kiện Tự Động:</strong> Stop-loss, Take-profit,
@@ -282,16 +327,52 @@ const PRODUCT_DETAIL: Record<
 };
 
 const COMMUNITY_VALUES: { icon: LucideIcon; title: string; desc: string }[] = [
-  { icon: Users, title: "Kết nối & Chia sẻ", desc: "Giao lưu với cộng đồng những người cùng chung chí hướng xây dựng an tâm tài chính." },
-  { icon: BookOpen, title: "Làm giàu tri thức", desc: "Tiếp cận các buổi tọa đàm, tài liệu nghiên cứu chuyên sâu từ chuyên gia phân tích." },
-  { icon: Award, title: "Trao quyền tự chủ", desc: "Tự tin làm chủ quyết định phân bổ danh mục qua các công cụ số hóa hiện đại." },
-  { icon: Repeat, title: "Hình thành nếp đầu tư", desc: "Rèn luyện tính kỷ luật, biến đầu tư thành một thói quen tự nhiên trong đời sống." },
+  {
+    icon: Users,
+    title: "Kết nối & Chia sẻ",
+    desc: "Giao lưu với cộng đồng những người cùng chung chí hướng xây dựng an tâm tài chính.",
+  },
+  {
+    icon: BookOpen,
+    title: "Làm giàu tri thức",
+    desc: "Tiếp cận các buổi tọa đàm, tài liệu nghiên cứu chuyên sâu từ chuyên gia phân tích.",
+  },
+  {
+    icon: Award,
+    title: "Trao quyền tự chủ",
+    desc: "Tự tin làm chủ quyết định phân bổ danh mục qua các công cụ số hóa hiện đại.",
+  },
+  {
+    icon: Repeat,
+    title: "Hình thành nếp đầu tư",
+    desc: "Rèn luyện tính kỷ luật, biến đầu tư thành một thói quen tự nhiên trong đời sống.",
+  },
 ];
 
-const LIFE_STAGES: { icon: LucideIcon; tag: string; title: string; desc: string }[] = [
-  { icon: Repeat, tag: "Giai đoạn tích lũy", title: "Khách hàng trẻ & Gia đình trẻ", desc: "Ưu tiên kích hoạt VNDSIP để tự động hóa tích lũy hưu trí, mua nhà, quỹ học vấn con cái." },
-  { icon: Building2, tag: "Giai đoạn gia sản", title: "Gia đình & Nhà đầu tư đã có tài sản", desc: "Ưu tiên VNDWealth để hoạch định phân bổ đa tầng, bảo toàn vốn và thiết lập thừa kế thế hệ." },
-  { icon: LineChart, tag: "Giao dịch chủ động", title: "Nhà đầu tư năng động", desc: "Sử dụng VNDTRADE với bảng giá DBOARD, hệ thống lệnh điều kiện và kho dữ liệu chuyên sâu." },
+const LIFE_STAGES: {
+  icon: LucideIcon;
+  tag: string;
+  title: string;
+  desc: string;
+}[] = [
+  {
+    icon: Repeat,
+    tag: "Giai đoạn tích lũy",
+    title: "Khách hàng trẻ & Gia đình trẻ",
+    desc: "Ưu tiên kích hoạt VNDSIP để tự động hóa tích lũy hưu trí, mua nhà, quỹ học vấn con cái.",
+  },
+  {
+    icon: Building2,
+    tag: "Giai đoạn gia sản",
+    title: "Gia đình & Nhà đầu tư đã có tài sản",
+    desc: "Ưu tiên VNDWealth để hoạch định phân bổ đa tầng, bảo toàn vốn và thiết lập thừa kế thế hệ.",
+  },
+  {
+    icon: LineChart,
+    tag: "Giao dịch chủ động",
+    title: "Nhà đầu tư năng động",
+    desc: "Sử dụng VNDTRADE với bảng giá DBOARD, hệ thống lệnh điều kiện và kho dữ liệu chuyên sâu.",
+  },
 ];
 
 const WORKSHOP_TOPICS = [
@@ -308,18 +389,26 @@ const WORKSHOP_LOCATIONS = [
 const sectionCls = "border-b border-neutral-200 bg-neutral-50 py-16 sm:py-24";
 
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document
+    .getElementById(id)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 export function ThinhVuongView() {
-  const [activeTab, setActiveTab] = useState<string>("");
   const [modalProduct, setModalProduct] = useState<ProductKey | null>(null);
   const [workshopOpen, setWorkshopOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Hero */}
-      <section className="h-hero relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 py-16 text-neutral-900 sm:min-h-[48rem] sm:py-0 lg:min-h-[54rem]">
+      <section className="h-hero hero-bleed relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-[48rem] sm:pb-0 lg:min-h-[54rem]">
+        <Breadcrumbs
+          variant="overlay-light"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "Tháp Thịnh Vượng VNDGO" },
+          ]}
+        />
         <div className="absolute inset-0">
           <Image
             src={HERO_IMAGE}
@@ -334,73 +423,38 @@ export function ThinhVuongView() {
         </div>
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="relative z-10 max-w-2xl space-y-5">
-              <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
-                Tháp Thịnh Vượng{" "}
-                <span className="text-wealth-600">VNDGO</span>
-              </h1>
-              <p className="font-display text-xs font-bold uppercase tracking-widest text-wealth-700 sm:text-sm lg:text-base">
-                Một nếp sống đầu tư · Một bản đồ thịnh vượng
-              </p>
-              <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
-                Không chỉ là nơi giao dịch, VNDIRECT kiến tạo một không gian sống
-                tài chính trọn vẹn — nơi bạn thấu hiểu bản thân, xây nền kỷ luật
-                và gieo mầm gia sản vững bền qua các thế hệ.
-              </p>
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => scrollToId("nhom-san-pham")}
-                  className="inline-flex items-center gap-2 rounded-full bg-wealth-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-wealth-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  <span>Khám phá 3 nhóm sản phẩm</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => scrollToId("chuyen-gia-vndcare")}
-                  className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
-                >
-                  <HeartHandshake className="h-4 w-4 text-wealth-700" />
-                  <span>Đồng hành Chuyên gia VNDCARE</span>
-                </button>
-              </div>
+            <h1 className="font-display text-4xl font-black leading-tight tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+              Tháp Thịnh Vượng <span className="text-wealth-600">VNDGO</span>
+            </h1>
+            <p className="font-display text-xs font-bold uppercase tracking-widest text-wealth-700 sm:text-sm lg:text-base">
+              Một nếp sống đầu tư · Một bản đồ thịnh vượng
+            </p>
+            <p className="text-sm font-light leading-relaxed text-neutral-700 sm:text-base lg:text-lg">
+              Không chỉ là nơi giao dịch, VNDIRECT kiến tạo một không gian sống
+              tài chính trọn vẹn — nơi bạn thấu hiểu bản thân, xây nền kỷ luật
+              và gieo mầm gia sản vững bền qua các thế hệ.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => scrollToId("nhom-san-pham")}
+                className="inline-flex items-center gap-2 rounded-full bg-wealth-600 px-7 py-3.5 text-xs font-bold tracking-wide text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-wealth-700 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                <span>Khám phá 3 nhóm sản phẩm</span>
+                <ArrowRight className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToId("chuyen-gia-vndcare")}
+                className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/95 px-7 py-3.5 text-xs font-semibold tracking-wide text-neutral-900 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 motion-reduce:hover:translate-y-0 sm:text-sm"
+              >
+                <HeartHandshake className="h-4 w-4 text-wealth-700" />
+                <span>Đồng hành Chuyên gia VNDCARE</span>
+              </button>
             </div>
           </div>
-      </section>
-
-      {/* Sticky quick nav */}
-      <nav
-        aria-label="Điều hướng nhanh Tháp Thịnh Vượng"
-        className="sticky top-16 z-30 border-y border-neutral-200 bg-neutral-50/95 py-3 shadow-sm backdrop-blur-md sm:top-20"
-      >
-        <div className="no-scrollbar mx-auto flex max-w-7xl items-center gap-2 overflow-x-auto px-4 sm:px-6 lg:px-8">
-          {NAV_TABS.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              onClick={() => {
-                setActiveTab(tab.id);
-                scrollToId(tab.id);
-              }}
-              className={cn(
-                "shrink-0 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
-                activeTab === tab.id
-                  ? "bg-neutral-900 text-white shadow-sm"
-                  : "border border-neutral-200 bg-white text-neutral-700 hover:bg-wealth-50 hover:text-wealth-700",
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
-          <Link
-            href={routes.tuyenDungCa}
-            className="ml-auto hidden shrink-0 items-center gap-1 text-xs font-bold text-wealth-700 hover:text-brand-brown-dark sm:flex"
-          >
-            <span>Kết nối Chuyên gia CA</span>
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
         </div>
-      </nav>
+      </section>
 
       {/* Section: Toàn trình */}
       <section id="toan-trinh" className={cn(sectionCls, "scroll-mt-32")}>
@@ -479,7 +533,10 @@ export function ThinhVuongView() {
       </section>
 
       {/* Section: Chuyên gia VNDCARE */}
-      <section id="chuyen-gia-vndcare" className={cn(sectionCls, "scroll-mt-32")}>
+      <section
+        id="chuyen-gia-vndcare"
+        className={cn(sectionCls, "scroll-mt-32")}
+      >
         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:px-8">
           <div className="space-y-6 lg:col-span-7">
             <span className="block text-xs font-bold uppercase tracking-widest text-wealth-700">
@@ -546,8 +603,8 @@ export function ThinhVuongView() {
                   Cam kết từ VNDCARE
                 </span>
                 <p className="text-xs font-medium text-white sm:text-sm">
-                  Tư vấn vì lợi ích của khách hàng — Đúng người — Đúng lúc — Đúng
-                  giải pháp.
+                  Tư vấn vì lợi ích của khách hàng — Đúng người — Đúng lúc —
+                  Đúng giải pháp.
                 </p>
               </div>
               <Link
@@ -654,7 +711,9 @@ export function ThinhVuongView() {
                     <div>
                       <h3 className="flex items-baseline gap-2 font-display text-xl font-black text-neutral-900">
                         <span>{product.name}</span>
-                        <span className="text-sm font-normal text-neutral-400">—</span>
+                        <span className="text-sm font-normal text-neutral-400">
+                          —
+                        </span>
                         <span className="truncate text-sm font-semibold text-neutral-700">
                           {product.tagline}
                         </span>
@@ -753,7 +812,10 @@ export function ThinhVuongView() {
       </section>
 
       {/* Section: Cộng đồng */}
-      <section id="cong-dong" className="scroll-mt-32 bg-neutral-50 py-16 sm:py-24">
+      <section
+        id="cong-dong"
+        className="scroll-mt-32 bg-neutral-50 py-16 sm:py-24"
+      >
         <div className="mx-auto max-w-7xl space-y-12 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl space-y-3 text-center">
             <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-wealth-700">
@@ -764,9 +826,9 @@ export function ThinhVuongView() {
               Từ nếp sống đầu tư đến kết nối hiểu biết và trao quyền
             </h2>
             <p className="mx-auto max-w-2xl text-xs font-light text-neutral-600 sm:text-base">
-              Cộng đồng VNDGO là không gian mở dành cho những người muốn xây dựng
-              nếp sống đầu tư bền vững, cùng chia sẻ kinh nghiệm, cập nhật tri
-              thức và kiến tạo tương lai thịnh vượng.
+              Cộng đồng VNDGO là không gian mở dành cho những người muốn xây
+              dựng nếp sống đầu tư bền vững, cùng chia sẻ kinh nghiệm, cập nhật
+              tri thức và kiến tạo tương lai thịnh vượng.
             </p>
           </div>
 
@@ -803,8 +865,8 @@ export function ThinhVuongView() {
                 </h3>
                 <p className="text-xs font-light leading-relaxed text-neutral-600 sm:text-sm">
                   Cập nhật các chương trình livestream nhận định thị trường hàng
-                  ngày, hỏi đáp trực tiếp cùng đội ngũ chuyên gia phân tích và kết
-                  nối cùng hàng trăm nghìn nhà đầu tư.
+                  ngày, hỏi đáp trực tiếp cùng đội ngũ chuyên gia phân tích và
+                  kết nối cùng hàng trăm nghìn nhà đầu tư.
                 </p>
               </div>
               <a
@@ -827,9 +889,9 @@ export function ThinhVuongView() {
                   Đăng ký tham gia Workshop tại Trạm Dstation
                 </h3>
                 <p className="text-xs font-light leading-relaxed text-neutral-600 sm:text-sm">
-                  Các buổi hội thảo chuyên đề hàng tuần về Lập kế hoạch tài chính
-                  cá nhân, Tích sản hưu trí và Quản trị danh mục gia sản tại các
-                  trạm dịch vụ Dstation trên toàn quốc.
+                  Các buổi hội thảo chuyên đề hàng tuần về Lập kế hoạch tài
+                  chính cá nhân, Tích sản hưu trí và Quản trị danh mục gia sản
+                  tại các trạm dịch vụ Dstation trên toàn quốc.
                 </p>
               </div>
               <button

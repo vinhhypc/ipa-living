@@ -31,7 +31,7 @@ export function WorkshopTeaserSection({
           </div>
           <Link
             href={`${routes.diemCham}#workshop`}
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded text-xs font-bold uppercase tracking-widest text-brand-gold transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            className="group inline-flex shrink-0 items-center gap-1.5 rounded text-xs font-bold uppercase  text-brand-gold transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
           >
             <span>Xem tất cả Workshop</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />

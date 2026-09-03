@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import {
   BadgeCheck,
@@ -21,6 +21,9 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { routes } from "@/lib/routes";
+import { useHashSync } from "@/lib/use-hash-sync";
+import { Breadcrumbs } from "@/components/layout/breadcrumbs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -149,23 +152,24 @@ const SUPPLIER_CRITERIA = [
 export function DOneView({ initialTab = "member" }: { initialTab?: TabId }) {
   const [tab, setTab] = useState<TabId>(initialTab);
 
-  useEffect(() => {
-    const syncFromHash = () => {
-      const hash = window.location.hash;
-      if (hash.includes("supplier") || hash.includes("nha-cung-cap")) {
-        setTab("supplier");
-      } else if (hash.includes("member")) {
-        setTab("member");
-      }
-    };
-    syncFromHash();
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, []);
+  useHashSync((hash) => {
+    if (hash.includes("supplier") || hash.includes("nha-cung-cap")) {
+      setTab("supplier");
+    } else if (hash.includes("member")) {
+      setTab("member");
+    }
+  });
 
   return (
     <div className="min-h-screen bg-neutral-50 font-sans">
-      <section className="relative overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white md:py-24">
+      <section className="hero-bleed relative overflow-hidden border-b border-neutral-800 bg-neutral-950 pb-16 text-white md:pb-24">
+        <Breadcrumbs
+          variant="overlay-dark"
+          items={[
+            { label: "Trang chủ", href: routes.home },
+            { label: "D-One" },
+          ]}
+        />
         <div className="bg-glow-green-tr pointer-events-none absolute inset-0" />
         <div className="relative z-10 mx-auto max-w-7xl space-y-5 px-4 text-center sm:px-6 lg:px-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-300 backdrop-blur-md">
@@ -182,9 +186,9 @@ export function DOneView({ initialTab = "member" }: { initialTab?: TabId }) {
               trải nghiệm liền mạch.
             </p>
             <p className="text-xs text-neutral-400 sm:text-sm">
-              Từ những lựa chọn chăm sóc sức khỏe mỗi ngày, kế hoạch tài chính cá
-              nhân đến giải pháp bảo vệ cho tương lai, D-one ghi nhớ điều quan
-              trọng với bạn và kết nối bạn với đúng chuyên gia khi cần.
+              Từ những lựa chọn chăm sóc sức khỏe mỗi ngày, kế hoạch tài chính
+              cá nhân đến giải pháp bảo vệ cho tương lai, D-one ghi nhớ điều
+              quan trọng với bạn và kết nối bạn với đúng chuyên gia khi cần.
             </p>
           </div>
 
@@ -260,8 +264,8 @@ function MemberTab() {
           Ba hành trình, một điểm chạm
         </h2>
         <p className="text-sm leading-relaxed text-neutral-600">
-          Kết nối liền mạch các giải pháp và chuyên gia trên toàn bộ hệ sinh thái
-          IPA Living.
+          Kết nối liền mạch các giải pháp và chuyên gia trên toàn bộ hệ sinh
+          thái IPA Living.
         </p>
       </div>
 
@@ -297,9 +301,9 @@ function MemberTab() {
         })}
       </div>
 
-      <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg">
-        <div className="grid grid-cols-1 md:grid-cols-5">
-          <div className="flex flex-col justify-between space-y-6 bg-gradient-to-br from-emerald-900 via-neutral-900 to-neutral-950 p-8 text-white md:col-span-2">
+      <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="flex flex-col justify-between space-y-6 bg-gradient-to-br from-emerald-900 via-neutral-900 to-neutral-950 p-8 text-white lg:col-span-5">
             <div className="space-y-4">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-emerald-300">
                 <BadgeCheck className="h-3.5 w-3.5" />
@@ -342,7 +346,7 @@ function MemberTab() {
             </div>
           </div>
 
-          <div className="p-8 sm:p-10 md:col-span-3">
+          <div className="p-8 sm:p-10 lg:col-span-7">
             {state.status === "success" ? (
               <SuccessPanel
                 tone="emerald"
@@ -361,15 +365,38 @@ function MemberTab() {
                 ) : null}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="m-name" label="Họ và tên" required>
-                    <Input id="m-name" name="name" type="text" required autoComplete="name" placeholder="Ví dụ: Nguyễn Văn An" className={fieldClass} />
+                    <Input
+                      id="m-name"
+                      name="name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      placeholder="Ví dụ: Nguyễn Văn An"
+                      className={fieldClass}
+                    />
                   </Field>
                   <Field id="m-phone" label="Số điện thoại" required>
-                    <Input id="m-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0912 345 678" className={fieldClass} />
+                    <Input
+                      id="m-phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      autoComplete="tel"
+                      placeholder="0912 345 678"
+                      className={fieldClass}
+                    />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="m-email" label="Email nhận thông báo">
-                    <Input id="m-email" name="email" type="email" autoComplete="email" placeholder="email@example.com" className={fieldClass} />
+                    <Input
+                      id="m-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="email@example.com"
+                      className={fieldClass}
+                    />
                   </Field>
                   <Field id="m-city" label="Khu vực sinh sống">
                     <Select name="city" defaultValue="Hà Nội">
@@ -401,10 +428,19 @@ function MemberTab() {
                   </Select>
                 </Field>
                 <Field id="m-note" label="Ghi chú / Nhu cầu cụ thể (nếu có)">
-                  <Textarea id="m-note" name="note" rows={2} placeholder="Ví dụ: Tôi muốn tham gia workshop Bếp nhà Delivie làm bánh men sống..." className={cn(fieldClass, "resize-none")} />
+                  <Textarea
+                    id="m-note"
+                    name="note"
+                    rows={2}
+                    placeholder="Ví dụ: Tôi muốn tham gia workshop Bếp nhà Delivie làm bánh men sống..."
+                    className={cn(fieldClass, "resize-none")}
+                  />
                 </Field>
                 <div className="pt-2">
-                  <SubmitButton tone="emerald" label="Trở thành thành viên D-one" />
+                  <SubmitButton
+                    tone="emerald"
+                    label="Trở thành thành viên D-one"
+                  />
                   <p className="mt-2 text-center text-xs font-medium text-neutral-500">
                     Bắt đầu kết nối Sống khỏe - Sống giàu - Sống an.
                   </p>
@@ -428,8 +464,8 @@ function SupplierTab() {
           Hợp tác Nhà Cung Cấp Đối Tác
         </h2>
         <p className="text-sm leading-relaxed text-neutral-600">
-          Cùng IPA Living kiến tạo chuỗi cung ứng sản phẩm thảo mộc bản địa, dinh
-          dưỡng hữu cơ, giải pháp bảo an và lối sống xanh chuẩn mực.
+          Cùng IPA Living kiến tạo chuỗi cung ứng sản phẩm thảo mộc bản địa,
+          dinh dưỡng hữu cơ, giải pháp bảo an và lối sống xanh chuẩn mực.
         </p>
       </div>
 
@@ -450,9 +486,9 @@ function SupplierTab() {
         ))}
       </div>
 
-      <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg">
-        <div className="grid grid-cols-1 md:grid-cols-5">
-          <div className="flex flex-col justify-between space-y-6 bg-gradient-to-br from-amber-950 to-neutral-900 p-8 text-white md:col-span-2">
+      <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="flex flex-col justify-between space-y-6 bg-gradient-to-br from-amber-950 to-neutral-900 p-8 text-white lg:col-span-5">
             <div className="space-y-4">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-amber-300">
                 <Store className="h-3.5 w-3.5" />
@@ -478,7 +514,7 @@ function SupplierTab() {
             </div>
           </div>
 
-          <div className="p-8 sm:p-10 md:col-span-3">
+          <div className="p-8 sm:p-10 lg:col-span-7">
             {state.status === "success" ? (
               <SuccessPanel
                 tone="amber"
@@ -496,25 +532,62 @@ function SupplierTab() {
                   </p>
                 ) : null}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Field id="s-company" label="Tên Đơn vị / Doanh nghiệp" required>
-                    <Input id="s-company" name="companyName" type="text" required placeholder="Công ty / Hợp tác xã / Xưởng..." className={fieldAmber} />
+                  <Field
+                    id="s-company"
+                    label="Tên Đơn vị / Doanh nghiệp"
+                    required
+                  >
+                    <Input
+                      id="s-company"
+                      name="companyName"
+                      type="text"
+                      required
+                      placeholder="Công ty / Hợp tác xã / Xưởng..."
+                      className={fieldAmber}
+                    />
                   </Field>
                   <Field id="s-name" label="Người đại diện liên hệ" required>
-                    <Input id="s-name" name="name" type="text" required autoComplete="name" placeholder="Họ và tên người đại diện" className={fieldAmber} />
+                    <Input
+                      id="s-name"
+                      name="name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      placeholder="Họ và tên người đại diện"
+                      className={fieldAmber}
+                    />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-phone" label="Số điện thoại" required>
-                    <Input id="s-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0988 123 456" className={fieldAmber} />
+                    <Input
+                      id="s-phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      autoComplete="tel"
+                      placeholder="0988 123 456"
+                      className={fieldAmber}
+                    />
                   </Field>
                   <Field id="s-email" label="Email liên hệ">
-                    <Input id="s-email" name="email" type="email" autoComplete="email" placeholder="contact@company.com" className={fieldAmber} />
+                    <Input
+                      id="s-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="contact@company.com"
+                      className={fieldAmber}
+                    />
                   </Field>
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-category" label="Nhóm sản phẩm / Dịch vụ">
                     <Select name="productCategory" defaultValue="herbal">
-                      <SelectTrigger id="s-category" className={selectTriggerAmber}>
+                      <SelectTrigger
+                        id="s-category"
+                        className={selectTriggerAmber}
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -527,13 +600,31 @@ function SupplierTab() {
                     </Select>
                   </Field>
                   <Field id="s-cert" label="Chứng nhận chất lượng (nếu có)">
-                    <Input id="s-cert" name="certification" type="text" placeholder="VietGAP, HACCP, Organic, ISO..." className={fieldAmber} />
+                    <Input
+                      id="s-cert"
+                      name="certification"
+                      type="text"
+                      placeholder="VietGAP, HACCP, Organic, ISO..."
+                      className={fieldAmber}
+                    />
                   </Field>
                 </div>
-                <Field id="s-desc" label="Mô tả chi tiết sản phẩm & Năng lực cung ứng">
-                  <Textarea id="s-desc" name="productDescription" rows={3} placeholder="Giới thiệu quy trình sản xuất, công suất cung ứng hàng tháng, đặc điểm nổi bật..." className={cn(fieldAmber, "resize-none")} />
+                <Field
+                  id="s-desc"
+                  label="Mô tả chi tiết sản phẩm & Năng lực cung ứng"
+                >
+                  <Textarea
+                    id="s-desc"
+                    name="productDescription"
+                    rows={3}
+                    placeholder="Giới thiệu quy trình sản xuất, công suất cung ứng hàng tháng, đặc điểm nổi bật..."
+                    className={cn(fieldAmber, "resize-none")}
+                  />
                 </Field>
-                <SubmitButton tone="amber" label="Gửi hồ sơ đăng ký Nhà cung cấp" />
+                <SubmitButton
+                  tone="amber"
+                  label="Gửi hồ sơ đăng ký Nhà cung cấp"
+                />
               </form>
             )}
           </div>
