@@ -150,8 +150,10 @@
 
   --color-neutral-50: #faf7f0;
   --color-neutral-100: #f5efe3;
-  --color-neutral-200: #e7decb;
-  --color-neutral-300: #d2c6af;
+  /* Neutral 200/300 chủ yếu dùng làm viền. Hạ tông xuống nhạt & bớt ấm hơn để
+     border/divide trên nền trắng mảnh, "mịn" hơn — bớt nổi bật theo yêu cầu UI. */
+  --color-neutral-200: #ede8df;
+  --color-neutral-300: #ddd6ca;
   --color-neutral-400: #a89a84;
   --color-neutral-500: #7b6f5d;
   --color-neutral-600: #5f5548;
@@ -199,15 +201,15 @@
      border-b) trong components/layout/site-header.tsx. Không có step Tailwind khớp;
      dùng cho sticky offset của sub-nav: `top-[var(--header-h)]`. */
   --header-h-top: 4.8125rem; /* 77px — header lúc chưa cuộn (py-4), tức phần header
-     chiếm chỗ trong flow. Dùng để kéo hero full-bleed lên dưới header trong suốt:
-     `-mt-[var(--header-h-top)]` + bù lại `pt-[var(--header-h-top)]`. */
+     chiếm chỗ trong flow. Dùng cho `.min-h-hero-nav` (viewport trừ header). */
 
   /* Token ngữ nghĩa của shadcn/ui — ánh xạ sang bảng màu sẵn có của IPA Living
      để các component shadcn (Select, Input, Checkbox...) dùng nguyên bản không
      cần sửa class. Site chỉ có light mode nên không khai báo `.dark`. */
   --radius: 0.75rem;
   --border: var(--color-neutral-200);
-  --input: var(--color-neutral-200);
+  /* Field control cần rõ hơn viền trang trí một chút nên neo ở bậc 300. */
+  --input: var(--color-neutral-300);
   --ring: var(--color-primary-500);
   --background: var(--color-surface-page);
   --foreground: var(--color-neutral-900);
@@ -343,8 +345,11 @@
    `border-<color>` utilities can still override it — an unlayered `*` rule beats
    every layered utility regardless of specificity. */
 @layer base {
+  /* Màu viền mặc định cho mọi border không chỉ định màu (Tailwind v3-style).
+     Phải nằm trong `@layer base` để tiện ích `border-<color>` vẫn ghi đè được.
+     Dùng tông mờ hơn bậc 200 để hairline "mịn", ít tương phản trên nền trắng. */
   * {
-    border-color: var(--color-neutral-200);
+    border-color: color-mix(in srgb, var(--color-neutral-200) 60%, white);
   }
 }
 
@@ -412,8 +417,39 @@ h6 {
   border-radius: 999px;
 }
 
+/* Thanh cuộn mảnh, mịn cho khu admin /dashboard (bảng, sidebar, nội dung). */
+.scrollbar-slim {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.5) transparent; /* slate-400 */
+}
+
+.scrollbar-slim::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.45);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+.scrollbar-slim::-webkit-scrollbar-thumb:hover {
+  background: rgb(100 116 139 / 0.7); /* slate-500 */
+  background-clip: content-box;
+}
+
+.scrollbar-slim::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .border-slate-150 {
-  border-color: #e5e7eb;
+  border-color: #eef0f2;
 }
 
 .shadow-2xs {
@@ -433,13 +469,22 @@ h6 {
   height: 88vh;
 }
 
-/* Hero full-bleed: kéo section lên dưới header trong suốt (`-mt`) rồi bù padding-top
-   để nội dung không bị header che. Cặp giá trị bám token `--header-h-top` (77px).
-   Dùng cho hero là phần tử đầu trang + route nằm trong HERO_OVERLAY_ROUTES của site-header. */
+/* Hero đầu trang: nằm NGAY DƯỚI header đặc (header sticky đã chiếm chỗ trong flow),
+   KHÔNG bleed lên dưới nav nữa. Chỉ chừa khoảng thở phía trên cho nội dung + dòng
+   breadcrumb overlay (`variant="overlay-*"` đặt `top-4`). */
 .hero-bleed {
-  margin-top: calc(-1 * var(--header-h-top));
-  /* chừa chỗ cho header trong suốt + dòng breadcrumb overlay ngay dưới nó */
-  padding-top: calc(var(--header-h-top) + 2.75rem);
+  padding-top: 3rem;
+}
+
+@media (min-width: 768px) {
+  .hero-bleed {
+    padding-top: 4rem;
+  }
+}
+
+/* Hero đầu trang cao gần bằng viewport, đã trừ chiều cao header đặc phía trên. */
+.min-h-hero-nav {
+  min-height: calc(100svh - var(--header-h-top));
 }
 
 .max-h-modal {

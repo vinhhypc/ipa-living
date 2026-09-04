@@ -174,7 +174,7 @@ const BRANCHES: Branch[] = [
     mission:
       '"Vun bồi sức khỏe tài chính và thịnh vượng bền vững cho mỗi gia đình Việt — nền vững trước, tăng trưởng sau."',
     extra: (
-      <div className="grid grid-cols-1 gap-4 border-t border-neutral-100 pt-4 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 pt-4 md:grid-cols-2">
         <div className="space-y-1 rounded-2xl border border-wealth-500/30 bg-wealth-50 p-4">
           <span className="text-xs font-bold uppercase text-wealth-700">
             Tagline VNDGO
@@ -550,7 +550,7 @@ function BranchSection({ branch }: { branch: Branch }) {
               {branch.vision}
             </p>
           </div>
-          <div className="space-y-2 border-t border-neutral-100 pt-4">
+          <div className="space-y-2 pt-4">
             <span
               className={cn(
                 "block text-xs font-bold uppercase tracking-widest",
@@ -564,7 +564,7 @@ function BranchSection({ branch }: { branch: Branch }) {
             </p>
           </div>
           {branch.extra ? (
-            <div className="border-t border-neutral-100 pt-4">
+            <div className="pt-4">
               {branch.extra}
             </div>
           ) : null}

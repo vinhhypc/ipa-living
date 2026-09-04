@@ -128,7 +128,7 @@ export function WorkshopCard({ workshop }: { workshop: Workshop }) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between border-t border-neutral-100 pt-4">
+        <div className="flex items-center justify-between pt-4">
           <span className="text-xs font-semibold text-brand-gold">
             Còn {spotsLeft} chỗ đăng ký
           </span>

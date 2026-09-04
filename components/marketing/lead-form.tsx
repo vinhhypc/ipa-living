@@ -15,7 +15,7 @@ const INITIAL: WorkshopInterestState = { status: "idle" };
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện PTI (amber).
 const fieldClass =
-  "focus-visible:border-amber-600 focus-visible:ring-amber-600/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-amber-600 focus-visible:ring-amber-600/30";
 
 /**
  * Form "Để lại thông tin" dùng chung cho các trang sản phẩm PTI
@@ -27,6 +27,7 @@ export function LeadForm({
   intro,
   bullets,
   product,
+  apiCode,
   submitLabel = "Đăng ký tư vấn",
   note,
 }: {
@@ -35,6 +36,8 @@ export function LeadForm({
   intro: string;
   bullets: string[];
   product: string;
+  /** Business rule code, ví dụ `register_consultation_pti_health_ipa_living`. */
+  apiCode: string;
   submitLabel?: string;
   note?: string;
 }) {
@@ -48,7 +51,7 @@ export function LeadForm({
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-amber-300">
               {eyebrow}
             </span>
-            <h3 className="font-display text-xl font-bold leading-tight sm:text-2xl">
+            <h3 className="font-display text-lg font-bold leading-tight sm:text-2xl">
               {title}
             </h3>
             <p className="text-xs font-light leading-relaxed text-neutral-300">
@@ -71,7 +74,7 @@ export function LeadForm({
               <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100 text-amber-800">
                 <CheckCircle2 className="h-8 w-8" />
               </span>
-              <h4 className="text-xl font-bold text-neutral-900">
+              <h4 className="text-lg font-bold text-neutral-900 sm:text-xl">
                 Gửi thông tin thành công!
               </h4>
               <p className="mx-auto max-w-sm text-xs leading-relaxed text-neutral-600">
@@ -80,7 +83,8 @@ export function LeadForm({
             </div>
           ) : (
             <form action={formAction} className="space-y-4" noValidate>
-              <input type="hidden" name="product" value={product} />
+              <input type="hidden" name="apiCode" value={apiCode} />
+              <input type="hidden" name="interestedProduct" value={product} />
               {state.status === "error" && state.message ? (
                 <p
                   role="alert"
@@ -90,19 +94,44 @@ export function LeadForm({
                 </p>
               ) : null}
               <div>
-                <Label htmlFor="lead-name" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label
+                  htmlFor="lead-name"
+                  className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                >
                   Họ và tên <span className="text-rose-500">*</span>
                 </Label>
-                <Input id="lead-name" name="name" type="text" required autoComplete="name" placeholder="Nguyễn Văn A" className={fieldClass} />
+                <Input
+                  id="lead-name"
+                  name="fullName"
+                  type="text"
+                  required
+                  autoComplete="name"
+                  placeholder="Nguyễn Văn A"
+                  className={fieldClass}
+                />
               </div>
               <div>
-                <Label htmlFor="lead-phone" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label
+                  htmlFor="lead-phone"
+                  className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                >
                   Số điện thoại <span className="text-rose-500">*</span>
                 </Label>
-                <Input id="lead-phone" name="phone" type="tel" required autoComplete="tel" placeholder="0901 234 567" className={fieldClass} />
+                <Input
+                  id="lead-phone"
+                  name="phoneNumber"
+                  type="tel"
+                  required
+                  autoComplete="tel"
+                  placeholder="0901 234 567"
+                  className={fieldClass}
+                />
               </div>
               <div>
-                <Label htmlFor="lead-product" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label
+                  htmlFor="lead-product"
+                  className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                >
                   Sản phẩm quan tâm
                 </Label>
                 <Input
@@ -114,10 +143,20 @@ export function LeadForm({
                 />
               </div>
               <div>
-                <Label htmlFor="lead-email" className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700">
+                <Label
+                  htmlFor="lead-email"
+                  className="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-700"
+                >
                   Email (không bắt buộc)
                 </Label>
-                <Input id="lead-email" name="email" type="email" autoComplete="email" placeholder="email@cua-ban.com" className={fieldClass} />
+                <Input
+                  id="lead-email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="email@cua-ban.com"
+                  className={fieldClass}
+                />
               </div>
               <div className="pt-2">
                 <SubmitButton label={submitLabel} />

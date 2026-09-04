@@ -288,7 +288,7 @@ export function TowersSection() {
                         onClick={() => setSubIndex(idx)}
                         aria-pressed={selected}
                         className={cn(
-                          "flex flex-row items-center justify-between gap-3 rounded-2xl border-2 p-3.5 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:min-h-20 sm:flex-col sm:items-stretch sm:justify-between sm:p-4",
+                          "flex flex-row items-center justify-between gap-3 rounded-2xl border p-3.5 text-left transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 sm:min-h-20 sm:flex-col sm:items-stretch sm:justify-between sm:p-4",
                           selected
                             ? cn(tower.selectedPill, "shadow-sm")
                             : "border-neutral-200 bg-white/80 text-neutral-800 hover:border-neutral-300 hover:bg-white",
@@ -305,7 +305,7 @@ export function TowersSection() {
                   })}
                 </div>
 
-                <div className="space-y-3 border-t border-neutral-200 pt-5">
+                <div className="space-y-3 pt-5">
                   <span className="block text-xs font-bold uppercase tracking-widest text-neutral-400">
                     {sub.tag}
                   </span>

@@ -84,7 +84,7 @@ const TOWERS: Record<Tower, TowerConfig> = {
     chip: "bg-brand-gold/15 text-brand-gold-dark",
     icon: TrendingUp,
     iconColor: "text-brand-gold",
-    cta: "bg-brand-gold text-brand-navy hover:bg-brand-gold-dark hover:text-white",
+    cta: "bg-brand-gold text-white hover:bg-brand-gold-dark",
     tagline: "Gieo hạt tài chính, gặt sự an tâm dài hạn.",
     layers: [
       {
@@ -212,7 +212,7 @@ export function TowerCard({ towerType }: { towerType: Tower }) {
         </p>
       </div>
 
-      <div className="flex flex-grow flex-col justify-between border-t border-neutral-100 bg-white p-5 sm:p-6">
+      <div className="flex flex-grow flex-col justify-between bg-white p-5 sm:p-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={selected}

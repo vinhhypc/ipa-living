@@ -92,10 +92,7 @@ export function Breadcrumbs({
   if (variant !== "bar") {
     return (
       <div
-        className={cn(
-          "absolute inset-x-0 top-[var(--header-h-top)] z-20",
-          className,
-        )}
+        className={cn("absolute inset-x-0 top-4 z-20", className)}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <CrumbList items={items} variant={variant} />

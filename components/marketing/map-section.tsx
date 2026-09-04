@@ -162,7 +162,7 @@ export function MapSection() {
                     className={cn(
                       "flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold",
                       activeBtn
-                        ? "bg-brand-gold text-brand-navy shadow-sm"
+                        ? "bg-brand-gold text-white shadow-sm"
                         : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white",
                     )}
                   >
@@ -171,7 +171,7 @@ export function MapSection() {
                       className={cn(
                         "rounded-full px-1.5 text-xs",
                         activeBtn
-                          ? "bg-brand-navy/20 font-bold text-brand-navy"
+                          ? "bg-white/25 font-bold text-white"
                           : "bg-white/10 text-neutral-400",
                       )}
                     >
@@ -205,7 +205,7 @@ export function MapSection() {
                         className={cn(
                           "flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold",
                           selected
-                            ? "bg-brand-gold text-brand-navy"
+                            ? "bg-brand-gold text-white"
                             : isHoaVi
                               ? "border border-amber-500/30 bg-amber-500/20 text-amber-300"
                               : "bg-white/10 text-neutral-300",
@@ -298,7 +298,7 @@ export function MapSection() {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-gold text-sm font-black text-brand-navy shadow-sm">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-gold text-sm font-black text-white shadow-sm">
                 {active.orderNumber}
               </span>
               <div>
@@ -329,7 +329,7 @@ export function MapSection() {
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-lg bg-brand-gold px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-brand-navy shadow transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:self-center"
+                className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-lg bg-brand-gold px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-white shadow transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:self-center"
               >
                 <Globe className="h-3.5 w-3.5" />
                 <span>Xem Maps</span>
@@ -364,7 +364,7 @@ export function MapSection() {
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-gold px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-brand-navy shadow-md transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-gold px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-md transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <Navigation className="h-4 w-4" />
               <span>Chỉ đường trên Google Maps</span>

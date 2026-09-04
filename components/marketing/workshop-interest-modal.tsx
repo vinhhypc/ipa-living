@@ -24,7 +24,7 @@ const INITIAL: WorkshopInterestState = { status: "idle" };
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện Dstation (brand gold).
 const fieldClass =
-  "focus-visible:border-brand-gold focus-visible:ring-brand-gold/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-brand-gold focus-visible:ring-brand-gold/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 
 export type ModalSelect = {
@@ -40,6 +40,8 @@ export function WorkshopInterestModal({
   title = "Đăng ký Workshop",
   intro,
   selects,
+  apiCode,
+  requireEmail = false,
   withMessage = false,
   submitLabel = "Gửi đăng ký",
 }: {
@@ -49,6 +51,9 @@ export function WorkshopInterestModal({
   title?: string;
   intro?: string;
   selects: ModalSelect[];
+  /** Business rule code cho form này. */
+  apiCode: string;
+  requireEmail?: boolean;
   withMessage?: boolean;
   submitLabel?: string;
 }) {
@@ -89,7 +94,7 @@ export function WorkshopInterestModal({
             </span>
             <h3
               id={titleId}
-              className="mt-1 font-display text-xl font-black text-neutral-900"
+              className="mt-1 font-display text-lg font-black text-neutral-900 sm:text-xl"
             >
               {title}
             </h3>
@@ -117,7 +122,9 @@ export function WorkshopInterestModal({
             <h4 className="font-display text-lg font-bold text-neutral-900">
               Đăng ký thành công!
             </h4>
-            <p className="text-xs font-light text-neutral-600">{state.message}</p>
+            <p className="text-xs font-light text-neutral-600">
+              {state.message}
+            </p>
             <button
               type="button"
               onClick={onClose}
@@ -128,6 +135,7 @@ export function WorkshopInterestModal({
           </div>
         ) : (
           <form action={formAction} className="space-y-4 text-xs" noValidate>
+            <input type="hidden" name="apiCode" value={apiCode} />
             {state.status === "error" && state.message ? (
               <p
                 role="alert"
@@ -138,12 +146,15 @@ export function WorkshopInterestModal({
             ) : null}
 
             <div>
-              <Label htmlFor="lead-name" className="mb-1 block font-bold text-neutral-700">
+              <Label
+                htmlFor="lead-name"
+                className="mb-1 block font-bold text-neutral-700"
+              >
                 Họ và tên <span className="text-red-500">*</span>
               </Label>
               <Input
                 id="lead-name"
-                name="name"
+                name="fullName"
                 type="text"
                 required
                 autoComplete="name"
@@ -154,12 +165,15 @@ export function WorkshopInterestModal({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label htmlFor="lead-phone" className="mb-1 block font-bold text-neutral-700">
+                <Label
+                  htmlFor="lead-phone"
+                  className="mb-1 block font-bold text-neutral-700"
+                >
                   Số điện thoại <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="lead-phone"
-                  name="phone"
+                  name="phoneNumber"
                   type="tel"
                   required
                   autoComplete="tel"
@@ -168,13 +182,18 @@ export function WorkshopInterestModal({
                 />
               </div>
               <div>
-                <Label htmlFor="lead-email" className="mb-1 block font-bold text-neutral-700">
-                  Email
+                <Label
+                  htmlFor="lead-email"
+                  className="mb-1 block font-bold text-neutral-700"
+                >
+                  Email{" "}
+                  {requireEmail ? <span className="text-red-500">*</span> : null}
                 </Label>
                 <Input
                   id="lead-email"
                   name="email"
                   type="email"
+                  required={requireEmail}
                   autoComplete="email"
                   placeholder="email@example.com"
                   className={fieldClass}
@@ -210,7 +229,10 @@ export function WorkshopInterestModal({
 
             {withMessage ? (
               <div>
-                <Label htmlFor="lead-message" className="mb-1 block font-bold text-neutral-700">
+                <Label
+                  htmlFor="lead-message"
+                  className="mb-1 block font-bold text-neutral-700"
+                >
                   Ghi chú thêm (không bắt buộc)
                 </Label>
                 <Textarea

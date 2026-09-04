@@ -252,7 +252,7 @@ function TabPanel({
 }) {
   return (
     <div className="space-y-8 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-10">
-      <div className="border-b border-neutral-100 pb-4">
+      <div className="pb-4">
         <span className="text-xs font-bold uppercase tracking-widest text-purple-800">
           {no}
         </span>

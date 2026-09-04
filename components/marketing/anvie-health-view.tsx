@@ -245,7 +245,7 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
 
         {tab === "cbx" ? (
           <div className="space-y-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-10">
-            <div className="border-b border-neutral-100 pb-4">
+            <div className="pb-4">
               <span className="text-xs font-bold uppercase tracking-widest text-emerald-800">
                 Trải Nghiệm 02
               </span>
@@ -294,7 +294,7 @@ export function AnvieHealthView({ initialTab = "fb" }: { initialTab?: TabId }) {
 
         {tab === "cda" ? (
           <div className="space-y-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-10">
-            <div className="border-b border-neutral-100 pb-4">
+            <div className="pb-4">
               <span className="text-xs font-bold uppercase tracking-widest text-purple-800">
                 Trải Nghiệm 03
               </span>

@@ -103,7 +103,7 @@ function SectionCard({
 }) {
   return (
     <div className="space-y-6 rounded-3xl border border-neutral-100 bg-white p-6 shadow-sm sm:p-8">
-      <h2 className="flex items-center gap-2 border-b border-neutral-100 pb-4 font-display text-xl font-extrabold text-brand-navy">
+      <h2 className="flex items-center gap-2 pb-4 font-display text-xl font-extrabold text-brand-navy">
         <Icon className="h-5 w-5 text-brand-gold" />
         <span>{title}</span>
       </h2>
@@ -151,7 +151,7 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent" />
             <div className="absolute inset-x-6 bottom-6 space-y-2 text-white">
-              <span className="inline-block rounded-full bg-brand-gold px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-neutral-900">
+              <span className="inline-block rounded-full bg-brand-gold px-3 py-1 text-xs font-extrabold uppercase tracking-widest text-white">
                 {completed ? "Đã diễn ra" : "Sự kiện đặc biệt"}
               </span>
               <p className="text-xs font-light text-neutral-300">
@@ -200,7 +200,7 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
               </dl>
             </div>
 
-            <div className="flex flex-col items-center justify-between gap-4 border-t border-neutral-100 pt-4 sm:flex-row">
+            <div className="flex flex-col items-center justify-between gap-4 pt-4 sm:flex-row">
               <p className="text-xs font-light text-neutral-500">
                 <span className="mr-2 block text-base font-bold text-neutral-800 sm:inline">
                   Vé tham dự: Miễn phí
@@ -322,7 +322,7 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
                   <span>Bãi đỗ xe ô tô &amp; xe máy rộng rãi an toàn</span>
                 </p>
               </div>
-              <div className="border-t border-neutral-100 pt-2">
+              <div className="pt-2">
                 <Link
                   href={`${routes.diemCham}#dstation`}
                   className="block w-full rounded-xl border border-neutral-200 py-2.5 text-center text-xs font-bold text-brand-navy transition-colors hover:border-brand-navy"
@@ -345,7 +345,7 @@ export function WorkshopDetailView({ workshop }: { workshop: Workshop }) {
               </p>
               <Link
                 href={routes.tuyenDungCa}
-                className="block w-full rounded-xl bg-brand-gold py-3 text-center text-xs font-bold uppercase tracking-widest text-brand-navy transition-colors hover:bg-brand-gold-light"
+                className="block w-full rounded-xl bg-brand-gold py-3 text-center text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-brand-gold-light"
               >
                 Kết nối Client Advisor
               </Link>

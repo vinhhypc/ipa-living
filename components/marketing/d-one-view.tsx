@@ -43,44 +43,32 @@ const INITIAL: WorkshopInterestState = { status: "idle" };
 
 // shadcn UI thuần — chỉ override màu focus ring theo tab (member = emerald, supplier = amber).
 const fieldClass =
-  "focus-visible:border-emerald-500 focus-visible:ring-emerald-500/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-emerald-500 focus-visible:ring-emerald-500/30";
 const fieldAmber =
   "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 const selectTriggerAmber = cn("w-full", fieldAmber);
 
 const CITY_OPTIONS = [
-  { value: "Hà Nội", label: "Hà Nội" },
-  { value: "TP. Hồ Chí Minh", label: "TP. Hồ Chí Minh" },
-  { value: "Đà Nẵng", label: "Đà Nẵng" },
-  { value: "Khác", label: "Tỉnh thành khác" },
+  "Hà Nội",
+  "TP. Hồ Chí Minh",
+  "Đà Nẵng",
+  "Tỉnh thành khác",
 ] as const;
 
 const TOWER_OPTIONS = [
-  {
-    value: "all",
-    label: "Toàn diện cả 3 Trụ cột (Sức khỏe - Đầu tư - Bảo an)",
-  },
-  {
-    value: "anvie",
-    label: "Sức khỏe Anvie (Y học lối sống & Dược liệu Gobio)",
-  },
-  {
-    value: "vndgo",
-    label: "Thịnh vượng VNDGO (Tích sản VNDSIP & Lớp học tài chính)",
-  },
-  {
-    value: "pticare",
-    label: "Bảo an PTI (Bảo hiểm sức khỏe PTI Health & SOS)",
-  },
+  "Toàn diện cả 3 Trụ cột (Sức khỏe - Đầu tư - Bảo an)",
+  "Sức khỏe Anvie (Y học lối sống & Dược liệu Gobio)",
+  "Thịnh vượng VNDGO (Tích sản VNDSIP & Lớp học tài chính)",
+  "Bảo an PTI (Bảo hiểm sức khỏe PTI Health & SOS)",
 ] as const;
 
 const PRODUCT_CATEGORY_OPTIONS = [
-  { value: "herbal", label: "Dược liệu & Thảo mộc bản địa" },
-  { value: "food", label: "Thực phẩm dinh dưỡng & Lên men" },
-  { value: "cosmetic", label: "Mỹ phẩm tự nhiên & Chăm sóc cá nhân" },
-  { value: "eco", label: "Đồ dùng sinh thái & Đời sống xanh" },
-  { value: "service", label: "Dịch vụ chăm sóc sức khỏe / Đào tạo" },
+  "Dược liệu & Thảo mộc bản địa",
+  "Thực phẩm dinh dưỡng & Lên men",
+  "Mỹ phẩm tự nhiên & Chăm sóc cá nhân",
+  "Đồ dùng sinh thái & Đời sống xanh",
+  "Dịch vụ chăm sóc sức khỏe / Đào tạo",
 ] as const;
 const labelClass =
   "mb-1.5 block text-xs font-bold uppercase tracking-wider text-neutral-700";
@@ -260,7 +248,7 @@ function MemberTab() {
         <span className="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-800">
           Trải nghiệm tích hợp
         </span>
-        <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-3xl">
+        <h2 className="font-display text-xl font-black text-neutral-900 sm:text-3xl">
           Ba hành trình, một điểm chạm
         </h2>
         <p className="text-sm leading-relaxed text-neutral-600">
@@ -355,6 +343,11 @@ function MemberTab() {
               />
             ) : (
               <form action={formAction} className="space-y-4" noValidate>
+                <input
+                  type="hidden"
+                  name="apiCode"
+                  value="register_membership_done_ipa_living"
+                />
                 {state.status === "error" && state.message ? (
                   <p
                     role="alert"
@@ -367,7 +360,7 @@ function MemberTab() {
                   <Field id="m-name" label="Họ và tên" required>
                     <Input
                       id="m-name"
-                      name="name"
+                      name="fullName"
                       type="text"
                       required
                       autoComplete="name"
@@ -378,7 +371,7 @@ function MemberTab() {
                   <Field id="m-phone" label="Số điện thoại" required>
                     <Input
                       id="m-phone"
-                      name="phone"
+                      name="phoneNumber"
                       type="tel"
                       required
                       autoComplete="tel"
@@ -399,14 +392,14 @@ function MemberTab() {
                     />
                   </Field>
                   <Field id="m-city" label="Khu vực sinh sống">
-                    <Select name="city" defaultValue="Hà Nội">
+                    <Select name="address" defaultValue={CITY_OPTIONS[0]}>
                       <SelectTrigger id="m-city" className={selectTriggerClass}>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
                         {CITY_OPTIONS.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                          <SelectItem key={option} value={option}>
+                            {option}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -414,14 +407,17 @@ function MemberTab() {
                   </Field>
                 </div>
                 <Field id="m-tower" label="Trụ cột bạn quan tâm nhất">
-                  <Select name="interestedTower" defaultValue="all">
+                  <Select
+                    name="interestedPillar"
+                    defaultValue={TOWER_OPTIONS[0]}
+                  >
                     <SelectTrigger id="m-tower" className={selectTriggerClass}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {TOWER_OPTIONS.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                        <SelectItem key={option} value={option}>
+                          {option}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -430,7 +426,7 @@ function MemberTab() {
                 <Field id="m-note" label="Ghi chú / Nhu cầu cụ thể (nếu có)">
                   <Textarea
                     id="m-note"
-                    name="note"
+                    name="message"
                     rows={2}
                     placeholder="Ví dụ: Tôi muốn tham gia workshop Bếp nhà Delivie làm bánh men sống..."
                     className={cn(fieldClass, "resize-none")}
@@ -460,7 +456,7 @@ function SupplierTab() {
   return (
     <>
       <div id="supplier" className="mx-auto max-w-3xl space-y-3 text-center">
-        <h2 className="font-display text-2xl font-black text-neutral-900 sm:text-3xl">
+        <h2 className="font-display text-xl font-black text-neutral-900 sm:text-3xl">
           Hợp tác Nhà Cung Cấp Đối Tác
         </h2>
         <p className="text-sm leading-relaxed text-neutral-600">
@@ -523,6 +519,11 @@ function SupplierTab() {
               />
             ) : (
               <form action={formAction} className="space-y-4" noValidate>
+                <input
+                  type="hidden"
+                  name="apiCode"
+                  value="register_supplier_ipa_living"
+                />
                 {state.status === "error" && state.message ? (
                   <p
                     role="alert"
@@ -549,7 +550,7 @@ function SupplierTab() {
                   <Field id="s-name" label="Người đại diện liên hệ" required>
                     <Input
                       id="s-name"
-                      name="name"
+                      name="representativeName"
                       type="text"
                       required
                       autoComplete="name"
@@ -562,7 +563,7 @@ function SupplierTab() {
                   <Field id="s-phone" label="Số điện thoại" required>
                     <Input
                       id="s-phone"
-                      name="phone"
+                      name="phoneNumber"
                       type="tel"
                       required
                       autoComplete="tel"
@@ -583,7 +584,10 @@ function SupplierTab() {
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Field id="s-category" label="Nhóm sản phẩm / Dịch vụ">
-                    <Select name="productCategory" defaultValue="herbal">
+                    <Select
+                      name="productServiceGroup"
+                      defaultValue={PRODUCT_CATEGORY_OPTIONS[0]}
+                    >
                       <SelectTrigger
                         id="s-category"
                         className={selectTriggerAmber}
@@ -592,8 +596,8 @@ function SupplierTab() {
                       </SelectTrigger>
                       <SelectContent>
                         {PRODUCT_CATEGORY_OPTIONS.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                          <SelectItem key={option} value={option}>
+                            {option}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -602,7 +606,7 @@ function SupplierTab() {
                   <Field id="s-cert" label="Chứng nhận chất lượng (nếu có)">
                     <Input
                       id="s-cert"
-                      name="certification"
+                      name="qualityCertificates"
                       type="text"
                       placeholder="VietGAP, HACCP, Organic, ISO..."
                       className={fieldAmber}
@@ -615,7 +619,7 @@ function SupplierTab() {
                 >
                   <Textarea
                     id="s-desc"
-                    name="productDescription"
+                    name="message"
                     rows={3}
                     placeholder="Giới thiệu quy trình sản xuất, công suất cung ứng hàng tháng, đặc điểm nổi bật..."
                     className={cn(fieldAmber, "resize-none")}
@@ -701,7 +705,7 @@ function SuccessPanel({
       >
         <CheckCircle2 className="h-10 w-10" />
       </span>
-      <h3 className="text-xl font-bold text-neutral-900">{title}</h3>
+      <h3 className="text-lg font-bold text-neutral-900 sm:text-xl">{title}</h3>
       <p className="mx-auto max-w-md text-xs leading-relaxed text-neutral-600 sm:text-sm">
         {message}
       </p>

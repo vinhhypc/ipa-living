@@ -43,7 +43,7 @@ const INITIAL: WorkshopInterestState = { status: "idle" };
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện PTI SOS (amber).
 const fieldClass =
-  "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 
 const HERO_IMAGE = localImage(
@@ -290,7 +290,7 @@ function ProductCard({
           ))}
         </div>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-4">
         <span>
           <span className="block text-xs font-light text-neutral-400">
             Tham khảo chỉ từ:
@@ -585,7 +585,7 @@ export function PtiSosView() {
                     <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                       <CheckCircle2 className="h-8 w-8" />
                     </span>
-                    <h3 className="text-xl font-bold text-neutral-900">
+                    <h3 className="text-lg font-bold text-neutral-900 sm:text-xl">
                       Gửi yêu cầu thành công!
                     </h3>
                     <p className="mx-auto max-w-sm text-xs leading-relaxed text-neutral-600">
@@ -594,6 +594,11 @@ export function PtiSosView() {
                   </div>
                 ) : (
                   <form action={formAction} className="space-y-4" noValidate>
+                    <input
+                      type="hidden"
+                      name="apiCode"
+                      value="register_consultation_pti_sos_ipa_living"
+                    />
                     {state.status === "error" && state.message ? (
                       <p
                         role="alert"
@@ -610,7 +615,7 @@ export function PtiSosView() {
                         Sản phẩm quan tâm
                       </Label>
                       <Select
-                        name="product"
+                        name="interestedProduct"
                         value={selectedLabel}
                         onValueChange={(value) =>
                           setSelectedLabel(value as string)
@@ -640,7 +645,7 @@ export function PtiSosView() {
                       </Label>
                       <Input
                         id="sos-name"
-                        name="name"
+                        name="fullName"
                         type="text"
                         required
                         autoComplete="name"
@@ -657,7 +662,7 @@ export function PtiSosView() {
                       </Label>
                       <Input
                         id="sos-phone"
-                        name="phone"
+                        name="phoneNumber"
                         type="tel"
                         required
                         autoComplete="tel"
@@ -674,7 +679,7 @@ export function PtiSosView() {
                       </Label>
                       <Input
                         id="sos-detail"
-                        name="detail"
+                        name="productInfo"
                         type="text"
                         placeholder="VD: Mazda CX-5 / Nhật Bản 5 ngày / Chung cư 70m²"
                         className={fieldClass}
@@ -735,7 +740,7 @@ export function PtiSosView() {
             </button>
             <Link
               href={routes.dCare}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-4 text-xs font-bold uppercase tracking-wider text-brand-navy shadow-lg transition-all hover:bg-brand-gold-light sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-brand-gold-light sm:w-auto"
             >
               <UserCheck className="h-4 w-4" />
               <span>Liên hệ CA</span>

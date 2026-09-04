@@ -37,7 +37,7 @@ export function FinalCtaSection() {
             <div className="flex flex-col gap-4 pt-2 sm:flex-row">
               <Link
                 href={routes.tuyenDungCa}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-7 py-3.5 text-xs font-bold uppercase text-brand-navy shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-gold-dark hover:text-white hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-gold px-7 py-3.5 text-xs font-bold uppercase text-white shadow-md transition-all hover:-translate-y-0.5 hover:bg-brand-gold-dark hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 motion-reduce:hover:translate-y-0"
               >
                 <span className="text-white">Ứng tuyển CA ngay</span>
                 <ArrowRight className="h-4 w-4 text-white" />

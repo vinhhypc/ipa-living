@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -41,27 +41,13 @@ const ABOUT_ROUTES = [
   routes.baoAn,
 ];
 const DSTATION_ROUTES = [routes.diemCham, routes.triThuc];
-/**
- * Trang có hero là phần tử đầu trang: header nổi (frosted) đè lên hero khi chưa cuộn.
- * Phải đi kèm class `hero-bleed` trên `<section>` hero (xem app/globals.css).
- */
-const HERO_OVERLAY_ROUTES = [
-  routes.home,
-  routes.sucKhoe,
-  routes.thinhVuong,
-  routes.baoAn,
-  routes.diemCham,
-  routes.triThuc,
-  routes.dOne,
-  routes.dCare,
-  routes.tuyenDungCa,
-];
 
 export function SiteHeader() {
   const pathname = usePathname() ?? "/";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<Dropdown | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -70,7 +56,26 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  /** Mở dropdown ngay, hủy mọi lịch đóng đang chờ. */
+  const openMenu = (name: Dropdown) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenDropdown(name);
+  };
+
+  /** Trì hoãn việc đóng để tránh nháy khi rê chuột giữa nav link và submenu. */
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpenDropdown(null), 120);
+  };
+
   const closeMenus = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
     setMobileMenuOpen(false);
     setOpenDropdown(null);
   };
@@ -82,45 +87,28 @@ export function SiteHeader() {
     pathname as (typeof DSTATION_ROUTES)[number],
   );
 
-  const hasHeroOverlay = HERO_OVERLAY_ROUTES.includes(
-    pathname as (typeof HERO_OVERLAY_ROUTES)[number],
-  );
-  const overlay = hasHeroOverlay && !scrolled && !mobileMenuOpen;
-
   const navPillBase =
-    "px-4 py-2 rounded-full font-semibold text-xs uppercase tracking-widest transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2";
+    "px-4 py-2 rounded-full font-semibold text-sm uppercase tracking-wide transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2";
   const navPill = (active: boolean) =>
     cn(
       navPillBase,
-      overlay
-        ? active
-          ? "bg-white/25 text-white text-shadow-sm"
-          : "text-white text-shadow-md hover:bg-white/15"
-        : active
-          ? "bg-neutral-200 text-neutral-900"
-          : "text-neutral-700 hover:bg-neutral-200/60 hover:text-neutral-900",
+      active
+        ? "bg-neutral-200 text-neutral-900"
+        : "text-neutral-700 hover:bg-neutral-200/60 hover:text-neutral-900",
     );
 
   return (
     <header
       id="main-header"
       className={cn(
-        "sticky top-0 z-50 text-neutral-800 transition-all duration-300",
-        overlay
-          ? "border-b border-transparent bg-transparent py-4"
-          : scrolled
-            ? "border-b border-neutral-200 bg-neutral-50/95 py-3 shadow-sm backdrop-blur-md"
-            : "border-b border-neutral-200 bg-neutral-50 py-4",
+        "sticky top-0 z-50 border-b border-neutral-200 text-neutral-800 transition-all duration-300",
+        scrolled
+          ? "bg-neutral-50/95 shadow-sm backdrop-blur-md"
+          : "bg-neutral-50",
       )}
     >
-      {overlay && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/65 via-black/35 to-transparent"
-        />
-      )}
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           <Link
             href={routes.home}
             onClick={closeMenus}
@@ -130,10 +118,7 @@ export function SiteHeader() {
             <IpaLivingMark
               aria-label="IPA Living"
               role="img"
-              className={cn(
-                "h-11 w-auto shrink-0 -translate-y-3 transition-transform group-hover:scale-105",
-                overlay && "drop-shadow-md",
-              )}
+              className="h-11 w-auto shrink-0 transition-transform group-hover:scale-105"
             />
           </Link>
 
@@ -142,8 +127,8 @@ export function SiteHeader() {
             {/* Về IPA Living */}
             <div
               className="relative"
-              onMouseEnter={() => setOpenDropdown("ve-ipa-living")}
-              onMouseLeave={() => setOpenDropdown(null)}
+              onMouseEnter={() => openMenu("ve-ipa-living")}
+              onMouseLeave={scheduleClose}
             >
               <Link
                 href={routes.veIpaLiving}
@@ -162,7 +147,7 @@ export function SiteHeader() {
                 {openDropdown === "ve-ipa-living" && (
                   <motion.div
                     {...MENU_MOTION}
-                    className="absolute left-0 mt-2 w-90 rounded-2xl border border-neutral-100 bg-white p-4 text-neutral-800 shadow-lg"
+                    className="absolute left-0 mt-2 w-90 rounded-2xl border border-neutral-100 bg-white p-4 text-neutral-800 shadow-lg before:absolute before:-top-2 before:inset-x-0 before:h-2 before:content-['']"
                   >
                     <div className="mb-3 flex items-center justify-between border-b border-neutral-100 pb-2">
                       <Link
@@ -207,8 +192,8 @@ export function SiteHeader() {
             {/* Dstation */}
             <div
               className="relative"
-              onMouseEnter={() => setOpenDropdown("dstation")}
-              onMouseLeave={() => setOpenDropdown(null)}
+              onMouseEnter={() => openMenu("dstation")}
+              onMouseLeave={scheduleClose}
             >
               <Link
                 href={routes.diemCham}
@@ -227,7 +212,7 @@ export function SiteHeader() {
                 {openDropdown === "dstation" && (
                   <motion.div
                     {...MENU_MOTION}
-                    className="absolute left-0 mt-2 w-85 rounded-2xl border border-neutral-100 bg-white p-3.5 text-neutral-800 shadow-lg"
+                    className="absolute left-0 mt-2 w-85 rounded-2xl border border-neutral-100 bg-white p-3.5 text-neutral-800 shadow-lg before:absolute before:-top-2 before:inset-x-0 before:h-2 before:content-['']"
                   >
                     <div className="mb-2.5 flex items-center justify-between border-b border-neutral-100 pb-2">
                       <Link
@@ -275,8 +260,8 @@ export function SiteHeader() {
             {/* D-One */}
             <div
               className="relative"
-              onMouseEnter={() => setOpenDropdown("d-one")}
-              onMouseLeave={() => setOpenDropdown(null)}
+              onMouseEnter={() => openMenu("d-one")}
+              onMouseLeave={scheduleClose}
             >
               <Link
                 href={routes.dOne}
@@ -295,7 +280,7 @@ export function SiteHeader() {
                 {openDropdown === "d-one" && (
                   <motion.div
                     {...MENU_MOTION}
-                    className="absolute left-0 mt-2 w-80 rounded-2xl border border-neutral-100 bg-white p-3.5 text-neutral-800 shadow-lg"
+                    className="absolute left-0 mt-2 w-80 rounded-2xl border border-neutral-100 bg-white p-3.5 text-neutral-800 shadow-lg before:absolute before:-top-2 before:inset-x-0 before:h-2 before:content-['']"
                   >
                     <div className="space-y-1">
                       <MegaItem
@@ -340,12 +325,7 @@ export function SiteHeader() {
             onClick={() => setMobileMenuOpen((v) => !v)}
             aria-label={mobileMenuOpen ? "Đóng menu" : "Mở menu"}
             aria-expanded={mobileMenuOpen}
-            className={cn(
-              "rounded-lg p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden",
-              overlay
-                ? "text-white drop-shadow-md hover:bg-white/15"
-                : "text-neutral-800 hover:bg-neutral-200/50",
-            )}
+            className="rounded-lg p-2 text-neutral-800 hover:bg-neutral-200/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 lg:hidden"
           >
             {mobileMenuOpen ? (
               <X className="h-6 w-6" />
@@ -556,7 +536,7 @@ function MobileGroup({
           {label}
         </div>
       )}
-      <div className="ml-3 space-y-1 border-l-2 border-neutral-200 pl-4">
+      <div className="ml-3 space-y-1 border-l border-neutral-200 pl-4">
         {children}
       </div>
     </div>

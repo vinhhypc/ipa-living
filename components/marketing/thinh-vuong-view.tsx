@@ -734,7 +734,7 @@ export function ThinhVuongView() {
                       </p>
                     ) : null}
 
-                    <div className="space-y-2 border-t border-neutral-100 pt-2">
+                    <div className="space-y-2 pt-2">
                       <span className="block text-xs font-bold uppercase text-neutral-800">
                         {product.featTitle}
                       </span>
@@ -778,19 +778,11 @@ export function ThinhVuongView() {
           </div>
 
           <div className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="grid grid-cols-1 gap-6 divide-y divide-neutral-100 text-center md:grid-cols-3 md:divide-x md:divide-y-0 md:text-left">
-              {LIFE_STAGES.map((stage, idx) => {
+            <div className="grid grid-cols-1 gap-6 text-center md:grid-cols-3 md:gap-8 md:text-left">
+              {LIFE_STAGES.map((stage) => {
                 const Icon = stage.icon;
                 return (
-                  <div
-                    key={stage.tag}
-                    className={cn(
-                      "space-y-1.5",
-                      idx === 0 && "md:pr-4",
-                      idx === 1 && "pt-4 md:px-4 md:pt-0",
-                      idx === 2 && "pt-4 md:pl-4 md:pt-0",
-                    )}
-                  >
+                  <div key={stage.tag} className="space-y-1.5">
                     <span className="flex items-center justify-center gap-2 text-wealth-700 md:justify-start">
                       <Icon className="h-4 w-4" />
                       <span className="text-xs font-bold uppercase">
@@ -941,7 +933,7 @@ export function ThinhVuongView() {
             <div className="space-y-4 text-xs font-light leading-relaxed text-neutral-600 sm:text-sm">
               {PRODUCT_DETAIL[modalProduct].body}
             </div>
-            <div className="flex flex-wrap items-center justify-end gap-3 border-t border-neutral-100 pt-4">
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-4">
               <button
                 type="button"
                 onClick={() => setModalProduct(null)}
@@ -967,10 +959,16 @@ export function ThinhVuongView() {
         eyebrow="Trạm dịch vụ Dstation"
         title="Đăng ký Workshop Đầu Tư"
         submitLabel="Gửi đăng ký"
+        apiCode="register_investment_workshop_ipa_living"
+        requireEmail
         selects={[
-          { name: "topic", label: "Chủ đề quan tâm", options: WORKSHOP_TOPICS },
           {
-            name: "location",
+            name: "interestedTopic",
+            label: "Chủ đề quan tâm",
+            options: WORKSHOP_TOPICS,
+          },
+          {
+            name: "dstationAddress",
             label: "Địa điểm Trạm Dstation",
             options: WORKSHOP_LOCATIONS,
           },

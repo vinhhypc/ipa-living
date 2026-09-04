@@ -219,7 +219,7 @@ export function PtiHomesView() {
                     <p className="text-xs font-light leading-relaxed text-neutral-600">
                       {tier.desc}
                     </p>
-                    <ul className="space-y-2 border-t border-neutral-100 pt-2 text-xs font-medium text-neutral-700">
+                    <ul className="space-y-2 pt-2 text-xs font-medium text-neutral-700">
                       {tier.items.map((item) => (
                         <li key={item} className="flex items-start gap-2">
                           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
@@ -228,7 +228,7 @@ export function PtiHomesView() {
                       ))}
                     </ul>
                   </div>
-                  <div className="flex items-center justify-between border-t border-neutral-100 pt-4">
+                  <div className="flex items-center justify-between pt-4">
                     <span className="text-xs font-light text-neutral-400">
                       {tier.footLabel}
                     </span>
@@ -255,6 +255,7 @@ export function PtiHomesView() {
               "Tổng đài 24/7: 1900 54 54 75",
             ]}
             product="Bảo hiểm nhà tư nhân PTI Homecare"
+            apiCode="register_consultation_pti_care_ipa_living"
             submitLabel="Đăng ký tư vấn →"
             note="Thông tin trên trang chỉ mang tính giới thiệu. Quyền lợi và phí bảo hiểm thực tế theo Quy tắc bảo hiểm và hợp đồng được PTI cấp. Tổng đài 24/7: 1900 54 54 75."
           />

@@ -316,7 +316,7 @@ export function PtiHealthView() {
                     {benefit}
                   </p>
                 </div>
-                <p className="flex items-center border-t border-neutral-200/60 pt-3 text-xs font-semibold text-emerald-800">
+                <p className="flex items-center pt-3 text-xs font-semibold text-emerald-800">
                   <CheckCircle2 className="mr-1.5 h-4 w-4 text-emerald-600" />
                   <span>Chuẩn mực bảo vệ PTI</span>
                 </p>
@@ -339,6 +339,7 @@ export function PtiHealthView() {
               "Phản hồi trong vòng 24h",
             ]}
             product={product.formProduct}
+            apiCode="register_consultation_pti_health_ipa_living"
             submitLabel="Đăng ký tư vấn →"
             note="Bằng việc gửi thông tin, bạn đồng ý để PTI liên hệ tư vấn."
           />

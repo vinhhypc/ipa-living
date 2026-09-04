@@ -42,7 +42,7 @@ const BENEFITS = [
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện tuyển dụng (brand navy).
 const fieldClass =
-  "focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 
 const CITY_OPTIONS = [
@@ -86,12 +86,12 @@ export function RegistrationForm() {
           <span className="text-xs font-bold uppercase tracking-widest text-brand-gold">
             Tuyển Dụng Nhân Sự
           </span>
-          <h3 className="mt-2 font-display text-2xl font-extrabold leading-tight text-white md:text-3xl">
+          <h3 className="mt-2 font-display text-xl font-extrabold leading-tight text-white sm:text-2xl md:text-3xl">
             Gia Nhập Đội Ngũ Bạn Đồng Hành (CA)
           </h3>
           <p className="mt-3 text-sm font-light leading-relaxed text-slate-300">
-            IPA Living tìm kiếm các nhân sự nhiệt huyết làm Client Advisor (CA) —
-            lực lượng nòng cốt trực tiếp đồng hành, tư vấn và thiết kế bản đồ
+            IPA Living tìm kiếm các nhân sự nhiệt huyết làm Client Advisor (CA)
+            — lực lượng nòng cốt trực tiếp đồng hành, tư vấn và thiết kế bản đồ
             Wellbeing (Sức khỏe - Thịnh vượng - Bảo an) cho khách hàng.
           </p>
 
@@ -131,7 +131,7 @@ export function RegistrationForm() {
             <span className="mb-4 rounded-full bg-emerald-50 p-4 text-brand-green">
               <CheckCircle className="h-12 w-12" />
             </span>
-            <h4 className="font-display text-xl font-extrabold text-neutral-800">
+            <h4 className="font-display text-lg font-extrabold text-neutral-800 sm:text-xl">
               Ứng tuyển thành công!
             </h4>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-neutral-500">
@@ -140,7 +140,12 @@ export function RegistrationForm() {
           </motion.div>
         ) : (
           <form action={formAction} className="space-y-5" noValidate>
-            <h4 className="flex items-center justify-between border-b border-neutral-100 pb-3 font-display text-lg font-extrabold text-neutral-800 md:text-xl">
+            <input
+              type="hidden"
+              name="apiCode"
+              value="apply_client_advisor_ipa_living"
+            />
+            <h4 className="flex items-center justify-between pb-3 font-display text-lg font-extrabold text-neutral-800 md:text-xl">
               <span>Đăng ký ứng tuyển tuyển dụng CA</span>
               <span className="rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-brand-gold-dark">
                 Full-time / Part-time
@@ -179,16 +184,16 @@ export function RegistrationForm() {
                 id="phone"
                 label="Số điện thoại liên hệ"
                 required
-                error={state.fieldErrors?.phone}
+                error={state.fieldErrors?.phoneNumber}
               >
                 <Input
                   type="tel"
                   id="phone"
-                  name="phone"
+                  name="phoneNumber"
                   required
                   autoComplete="tel"
                   placeholder="0912xxxxxx"
-                  aria-invalid={Boolean(state.fieldErrors?.phone)}
+                  aria-invalid={Boolean(state.fieldErrors?.phoneNumber)}
                   className={fieldClass}
                 />
               </Field>
@@ -214,13 +219,13 @@ export function RegistrationForm() {
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Field id="city" label="Khu vực mong muốn làm việc">
-                <Select name="city" defaultValue="hanoi">
+                <Select name="workAddress" defaultValue={CITY_OPTIONS[0].label}>
                   <SelectTrigger id="city" className={selectTriggerClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {CITY_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.label}>
                         {option.label}
                       </SelectItem>
                     ))}
@@ -229,13 +234,16 @@ export function RegistrationForm() {
               </Field>
 
               <Field id="experience" label="Lĩnh vực chuyên môn thế mạnh">
-                <Select name="experience" defaultValue="finance">
+                <Select
+                  name="expertiseField"
+                  defaultValue={EXPERIENCE_OPTIONS[0].label}
+                >
                   <SelectTrigger id="experience" className={selectTriggerClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {EXPERIENCE_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.label}>
                         {option.label}
                       </SelectItem>
                     ))}
@@ -302,7 +310,7 @@ function SubmitButton() {
       disabled={pending}
       className={cn(
         "w-full rounded-xl py-3.5 text-xs font-bold uppercase tracking-widest shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-60",
-        "bg-brand-gold text-brand-navy hover:bg-brand-gold-dark hover:text-white",
+        "bg-brand-gold text-white hover:bg-brand-gold-dark",
       )}
     >
       {pending ? "Đang gửi hồ sơ ứng tuyển..." : "Gửi hồ sơ ứng tuyển CA"}

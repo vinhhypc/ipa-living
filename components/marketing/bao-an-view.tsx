@@ -206,7 +206,7 @@ const PRODUCT_LINES: {
 
 const MODAL_SELECTS = [
   {
-    name: "city",
+    name: "address",
     label: "Tỉnh / Thành phố",
     options: [
       "Hà Nội",
@@ -218,7 +218,7 @@ const MODAL_SELECTS = [
     ],
   },
   {
-    name: "productInterest",
+    name: "interestedProduct",
     label: "Nhu cầu bảo hiểm",
     options: [
       "Gói tổng hợp gia đình",
@@ -365,7 +365,7 @@ export function BaoAnView() {
                     </p>
                   </div>
 
-                  <div className="space-y-2 border-t border-neutral-100 pt-4">
+                  <div className="space-y-2 pt-4">
                     <span className="block text-xs font-bold uppercase tracking-wider text-neutral-400">
                       {dim.offeringsTitle}
                     </span>
@@ -514,7 +514,7 @@ export function BaoAnView() {
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3.5 text-xs font-bold uppercase tracking-widest text-brand-navy shadow-lg transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3.5 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <FileText className="h-4 w-4" />
               <span>Để lại thông tin liên hệ</span>
@@ -537,6 +537,7 @@ export function BaoAnView() {
         intro="Chuyên viên CA của PTI sẽ liên hệ hỗ trợ tư vấn giải pháp bảo vệ tối ưu nhất cho bạn."
         submitLabel="Gửi đăng ký"
         withMessage
+        apiCode="register_consultation_pti_care_ipa_living"
         selects={MODAL_SELECTS}
       />
     </div>

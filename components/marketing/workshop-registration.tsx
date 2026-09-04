@@ -29,14 +29,14 @@ type Info = {
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện workshop (brand navy).
 const fieldClass =
-  "focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-brand-navy focus-visible:ring-brand-navy/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 
 const TICKET_OPTIONS = [
-  { value: "1", label: "1 Người (Cá nhân)" },
-  { value: "2", label: "2 Người (Đồng hành cùng người thân)" },
-  { value: "3", label: "3 Người (Đội nhóm)" },
-  { value: "4-5", label: "4-5 Người (Gia đình)" },
+  "1 Người (Cá nhân)",
+  "2 Người (Đồng hành cùng người thân)",
+  "3 Người (Đội nhóm)",
+  "4-5 Người (Gia đình)",
 ] as const;
 
 export function WorkshopRegistration({ info }: { info: Info }) {
@@ -49,6 +49,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
   }>(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reminder, setReminder] = useState(true);
 
   if (info.completed) {
     return (
@@ -65,8 +66,6 @@ export function WorkshopRegistration({ info }: { info: Info }) {
   const handleSubmit = async (formData: FormData) => {
     setPending(true);
     setError(null);
-    formData.set("topic", info.title);
-    formData.set("location", info.location ?? "");
     const result = await submitWorkshopInterest({ status: "idle" }, formData);
     setPending(false);
     if (result.status === "error") {
@@ -75,9 +74,9 @@ export function WorkshopRegistration({ info }: { info: Info }) {
     }
     setTicket({
       code: `IPA-WS${Math.floor(100000 + Math.random() * 900000)}`,
-      name: String(formData.get("name") ?? ""),
+      name: String(formData.get("fullName") ?? ""),
       email: String(formData.get("email") ?? ""),
-      tickets: String(formData.get("tickets") ?? "1"),
+      tickets: String(formData.get("numberOfParticipants") ?? "1"),
     });
     setOpen(false);
   };
@@ -124,7 +123,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
               <span className="text-xs font-bold uppercase tracking-widest text-brand-gold-dark">
                 Phiếu đăng ký trực tuyến
               </span>
-              <h2 className="mt-1 font-display text-xl font-extrabold text-brand-navy">
+              <h2 className="mt-1 font-display text-lg font-extrabold text-brand-navy sm:text-xl">
                 Đăng ký tham dự Workshop
               </h2>
               <div className="mt-3 flex items-start gap-3 rounded-2xl border border-neutral-100 bg-neutral-50 p-3">
@@ -150,6 +149,11 @@ export function WorkshopRegistration({ info }: { info: Info }) {
             ) : null}
 
             <form action={handleSubmit} className="space-y-4" noValidate>
+              <input
+                type="hidden"
+                name="apiCode"
+                value="register_workshop_ipa_living"
+              />
               <div>
                 <Label
                   htmlFor="ws-name"
@@ -159,7 +163,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                 </Label>
                 <Input
                   id="ws-name"
-                  name="name"
+                  name="fullName"
                   type="text"
                   required
                   autoComplete="name"
@@ -178,7 +182,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                   </Label>
                   <Input
                     id="ws-phone"
-                    name="phone"
+                    name="phoneNumber"
                     type="tel"
                     required
                     autoComplete="tel"
@@ -212,14 +216,17 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                 >
                   Số lượng người tham dự
                 </Label>
-                <Select name="tickets" defaultValue="1">
+                <Select
+                  name="numberOfParticipants"
+                  defaultValue={TICKET_OPTIONS[0]}
+                >
                   <SelectTrigger id="ws-tickets" className={selectTriggerClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {TICKET_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
+                      <SelectItem key={option} value={option}>
+                        {option}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -235,7 +242,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
                 </Label>
                 <Textarea
                   id="ws-note"
-                  name="note"
+                  name="message"
                   rows={2}
                   placeholder="Ví dụ: Tôi muốn hỏi thêm về gói tư vấn dinh dưỡng AnVie..."
                   className={cn(fieldClass, "resize-none")}
@@ -243,7 +250,15 @@ export function WorkshopRegistration({ info }: { info: Info }) {
               </div>
 
               <label className="flex items-center gap-2 pt-1 text-xs font-light text-neutral-500">
-                <Checkbox name="notify" defaultChecked />
+                <input
+                  type="hidden"
+                  name="receiveReminderNotification"
+                  value={reminder ? "true" : "false"}
+                />
+                <Checkbox
+                  checked={reminder}
+                  onCheckedChange={(value) => setReminder(value === true)}
+                />
                 <span>
                   Nhận tin nhắc lịch &amp; mã vé qua Zalo / SMS / Email
                 </span>
@@ -252,7 +267,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
               <button
                 type="submit"
                 disabled={pending}
-                className="w-full rounded-xl bg-brand-gold px-4 py-3.5 text-xs font-bold uppercase tracking-widest text-brand-navy shadow-md transition-all hover:bg-brand-gold-dark hover:text-white disabled:opacity-60"
+                className="w-full rounded-xl bg-brand-gold px-4 py-3.5 text-xs font-bold uppercase tracking-widest text-white shadow-md transition-all hover:bg-brand-gold-dark disabled:opacity-60"
               >
                 {pending
                   ? "Đang gửi thông tin đăng ký..."
@@ -280,7 +295,7 @@ export function WorkshopRegistration({ info }: { info: Info }) {
             <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full border-4 border-emerald-50 bg-emerald-100 text-emerald-600">
               <CheckCircle2 className="h-10 w-10" />
             </span>
-            <h2 className="font-display text-2xl font-black text-neutral-800">
+            <h2 className="font-display text-xl font-black text-neutral-800 sm:text-2xl">
               Đăng ký thành công!
             </h2>
             <p className="mt-1.5 text-xs font-light leading-relaxed text-neutral-500">

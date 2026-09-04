@@ -203,7 +203,7 @@ export function ArticleDetailView({ article }: { article: Article }) {
             </div>
             <Link
               href={tower.href}
-              className="shrink-0 rounded-xl bg-white px-5 py-3 text-xs font-bold uppercase tracking-widest text-neutral-900 shadow-md transition-all hover:bg-brand-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              className="shrink-0 rounded-xl bg-white px-5 py-3 text-xs font-bold uppercase tracking-widest text-neutral-900 shadow-md transition-all hover:bg-brand-gold hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Tìm hiểu Tháp {tower.label} &rarr;
             </Link>
@@ -289,7 +289,7 @@ export function ArticleDetailView({ article }: { article: Article }) {
                         </Link>
                       </h3>
                     </div>
-                    <div className="flex items-center justify-between border-t border-neutral-100 pt-2 text-xs font-semibold text-neutral-700">
+                    <div className="flex items-center justify-between pt-2 text-xs font-semibold text-neutral-700">
                       <span>Đọc bài</span>
                       <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
                     </div>

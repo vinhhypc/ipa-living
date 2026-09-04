@@ -227,7 +227,7 @@ export function SucKhoeView() {
   return (
     <div className="min-h-screen bg-neutral-50 font-sans text-neutral-800">
       {/* Hero */}
-      <section className="h-hero hero-bleed relative flex min-h-[40rem] w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-[48rem] sm:pb-0 lg:min-h-[54rem]">
+      <section className="h-hero hero-bleed relative flex min-h-136 w-full items-center overflow-hidden border-b border-neutral-200 bg-neutral-50 pb-16 text-neutral-900 sm:min-h-192 sm:pb-0 lg:min-h-216">
         <Breadcrumbs
           variant="overlay-light"
           items={[
@@ -242,10 +242,11 @@ export function SucKhoeView() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-right lg:object-center"
+            className="object-cover object-center sm:object-right lg:object-center"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-neutral-50 via-neutral-50/90 to-transparent" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-50/80 via-transparent to-neutral-50/20" />
+          {/* Mobile: phủ mờ dọc (chữ ở nửa trên, ảnh lộ dần nửa dưới). Desktop: phủ mờ ngang bên trái. */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-neutral-50 via-neutral-50/85 to-neutral-50/30 sm:bg-gradient-to-r sm:from-neutral-50 sm:via-neutral-50/90 sm:to-transparent" />
+          <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-neutral-50/80 via-transparent to-neutral-50/20 sm:block" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -307,7 +308,7 @@ export function SucKhoeView() {
                 <div
                   key={pillar.name}
                   className={cn(
-                    "flex flex-col justify-between gap-6 rounded-3xl border-2 bg-neutral-50 p-6 transition-all hover:shadow-lg sm:p-8",
+                    "flex flex-col justify-between gap-6 rounded-3xl border bg-neutral-50 p-6 transition-all hover:shadow-lg sm:p-8",
                     tone.card,
                   )}
                 >
@@ -349,7 +350,7 @@ export function SucKhoeView() {
                       {pillar.intro}
                     </p>
 
-                    <div className="space-y-2 border-t border-neutral-200/80 pt-2">
+                    <div className="space-y-2 pt-2">
                       {pillar.items.map((item) => (
                         <div
                           key={item.title}

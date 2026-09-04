@@ -105,7 +105,7 @@ export function KnowledgeCard({ article }: { article: Article }) {
           </p>
         </div>
 
-        <div className="mt-4 flex flex-col gap-2 border-t border-neutral-100 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        <div className="mt-4 flex flex-col gap-2 pt-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <span className="flex min-w-0 items-center gap-1 text-xs text-neutral-500">
             <User className="h-3.5 w-3.5 shrink-0 text-neutral-400" />
             <span className="truncate">{article.author}</span>

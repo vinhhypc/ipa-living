@@ -48,35 +48,40 @@ const INITIAL: WorkshopInterestState = { status: "idle" };
 
 // shadcn UI thuần — chỉ override màu focus ring theo nhận diện tuyển dụng (amber).
 const fieldClass =
-  "focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
+  "text-sm placeholder:text-xs sm:placeholder:text-sm focus-visible:border-amber-500 focus-visible:ring-amber-500/30";
 const selectTriggerClass = cn("w-full", fieldClass);
 
 const POSITION_OPTIONS = [
-  { value: "ca", label: "Client Advisor (Tư vấn viên lối sống & gia sản)" },
-  { value: "doctor", label: "Bác sĩ / Dược sĩ Y học lối sống Anvie" },
-  { value: "financial", label: "Chuyên viên Hoạch định Tài chính VNDGO" },
-  { value: "insurance", label: "Chuyên viên Tư vấn Bảo hiểm PTI" },
-  { value: "station", label: "Quản lý / Vận hành Trạm Dstation" },
+  "Client Advisor (Tư vấn viên lối sống & gia sản)",
+  "Bác sĩ / Dược sĩ Y học lối sống Anvie",
+  "Chuyên viên Hoạch định Tài chính VNDGO",
+  "Chuyên viên Tư vấn Bảo hiểm PTI",
+  "Quản lý / Vận hành Trạm Dstation",
 ] as const;
 
 const LOCATION_OPTIONS = [
-  { value: "hanoi", label: "Hà Nội (Tây Hồ, Hai Bà Trưng)" },
-  { value: "hcm", label: "TP. HCM (Quận 1, Quận 5)" },
-  { value: "danang", label: "Đà Nẵng" },
-  { value: "haiphong", label: "Hải Phòng" },
+  "Hà Nội (Tây Hồ, Hai Bà Trưng)",
+  "TP. HCM (Quận 1, Quận 5)",
+  "Đà Nẵng",
+  "Hải Phòng",
 ] as const;
 
 const EXPERIENCE_YEARS_OPTIONS = [
-  { value: "fresh", label: "Mới tốt nghiệp / Đam mê phong cách sống" },
-  { value: "1-3", label: "1 - 3 năm kinh nghiệm" },
-  { value: "3-5", label: "3 - 5 năm kinh nghiệm" },
-  { value: "5+", label: "Trên 5 năm kinh nghiệm" },
+  "Mới tốt nghiệp / Đam mê phong cách sống",
+  "1 - 3 năm kinh nghiệm",
+  "3 - 5 năm kinh nghiệm",
+  "Trên 5 năm kinh nghiệm",
 ] as const;
 
 const TIME_SLOT_OPTIONS = [
-  { value: "09:00 - 10:30", label: "09:00 - 10:30 (Sáng)" },
-  { value: "14:00 - 15:30", label: "14:00 - 15:30 (Chiều)" },
-  { value: "16:00 - 17:30", label: "16:00 - 17:30 (Chiều)" },
+  "09:00 - 10:30 (Sáng)",
+  "14:00 - 15:30 (Chiều)",
+  "16:00 - 17:30 (Chiều)",
+] as const;
+
+const METHOD_OPTIONS = [
+  "Trực tiếp tại Dstation",
+  "Online qua Google Meet",
 ] as const;
 
 const CATEGORY_PILLS: {
@@ -234,18 +239,11 @@ export function DCareView() {
 
       <section className="relative z-20 mx-auto -mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-lg sm:p-8">
-          <div className="grid grid-cols-2 gap-6 divide-neutral-100 sm:gap-8 sm:divide-x lg:grid-cols-4">
-            {STATS.map((stat, idx) => {
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-4">
+            {STATS.map((stat) => {
               const Icon = stat.icon;
               return (
-                <div
-                  key={stat.label}
-                  className={cn(
-                    "space-y-2 text-center sm:text-left",
-                    idx > 0 && "sm:pl-4",
-                    idx < STATS.length - 1 && "sm:pr-4",
-                  )}
-                >
+                <div key={stat.label} className="space-y-2 text-center sm:text-left">
                   <span
                     className={cn(
                       "flex items-center justify-center gap-2 sm:justify-start",
@@ -377,7 +375,7 @@ export function DCareView() {
                     <MapPin className="h-3.5 w-3.5 shrink-0 text-amber-600" />
                     <span className="truncate">{expert.location}</span>
                   </p>
-                  <div className="space-y-1.5 border-t border-neutral-100 pt-2">
+                  <div className="space-y-1.5 pt-2">
                     <p className="text-xs font-bold uppercase text-neutral-400">
                       Lĩnh vực tư vấn
                     </p>
@@ -429,7 +427,7 @@ export function DCareView() {
                   <Award className="h-3.5 w-3.5 text-amber-400" />
                   <span>Phần 2: Tuyển dụng &amp; Đồng hành</span>
                 </span>
-                <h2 className="font-display text-2xl font-black leading-tight text-white sm:text-3xl">
+                <h2 className="font-display text-xl font-black leading-tight text-white sm:text-3xl">
                   Gia Nhập Đội Ngũ{" "}
                   <span className="text-amber-400">
                     Client Advisor &amp; Chuyên Gia
@@ -485,7 +483,7 @@ function RecruitmentForm() {
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-health-50 text-health-700">
           <CheckCircle2 className="h-10 w-10" />
         </span>
-        <h3 className="font-display text-2xl font-black text-neutral-900">
+        <h3 className="font-display text-xl font-black text-neutral-900 sm:text-2xl">
           Ứng tuyển thành công!
         </h3>
         <p className="mx-auto max-w-md text-xs leading-relaxed text-neutral-600 sm:text-sm">
@@ -497,6 +495,7 @@ function RecruitmentForm() {
 
   return (
     <form action={formAction} className="space-y-4" noValidate>
+      <input type="hidden" name="apiCode" value="apply_advisor_ipa_living" />
       <div>
         <h3 className="font-display text-xl font-bold text-neutral-900">
           Điền Thông Tin Ứng Tuyển
@@ -519,7 +518,7 @@ function RecruitmentForm() {
         <Field id="r-name" label="Họ và tên ứng viên" required>
           <Input
             id="r-name"
-            name="name"
+            name="fullName"
             type="text"
             required
             autoComplete="name"
@@ -530,7 +529,7 @@ function RecruitmentForm() {
         <Field id="r-phone" label="Số điện thoại" required>
           <Input
             id="r-phone"
-            name="phone"
+            name="phoneNumber"
             type="tel"
             required
             autoComplete="tel"
@@ -551,14 +550,14 @@ function RecruitmentForm() {
           />
         </Field>
         <Field id="r-position" label="Vị trí mong muốn ứng tuyển">
-          <Select name="position" defaultValue="ca">
+          <Select name="position" defaultValue={POSITION_OPTIONS[0]}>
             <SelectTrigger id="r-position" className={selectTriggerClass}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {POSITION_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                <SelectItem key={option} value={option}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -567,28 +566,31 @@ function RecruitmentForm() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field id="r-location" label="Khu vực làm việc mong muốn">
-          <Select name="location" defaultValue="hanoi">
+          <Select name="workAddress" defaultValue={LOCATION_OPTIONS[0]}>
             <SelectTrigger id="r-location" className={selectTriggerClass}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {LOCATION_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                <SelectItem key={option} value={option}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </Field>
         <Field id="r-exp" label="Kinh nghiệm làm việc">
-          <Select name="experienceYears" defaultValue="1-3">
+          <Select
+            name="workExperience"
+            defaultValue={EXPERIENCE_YEARS_OPTIONS[1]}
+          >
             <SelectTrigger id="r-exp" className={selectTriggerClass}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {EXPERIENCE_YEARS_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                <SelectItem key={option} value={option}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -601,7 +603,7 @@ function RecruitmentForm() {
       >
         <Input
           id="r-cv"
-          name="cvLink"
+          name="cvProfileUrl"
           type="url"
           placeholder="https://drive.google.com/... hoặc https://linkedin.com/in/..."
           className={fieldClass}
@@ -610,7 +612,7 @@ function RecruitmentForm() {
       <Field id="r-bg" label="Kinh nghiệm / Thông điệp gửi tới IPA Living">
         <Textarea
           id="r-bg"
-          name="background"
+          name="message"
           rows={2}
           placeholder="Chia sẻ ngắn về thế mạnh hoặc lý do bạn mong muốn đồng hành cùng chúng tôi..."
           className={cn(fieldClass, "resize-none")}
@@ -644,7 +646,9 @@ function BookingModal({
   onClose: () => void;
 }) {
   const [state, formAction] = useActionState(submitWorkshopInterest, INITIAL);
-  const [format, setFormat] = useState<"in-person" | "online">("in-person");
+  const [method, setMethod] = useState<(typeof METHOD_OPTIONS)[number]>(
+    METHOD_OPTIONS[0],
+  );
 
   return (
     <div
@@ -688,9 +692,13 @@ function BookingModal({
           </div>
         ) : (
           <form action={formAction} className="space-y-4" noValidate>
-            <input type="hidden" name="expert" value={expert.name} />
-            <input type="hidden" name="format" value={format} />
-            <div className="flex items-center gap-3.5 border-b border-neutral-100 pb-4">
+            <input
+              type="hidden"
+              name="apiCode"
+              value="register_consultation_ipa_living"
+            />
+            <input type="hidden" name="consultationMethod" value={method} />
+            <div className="flex items-center gap-3.5 pb-4">
               <Image
                 src={expert.avatar}
                 alt={expert.name}
@@ -719,7 +727,7 @@ function BookingModal({
               <Field id="b-name" label="Họ và tên của bạn" required>
                 <Input
                   id="b-name"
-                  name="name"
+                  name="fullName"
                   type="text"
                   required
                   autoComplete="name"
@@ -730,7 +738,7 @@ function BookingModal({
               <Field id="b-phone" label="Số điện thoại" required>
                 <Input
                   id="b-phone"
-                  name="phone"
+                  name="phoneNumber"
                   type="tel"
                   required
                   autoComplete="tel"
@@ -743,21 +751,24 @@ function BookingModal({
               <Field id="b-date" label="Ngày tư vấn">
                 <DatePicker
                   id="b-date"
-                  name="date"
+                  name="consultationDate"
                   placeholder="Chọn ngày tư vấn"
                   disablePast
                   triggerClassName={fieldClass}
                 />
               </Field>
               <Field id="b-slot" label="Khung giờ">
-                <Select name="timeSlot" defaultValue="09:00 - 10:30">
+                <Select
+                  name="consultationTime"
+                  defaultValue={TIME_SLOT_OPTIONS[0]}
+                >
                   <SelectTrigger id="b-slot" className={selectTriggerClass}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {TIME_SLOT_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
+                      <SelectItem key={option} value={option}>
+                        {option}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -769,22 +780,20 @@ function BookingModal({
                 Hình thức tư vấn
               </span>
               <div className="grid grid-cols-2 gap-2">
-                {(["in-person", "online"] as const).map((option) => (
+                {METHOD_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    onClick={() => setFormat(option)}
-                    aria-pressed={format === option}
+                    onClick={() => setMethod(option)}
+                    aria-pressed={method === option}
                     className={cn(
                       "rounded-xl border py-2 text-xs font-bold transition-colors",
-                      format === option
+                      method === option
                         ? "border-health-600 bg-health-50 text-health-700"
                         : "border-neutral-200 text-neutral-600 hover:bg-neutral-50",
                     )}
                   >
-                    {option === "in-person"
-                      ? "Trực tiếp tại Dstation"
-                      : "Online qua Google Meet"}
+                    {option}
                   </button>
                 ))}
               </div>
@@ -792,8 +801,9 @@ function BookingModal({
             <Field id="b-notes" label="Nhu cầu cần trao đổi cụ thể">
               <Textarea
                 id="b-notes"
-                name="notes"
+                name="message"
                 rows={2}
+                defaultValue={`Chuyên gia mong muốn: ${expert.name}\n`}
                 placeholder="Ví dụ: Cần tư vấn lộ trình tích sản hưu trí, cân bằng chuyển hóa đường ruột..."
                 className={cn(fieldClass, "resize-none")}
               />

@@ -95,7 +95,7 @@ export function PtiCommercialView() {
               </Link>
               <Link
                 href={routes.dCare}
-                className="inline-flex items-center gap-2 rounded-full bg-brand-gold px-5 py-3 text-xs font-bold uppercase tracking-wider text-brand-navy shadow-sm transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-gold px-5 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               >
                 <UserCheck className="h-4 w-4" />
                 <span>Liên hệ CA Advisor</span>
@@ -160,7 +160,7 @@ export function PtiCommercialView() {
                     <p className="text-sm font-light leading-relaxed text-neutral-600">
                       {solution.lead}
                     </p>
-                    <ul className="space-y-3 border-t border-neutral-200/60 pt-4">
+                    <ul className="space-y-3 pt-4">
                       {solution.benefits.map((benefit) => (
                         <li key={benefit} className="flex items-start gap-3">
                           <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-bluegray" />
@@ -210,7 +210,7 @@ export function PtiCommercialView() {
             </Link>
             <Link
               href={routes.dCare}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-brand-navy shadow-lg transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-gold px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:bg-brand-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto"
             >
               <UserCheck className="h-4 w-4" />
               <span>Liên hệ CA Advisor</span>

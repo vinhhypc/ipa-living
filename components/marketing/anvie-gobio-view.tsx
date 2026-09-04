@@ -328,7 +328,7 @@ function SectionCard({
 }) {
   return (
     <div className="space-y-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-      <div className="border-b border-neutral-100 pb-4">
+      <div className="pb-4">
         <span className="block text-xs font-bold uppercase tracking-widest text-emerald-800">
           {eyebrow}
         </span>
@@ -476,7 +476,7 @@ export function AnvieGobioView({
         {main === "portfolio" ? (
           <div className="space-y-8">
             <div className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-              <div className="flex flex-col justify-between gap-4 border-b border-neutral-100 pb-5 sm:flex-row sm:items-center">
+              <div className="flex flex-col justify-between gap-4 pb-5 sm:flex-row sm:items-center">
                 <div>
                   <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold uppercase text-emerald-900">
                     Section 01 · Portfolio Hệ Sản Phẩm Bio
@@ -600,7 +600,7 @@ export function AnvieGobioView({
 
         {main === "shop" ? (
           <div className="space-y-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="border-b border-neutral-100 pb-5">
+            <div className="pb-5">
               <span className="inline-flex rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold uppercase text-amber-900">
                 Section 02 · Kênh Thương Mại &amp; Bán Lẻ
               </span>
@@ -661,7 +661,7 @@ export function AnvieGobioView({
 
         {main === "tu-sach" ? (
           <div className="space-y-6 rounded-3xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-8">
-            <div className="border-b border-neutral-100 pb-5">
+            <div className="pb-5">
               <span className="inline-flex rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-bold uppercase text-neutral-900">
                 Section 03 · Di Sản Tri Thức
               </span>
@@ -695,7 +695,7 @@ export function AnvieGobioView({
                     <p className="text-xs font-light leading-relaxed text-neutral-600">
                       {card.desc}
                     </p>
-                    <p className="border-t border-neutral-200 pt-2 text-xs text-neutral-500">
+                    <p className="pt-2 text-xs text-neutral-500">
                       {card.list}
                     </p>
                   </div>

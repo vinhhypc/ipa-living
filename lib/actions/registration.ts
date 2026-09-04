@@ -1,37 +1,138 @@
 "use server";
 
 /**
- * Server Action nhận hồ sơ ứng tuyển Client Advisor (CA) từ `RegistrationForm`.
+ * Server Action dùng chung cho MỌI form marketing của IPA Living.
  *
- * Bản migrate hiện tại chỉ validate + log (stub) — chưa nối API/CRM thật. Khi có
- * endpoint, thay phần `console.info` bằng lời gọi trong `services/`.
+ * Mỗi form gắn một `<input type="hidden" name="apiCode" />` ứng với business
+ * rule tương ứng. Action đọc `apiCode`, lọc đúng bộ field theo `FORM_CATALOG`
+ * ([lib/forms/catalog.ts]), validate các field bắt buộc rồi POST body JSON:
+ *
+ *   POST {NEXT_PUBLIC_API_BASE_URL}/public/matches/{apiCode}
+ *
+ * Body gửi lên khớp `targetObject` của từng rule (xem Postman collection).
+ * `createdTime` do DRM tự set nên client không gửi.
  */
 
-export type RegistrationState = {
-  status: "idle" | "success" | "error";
-  message?: string;
-  fieldErrors?: Partial<Record<"fullName" | "phone" | "email", string>>;
-};
+import { formEntry, isFormCode, type FormCode } from "@/lib/forms/catalog";
 
 const PHONE_RE = /^(\+?84|0)\d{9,10}$/;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export async function submitRegistration(
-  _prev: RegistrationState,
-  formData: FormData,
-): Promise<RegistrationState> {
-  const fullName = String(formData.get("fullName") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
-  const city = String(formData.get("city") ?? "").trim();
-  const experience = String(formData.get("experience") ?? "").trim();
-  const message = String(formData.get("message") ?? "").trim();
+export type LeadFormState = {
+  status: "idle" | "success" | "error";
+  message?: string;
+  fieldErrors?: Record<string, string>;
+};
 
-  const fieldErrors: RegistrationState["fieldErrors"] = {};
-  if (!fullName) fieldErrors.fullName = "Vui lòng nhập họ và tên.";
-  if (!PHONE_RE.test(phone))
-    fieldErrors.phone = "Số điện thoại chưa hợp lệ.";
-  if (!EMAIL_RE.test(email)) fieldErrors.email = "Email chưa hợp lệ.";
+// Giữ tên cũ để không phải sửa import ở các component.
+export type RegistrationState = LeadFormState;
+export type WorkshopInterestState = LeadFormState;
+
+const REQUIRED_MESSAGE: Record<string, string> = {
+  fullName: "Vui lòng nhập họ và tên.",
+  phoneNumber: "Vui lòng nhập số điện thoại.",
+  email: "Vui lòng nhập email.",
+  companyName: "Vui lòng nhập tên đơn vị.",
+  representativeName: "Vui lòng nhập tên người đại diện.",
+};
+
+const DEFAULT_SUCCESS =
+  "Cảm ơn bạn! Thông tin đã được gửi tới IPA Living. Chuyên viên sẽ liên hệ với bạn trong thời gian sớm nhất.";
+
+async function postToDrm(
+  code: FormCode,
+  payload: Record<string, unknown>,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (!base) {
+    return { ok: false, message: "Thiếu cấu hình NEXT_PUBLIC_API_BASE_URL." };
+  }
+
+  let res: Response;
+  try {
+    res = await fetch(`${base}/public/matches/${code}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
+  } catch (error) {
+    console.error("[lead] network error", code, error);
+    return { ok: false, message: "Không kết nối được máy chủ, vui lòng thử lại." };
+  }
+
+  const text = await res.text();
+  let data: Record<string, unknown> | null = null;
+  try {
+    data = text ? (JSON.parse(text) as Record<string, unknown>) : null;
+  } catch {
+    data = null;
+  }
+
+  const businessMessage =
+    (data?.message as string | undefined) ??
+    (data?.error as string | undefined) ??
+    ((data?.exception as { message?: string } | undefined)?.message ?? undefined);
+
+  const businessCode =
+    (data?.code as string | undefined) ??
+    ((data?.exception as { code?: string } | undefined)?.code ?? undefined);
+
+  const failedRule =
+    data?.success === false ||
+    (typeof businessCode === "string" && businessCode.toUpperCase().startsWith("BR"));
+
+  if (!res.ok || failedRule) {
+    console.error("[lead] rejected", code, res.status, text.slice(0, 500));
+    return {
+      ok: false,
+      message: businessMessage ?? `Gửi thông tin thất bại (mã ${res.status}).`,
+    };
+  }
+
+  return { ok: true };
+}
+
+/**
+ * Xử lý submit cho một `apiCode` cụ thể: validate + build body + POST tới DRM.
+ */
+async function dispatchLead(formData: FormData): Promise<LeadFormState> {
+  const rawCode = String(formData.get("apiCode") ?? "").trim();
+  if (!rawCode || !isFormCode(rawCode)) {
+    console.error("[lead] apiCode không hợp lệ:", rawCode);
+    return { status: "error", message: "Form chưa được cấu hình đúng (thiếu apiCode)." };
+  }
+
+  const config = formEntry(rawCode);
+
+  // Đọc giá trị thô.
+  const values: Record<string, string> = {};
+  for (const field of config.fields) {
+    values[field] = String(formData.get(field) ?? "").trim();
+  }
+
+  // Validate.
+  const fieldErrors: Record<string, string> = {};
+  for (const field of config.required) {
+    if (!values[field]) {
+      fieldErrors[field] =
+        REQUIRED_MESSAGE[field] ?? "Trường này không được để trống.";
+    }
+  }
+  if (
+    config.fields.includes("phoneNumber") &&
+    values.phoneNumber &&
+    !PHONE_RE.test(values.phoneNumber)
+  ) {
+    fieldErrors.phoneNumber = "Số điện thoại chưa hợp lệ.";
+  }
+  if (config.fields.includes("email")) {
+    if (values.email && !EMAIL_RE.test(values.email)) {
+      fieldErrors.email = "Email chưa hợp lệ.";
+    } else if (!values.email && config.required.includes("email")) {
+      fieldErrors.email = "Vui lòng nhập email.";
+    }
+  }
 
   if (Object.keys(fieldErrors).length > 0) {
     return {
@@ -41,53 +142,39 @@ export async function submitRegistration(
     };
   }
 
-  // TODO: gọi service CRM/tuyển dụng thật ở đây.
-  console.info("[registration] hồ sơ CA mới", {
-    fullName,
-    phone,
-    email,
-    city,
-    experience,
-    hasMessage: message.length > 0,
-  });
+  // Build body JSON đúng shape của rule.
+  const payload: Record<string, unknown> = {};
+  for (const field of config.fields) {
+    if (config.booleans?.includes(field)) {
+      const raw = values[field].toLowerCase();
+      payload[field] = raw === "true" || raw === "on" || raw === "1";
+    } else {
+      payload[field] = values[field];
+    }
+  }
+
+  const result = await postToDrm(rawCode, payload);
+  if (!result.ok) {
+    return { status: "error", message: result.message };
+  }
 
   return {
     status: "success",
-    message:
-      "Cảm ơn bạn đã nộp hồ sơ ứng tuyển vị trí Bạn Đồng Hành (Client Advisor - CA) tại Hệ sinh thái IPA Living. Bộ phận Nhân sự sẽ chủ động liên hệ với bạn để trao đổi thông tin phỏng vấn.",
+    message: config.successMessage ?? DEFAULT_SUCCESS,
   };
 }
 
-export type WorkshopInterestState = {
-  status: "idle" | "success" | "error";
-  message?: string;
-};
-
-/**
- * Server Action nhận đăng ký tham gia workshop (stub: validate + log).
- */
 export async function submitWorkshopInterest(
-  _prev: WorkshopInterestState,
+  _prev: LeadFormState,
   formData: FormData,
-): Promise<WorkshopInterestState> {
-  const name = String(formData.get("name") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
+): Promise<LeadFormState> {
+  return dispatchLead(formData);
+}
 
-  if (!name || !PHONE_RE.test(phone)) {
-    return {
-      status: "error",
-      message: "Vui lòng nhập họ tên và số điện thoại hợp lệ.",
-    };
-  }
-
-  const payload = Object.fromEntries(
-    Array.from(formData.entries()).map(([key, value]) => [key, String(value)]),
-  );
-  console.info("[lead-interest] đăng ký mới", payload);
-
-  return {
-    status: "success",
-    message:
-      "Chuyên viên hỗ trợ sẽ liên hệ xác nhận lịch hẹn và gửi vé mời chi tiết qua số điện thoại/email của bạn trong vòng 24 giờ.",
-  };
+// Giữ tên cũ cho form tuyển dụng CA.
+export async function submitRegistration(
+  _prev: LeadFormState,
+  formData: FormData,
+): Promise<LeadFormState> {
+  return dispatchLead(formData);
 }

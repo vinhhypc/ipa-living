@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 
 import { SITE_NAME, organizationJsonLd } from "@/lib/seo";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
-import { ScrollToButtons } from "@/components/layout/scroll-to-buttons";
 import { MotionProvider } from "@/components/providers/motion-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 import "./globals.css";
 
@@ -57,12 +55,9 @@ export default function RootLayout({
             __html: JSON.stringify(organizationJsonLd()),
           }}
         />
-        <MotionProvider>
-          <SiteHeader />
-          <main className="flex-grow">{children}</main>
-          <SiteFooter />
-          <ScrollToButtons />
-        </MotionProvider>
+        <QueryProvider>
+          <MotionProvider>{children}</MotionProvider>
+        </QueryProvider>
       </body>
     </html>
   );
