@@ -1,10 +1,9 @@
-/** Tách riêng, không import gì — an toàn để dùng trong middleware (edge). */
+/**
+ * Tách riêng, không import gì — an toàn để dùng trong middleware/proxy (edge).
+ *
+ * Cookie này chứa **token DRM** của phiên đăng nhập (không phải cờ boolean).
+ */
 export const DASHBOARD_COOKIE = "ipa_dashboard";
 
-/**
- * MOCK: tài khoản đăng nhập tạm cố định. Thay bằng gọi API xác thực khi có.
- */
-export const MOCK_CREDENTIALS = {
-  username: "admin",
-  password: "admin",
-};
+/** Tên tài khoản đã đăng nhập — chỉ để hiển thị ở sidebar. */
+export const DASHBOARD_USER_COOKIE = "ipa_dashboard_user";

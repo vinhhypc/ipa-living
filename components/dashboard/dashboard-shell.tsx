@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, PanelLeft, X } from "lucide-react";
@@ -12,29 +12,36 @@ import { LogoutButton } from "@/components/dashboard/logout-button";
 
 const STORAGE_KEY = "ipa_dash_sidebar";
 
+/** Đọc trạng thái sidebar đã lưu (SSR trả mặc định `true`). */
+function readStoredOpen(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== "0";
+  } catch {
+    return true;
+  }
+}
+
 export function DashboardShell({
   counts,
+  username,
   children,
 }: {
   counts: Record<string, number>;
+  username: string;
   children: React.ReactNode;
 }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(readStoredOpen);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved !== null) setOpen(saved === "1");
-    } catch {
-      /* ignore */
-    }
-  }, []);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  // Drawer mobile: đóng khi đổi trang. Link trong sidebar đã tự đóng qua
+  // `onNavigate`; chỗ này lo nốt back/forward. Dùng key thay vì effect.
+  const [drawerKey, setDrawerKey] = useState(pathname);
+  if (pathname !== drawerKey) {
+    setDrawerKey(pathname);
+    if (mobileOpen) setMobileOpen(false);
+  }
 
   function toggle() {
     setMobileOpen((v) => !v);
@@ -108,7 +115,7 @@ export function DashboardShell({
           )}
         >
           <div className="scrollbar-slim h-full w-72 overflow-y-auto">
-            <DashboardSidebar counts={counts} />
+            <DashboardSidebar counts={counts} username={username} />
           </div>
         </aside>
 
@@ -129,6 +136,7 @@ export function DashboardShell({
               </button>
               <DashboardSidebar
                 counts={counts}
+                username={username}
                 onNavigate={() => setMobileOpen(false)}
               />
             </aside>

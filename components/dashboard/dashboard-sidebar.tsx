@@ -10,12 +10,15 @@ import { groupStyle } from "@/components/dashboard/group-meta";
 
 type Props = {
   counts: Record<string, number>;
+  username?: string;
   onNavigate?: () => void;
 };
 
 const GROUP_ORDER = ["Workshop", "PTI", "D-One", "D-Care", "Tuyển dụng"] as const;
 
-export function DashboardSidebar({ counts, onNavigate }: Props) {
+export function DashboardSidebar({ counts, username, onNavigate }: Props) {
+  const name = username?.trim() || "—";
+  const initials = name.slice(0, 2).toUpperCase();
   const pathname = usePathname();
 
   const grouped = GROUP_ORDER.map((group) => ({
@@ -92,11 +95,11 @@ export function DashboardSidebar({ counts, onNavigate }: Props) {
 
       <div className="mt-auto flex items-center gap-2.5 rounded-xl bg-white/5 p-2.5 ring-1 ring-white/10">
         <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-gold text-xs font-bold text-white">
-          AD
+          {initials}
         </span>
         <div className="min-w-0">
-          <p className="truncate text-xs font-semibold text-white">admin</p>
-          <p className="truncate text-xs text-slate-400">Quản trị viên</p>
+          <p className="truncate text-xs font-semibold text-white">{name}</p>
+          <p className="truncate text-xs text-slate-400">Tài khoản DRM</p>
         </div>
       </div>
     </nav>

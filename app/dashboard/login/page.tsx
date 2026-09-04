@@ -29,14 +29,7 @@ export default function DashboardLoginPage() {
         </div>
 
         <p className="mt-4 text-center text-xs text-slate-400">
-          Tài khoản tạm:{" "}
-          <code className="rounded bg-white/10 px-1 font-semibold text-slate-200">
-            admin
-          </code>{" "}
-          /{" "}
-          <code className="rounded bg-white/10 px-1 font-semibold text-slate-200">
-            admin
-          </code>
+          Dùng tài khoản đăng nhập hệ thống DRM của bạn.
         </p>
       </div>
     </div>

@@ -11,7 +11,7 @@ import { DASHBOARD_COOKIE } from "@/lib/dashboard/constants";
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAuthed = request.cookies.get(DASHBOARD_COOKIE)?.value === "1";
+  const isAuthed = Boolean(request.cookies.get(DASHBOARD_COOKIE)?.value);
   const isLoginPage = pathname === "/dashboard/login";
 
   if (!isAuthed && !isLoginPage) {

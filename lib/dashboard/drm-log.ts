@@ -1,25 +1,25 @@
 import "server-only";
 
 import zlib from "node:zlib";
+import { cookies } from "next/headers";
 
 import { FORM_CATALOG, FORM_LIST, type FormCode } from "@/lib/forms/catalog";
+import { DASHBOARD_COOKIE } from "@/lib/dashboard/constants";
 import type { Submission, SubmissionResult } from "@/lib/dashboard/types";
 
 /**
  * Lấy danh sách lượt gửi của 1 form từ DRM admin.
  *
  *   GET {DRM_ADMIN_BASE_URL}/api/proxy/log?ruleId={id}&targetType=RULE&orderBy=created&isDesc=true
- *   Cookie: token={DRM_ADMIN_TOKEN}
+ *   Cookie: token={token}   ← token của phiên đăng nhập (lưu ở cookie `ipa_dashboard`)
  *
  * Mỗi bản ghi có `message` = "zip:" + base64(gzip(BRMS trace text)). Trong trace
  * có dòng `Record [..] Data: { ...payload JSON... }` — chính là dữ liệu người dùng nhập.
  *
- * ⚠️ `DRM_ADMIN_TOKEN` là token phiên admin UAT — sẽ HẾT HẠN. Khi log trả 401/403
- * thì cập nhật lại token trong `.env.*` (hoặc thay bằng luồng auth thật).
+ * Token hết hạn → log trả 401 → báo phiên hết hạn (người dùng đăng nhập lại).
  */
 
 const BASE = process.env.DRM_ADMIN_BASE_URL;
-const TOKEN = process.env.DRM_ADMIN_TOKEN;
 
 type LogItem = {
   recordId: string;
@@ -65,45 +65,57 @@ function extractPayload(trace: string): Record<string, unknown> | null {
   }
 }
 
+function logRequest(ruleId: number, token: string) {
+  return fetch(
+    `${BASE}/api/proxy/log?ruleId=${ruleId}&targetType=RULE&orderBy=created&isDesc=true`,
+    {
+      headers: {
+        Accept: "*/*",
+        Referer: `${BASE}/rules`,
+        "x-auth-mode": "required",
+        Cookie: `token=${token}`,
+        "User-Agent": "IPA-Living-Dashboard",
+      },
+      // Admin: luôn lấy mới, không cache — mỗi lần vào form gọi lại DRM.
+      cache: "no-store",
+    },
+  );
+}
+
 export async function fetchSubmissions(
   code: FormCode,
 ): Promise<SubmissionResult> {
   const { ruleId } = FORM_CATALOG[code];
 
-  if (!BASE || !TOKEN) {
+  if (!BASE) {
     return {
       ok: false,
-      error:
-        "Chưa cấu hình DRM_ADMIN_BASE_URL / DRM_ADMIN_TOKEN trong biến môi trường.",
+      error: "Chưa cấu hình DRM_ADMIN_BASE_URL trong biến môi trường.",
       rows: [],
     };
   }
 
+  const token = (await cookies()).get(DASHBOARD_COOKIE)?.value;
+  if (!token) {
+    return { ok: false, error: "Chưa đăng nhập.", rows: [] };
+  }
+
   let res: Response;
   try {
-    res = await fetch(
-      `${BASE}/api/proxy/log?ruleId=${ruleId}&targetType=RULE&orderBy=created&isDesc=true`,
-      {
-        headers: {
-          Accept: "*/*",
-          Referer: `${BASE}/rules`,
-          "x-auth-mode": "required",
-          Cookie: `token=${TOKEN}`,
-          "User-Agent": "IPA-Living-Dashboard",
-        },
-        // Admin: luôn lấy mới, không cache — mỗi lần vào form gọi lại DRM.
-        cache: "no-store",
-      },
-    );
+    res = await logRequest(ruleId, token);
   } catch (error) {
-    console.error("[drm-log] network error", code, error);
-    return { ok: false, error: "Không kết nối được DRM admin.", rows: [] };
+    console.error("[drm-log] error", code, error);
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Lỗi khi gọi DRM.",
+      rows: [],
+    };
   }
 
   if (res.status === 401 || res.status === 403) {
     return {
       ok: false,
-      error: "Token DRM admin đã hết hạn — cập nhật lại DRM_ADMIN_TOKEN.",
+      error: "Phiên đăng nhập DRM đã hết hạn — hãy đăng xuất và đăng nhập lại.",
       rows: [],
     };
   }

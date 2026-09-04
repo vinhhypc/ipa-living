@@ -35,7 +35,7 @@ export function LoginForm() {
           htmlFor="username"
           className="mb-1.5 block text-xs font-semibold text-slate-600"
         >
-          Tài khoản
+          Tài khoản DRM
         </label>
         <input
           id="username"
@@ -44,7 +44,7 @@ export function LoginForm() {
           required
           autoComplete="username"
           autoFocus
-          defaultValue="admin"
+          placeholder="Tài khoản đăng nhập DRM của bạn"
           className={fieldClass}
         />
       </div>
